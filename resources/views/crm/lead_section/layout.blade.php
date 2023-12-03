@@ -17,6 +17,12 @@
     }
 </style>
 
+@php
+    $url = $_SERVER['REQUEST_URI'];
+    $urlParts = explode('/', $url);
+    $leadId = (int) $urlParts[3];
+@endphp
+
 <section>
     <div class="container-fluid">
         <div class="card">
@@ -29,17 +35,16 @@
             <div class="card-body">
                 <ul class="nav nav-tabs d-flex justify-content-between" id="myTab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" id="general-tab" data-toggle="tab" href="#General" role="tab"
-                           aria-controls="General" aria-selected="true">{{trans('file.Contact')}}</a>
+                        <a class="nav-link {{ request()->routeIs('lead.contact.index') ? 'active' : '' }}" href="{{ route('lead.contact.index', $leadId) }}">{{trans('file.Contact')}}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#Profile" role="tab"
-                           aria-controls="Profile" aria-selected="false">{{trans('file.Lead Info')}}</a>
+                        <a class="nav-link" href="#">{{trans('file.Lead Info')}}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="set_salary-tab" data-toggle="tab" href="#Set_salary" role="tab"
+                        <a class="nav-link {{ request()->routeIs('lead.task.index') ? 'active' : '' }}" id="set_salary-tab" href="{{ route('lead.task.index', $leadId) }}" role="tab"
                            aria-controls="Set_salary" aria-selected="false">{{__('Task')}}</a>
                     </li>
+
                     <li class="nav-item">
                         <a class="nav-link" id="leave-tab" data-toggle="tab" href="#Leave" role="tab"
                            aria-controls="Leave" aria-selected="false">{{trans('file.Estimates')}}</a>

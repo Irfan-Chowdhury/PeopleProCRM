@@ -13,7 +13,6 @@
             <div class="modal-body">
 
                 <form method="POST" action="{{ route('lead.contact.update', ['lead' => $lead->id, 'leadContact'=>1]) }}" id="updateForm" enctype="multipart/form-data">
-                {{-- <form method="POST" id="updateForm" enctype="multipart/form-data"> --}}
                     @csrf
                     <div class="row">
 

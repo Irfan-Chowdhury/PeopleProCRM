@@ -2,11 +2,24 @@
 
 return array (
   'About' => 'About',
+  'Lead Details' => 'Lead Details',
+  'Add Task' => 'Add Task',
+  'Collaborators' => 'Collaborators',
+  'Labels' => 'Labels',
+  'Assigned Employee' => 'Assigned Employee',
+  'Assigned To' => 'Assigned To',
+  'Action' => 'Action',
+  'Edit Task' => 'Edit Task',
+  'Points' => 'Points',
+  'Contract' => 'Contract',
+  'Estimate Request' => 'Estimate Request',
+  'Estimates' => 'Estimates',
   'Absent' => 'Absent',
   'Account' => 'Account',
   'Accounts' => 'Accounts',
   'Active' => 'Active',
   'Add' => 'Add',
+  'Lead Info' => 'Lead Info',
   'Add More' => 'Add More',
   'Add New' => 'Add New',
   'Add New Goal' => 'Add New Goal',
@@ -81,11 +94,11 @@ return array (
   'Deductions' => 'Deductions',
   'Deferred' => 'Deferred',
   'Delete' => 'Delete',
-  'Deleting' => 
+  'Deleting' =>
   array (
-    '' => 
+    '' =>
     array (
-      '' => 
+      '' =>
       array (
         '' => 'Deleting...',
       ),
