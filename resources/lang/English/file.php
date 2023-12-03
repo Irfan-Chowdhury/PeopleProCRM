@@ -2,6 +2,12 @@
 
 return array (
   'About' => 'About',
+  'Estimate' => 'Estimate',
+  'Note' => 'Note',
+  'Add Estimate' => 'Add Estimate',
+  'Edit Estimate' => 'Edit Estimate',
+  'Estimate Date' => 'Estimate Date',
+  'Valid Until' => 'Valid Until',
   'Lead Details' => 'Lead Details',
   'Add Task' => 'Add Task',
   'Collaborators' => 'Collaborators',

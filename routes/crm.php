@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CRM\LeadContactController;
 use App\Http\Controllers\CRM\LeadController;
+use App\Http\Controllers\CRM\LeadEstimateController;
 use App\Http\Controllers\CRM\LeadTaskController;
 use Illuminate\Support\Facades\Route;
 
@@ -41,6 +42,18 @@ Route::group(['middleware' => ['XSS']], function () {
                         Route::post('/update/{leadTask}', 'update')->name('lead.task.update');
                         Route::get('/destroy/{leadTask}', 'destroy');
                         Route::post('/bulk_delete', 'bulkDelete')->name('lead.task.bulk_delete');
+                    });
+                });
+
+                Route::controller(LeadEstimateController::class)->group(function () {
+                    Route::prefix('estimate')->group(function () {
+                        Route::get('/', 'index')->name('lead.estimate.index');
+                        Route::get('/datatable', 'datatable')->name('lead.estimate.datatable');
+                        Route::post('/store', 'store')->name('lead.estimate.store');
+                        Route::get('/edit/{leadEstimate}', 'edit');
+                        Route::post('/update/{leadEstimate}', 'update')->name('lead.estimate.update');
+                        Route::get('/destroy/{leadEstimate}', 'destroy');
+                        Route::post('/bulk_delete', 'bulkDelete')->name('lead.estimate.bulk_delete');
                     });
                 });
             });

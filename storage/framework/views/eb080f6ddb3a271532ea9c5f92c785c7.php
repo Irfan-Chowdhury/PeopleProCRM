@@ -1,5 +1,4 @@
-@extends('layout.main')
-@section('content')
+<?php $__env->startSection('content'); ?>
 
 <style>
     .nav-tabs li a {
@@ -17,16 +16,16 @@
     }
 </style>
 
-@php
+<?php
     $url = $_SERVER['REQUEST_URI'];
     $urlParts = explode('/', $url);
     $leadId = (int) $urlParts[3];
-@endphp
+?>
 
 <section>
     <div class="container-fluid">
         <div class="card">
-            <div class="card-header"><h3>{{__('file.Lead Details')}}</h3></div>
+            <div class="card-header"><h3><?php echo e(__('file.Lead Details')); ?></h3></div>
         </div>
     </div>
 
@@ -35,48 +34,50 @@
             <div class="card-body">
                 <ul class="nav nav-tabs d-flex justify-content-between" id="myTab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('lead.contact.index') ? 'active' : '' }}" href="{{ route('lead.contact.index', $leadId) }}">{{trans('file.Contact')}}</a>
+                        <a class="nav-link <?php echo e(request()->routeIs('lead.contact.index') ? 'active' : ''); ?>" href="<?php echo e(route('lead.contact.index', $leadId)); ?>"><?php echo e(trans('file.Contact')); ?></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">{{trans('file.Lead Info')}}</a>
+                        <a class="nav-link" href="#"><?php echo e(trans('file.Lead Info')); ?></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('lead.task.index') ? 'active' : '' }}" id="set_salary-tab" href="{{ route('lead.task.index', $leadId) }}" role="tab"
-                           aria-controls="Set_salary" aria-selected="false">{{__('Task')}}</a>
+                        <a class="nav-link <?php echo e(request()->routeIs('lead.task.index') ? 'active' : ''); ?>" id="set_salary-tab" href="<?php echo e(route('lead.task.index', $leadId)); ?>" role="tab"
+                           aria-controls="Set_salary" aria-selected="false"><?php echo e(__('Task')); ?></a>
                     </li>
 
                     <li class="nav-item">
-                        {{-- <a class="nav-link {{ request()->routeIs('lead.estimate.index') ? 'active' : '' }}" id="leave-tab" data-toggle="tab" href="#Leave" role="tab"
-                           aria-controls="Leave" aria-selected="false">{{trans('file.Estimates')}}</a> --}}
+                        
 
-                        <a class="nav-link {{ request()->routeIs('lead.estimate.index') ? 'active' : '' }}"  href="{{ route('lead.estimate.index', $leadId) }}" role="tab"
-                            >{{trans('file.Estimates')}}
+                        <a class="nav-link <?php echo e(request()->routeIs('lead.estimate.index') ? 'active' : ''); ?>"  href="<?php echo e(route('lead.estimate.index', $leadId)); ?>" role="tab"
+                            ><?php echo e(trans('file.Estimates')); ?>
+
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="employee_core_hr-tab" data-toggle="tab" href="#Employee_Core_hr"
-                           role="tab" aria-controls="Employee_Core_hr" aria-selected="false">{{__('Proposals')}}</a>
+                           role="tab" aria-controls="Employee_Core_hr" aria-selected="false"><?php echo e(__('Proposals')); ?></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="employee_project_task-tab" data-toggle="tab"
                            href="#Employee_project_task" role="tab" aria-controls="Employee_project_task"
-                           aria-selected="false"> {{trans('file.Estimate Request')}}</a>
+                           aria-selected="false"> <?php echo e(trans('file.Estimate Request')); ?></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="employee_payslip-tab" data-toggle="tab" href="#Employee_Payslip"
                            role="tab" aria-controls="Employee_Payslip"
-                           aria-selected="false">{{trans('file.Contract')}}</a>
+                           aria-selected="false"><?php echo e(trans('file.Contract')); ?></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="remainingLeaveType-tab" data-toggle="tab" href="#remainingLeaveType"
                            role="tab" aria-controls="remainingLeaveType"
-                           aria-selected="false">{{trans('file.Notes')}}
+                           aria-selected="false"><?php echo e(trans('file.Notes')); ?>
+
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="remainingLeaveType-tab" data-toggle="tab" href="#remainingLeaveType"
                            role="tab" aria-controls="remainingLeaveType"
-                           aria-selected="false">{{trans('file.Files')}}
+                           aria-selected="false"><?php echo e(trans('file.Files')); ?>
+
                         </a>
                     </li>
                 </ul>
@@ -86,7 +87,9 @@
     </div>
 </section>
 
-@yield('lead_details')
+<?php echo $__env->yieldContent('lead_details'); ?>
 
 
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layout.main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/html/peoplepro/peopleprocrm/resources/views/crm/lead_section/layout.blade.php ENDPATH**/ ?>
