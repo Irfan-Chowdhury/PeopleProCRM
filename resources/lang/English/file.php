@@ -1,7 +1,12 @@
 <?php
 
 return array (
+  'Id' => 'Id',
   'About' => 'About',
+  'Contracts' => 'Contracts',
+  'Contract Date' => 'Contract Date',
+  'Add Contract' => 'Add Contract',
+  'Edit Contract' => 'Edit Contract',
   'Proposal' => 'Proposal',
   'Proposals' => 'Proposals',
   'Proposal Date' => 'Proposal Date',

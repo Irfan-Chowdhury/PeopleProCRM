@@ -61,9 +61,7 @@
                            aria-selected="false"> {{trans('file.Estimate Request')}}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="employee_payslip-tab" data-toggle="tab" href="#Employee_Payslip"
-                           role="tab" aria-controls="Employee_Payslip"
-                           aria-selected="false">{{trans('file.Contract')}}</a>
+                           <a class="nav-link {{ request()->routeIs('lead.contracts.index') ? 'active' : '' }}"  href="{{ route('lead.contracts.index', $leadId) }}" role="tab">{{trans('file.Contracts')}}</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="remainingLeaveType-tab" data-toggle="tab" href="#remainingLeaveType"
