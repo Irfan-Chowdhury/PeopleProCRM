@@ -64,10 +64,9 @@
                            <a class="nav-link {{ request()->routeIs('lead.contracts.index') ? 'active' : '' }}"  href="{{ route('lead.contracts.index', $leadId) }}" role="tab">{{trans('file.Contracts')}}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="remainingLeaveType-tab" data-toggle="tab" href="#remainingLeaveType"
-                           role="tab" aria-controls="remainingLeaveType"
-                           aria-selected="false">{{trans('file.Notes')}}
-                        </a>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('lead.notes.index') ? 'active' : '' }}"  href="{{ route('lead.notes.index', $leadId) }}" role="tab">{{trans('file.Notes')}}</a>
+                        </li>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="remainingLeaveType-tab" data-toggle="tab" href="#remainingLeaveType"

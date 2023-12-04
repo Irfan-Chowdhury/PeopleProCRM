@@ -29,7 +29,7 @@ return new class extends Migration
         });
     }
 
-    
+
     public function down(): void
     {
         Schema::table('lead_contracts', function (Blueprint $table) {
