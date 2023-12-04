@@ -2,6 +2,11 @@
 
 return array (
   'About' => 'About',
+  'Proposal' => 'Proposal',
+  'Proposals' => 'Proposals',
+  'Proposal Date' => 'Proposal Date',
+  'Add Proposal' => 'Add Proposal',
+  'Edit Proposal' => 'Edit Proposal',
   'Estimate' => 'Estimate',
   'Note' => 'Note',
   'Add Estimate' => 'Add Estimate',

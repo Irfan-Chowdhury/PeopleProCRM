@@ -1,14 +1,16 @@
-<?php $__env->startSection('lead_details'); ?>
+@extends('crm.lead_section.layout')
+@section('lead_details')
 
 <div class="container-fluid">
     <div class="card">
-        <div class="card-header"><h3><?php echo e(__('file.Task')); ?></h3></div>
+        <div class="card-header"><h3>{{__('file.Proposals')}}</h3></div>
         <div class="card-header">
-            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#createModal"><i class="fa fa-plus"></i> <?php echo e(__('file.Add New')); ?></button>
-            <button type="button" class="btn btn-danger" name="bulk_delete" id="bulk_delete"><i class="fa fa-minus-circle"></i> <?php echo e(__('Bulk delete')); ?></button>                </div>
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#createModal"><i class="fa fa-plus"></i> {{__('file.Add New')}}</button>
+            <button type="button" class="btn btn-danger" name="bulk_delete" id="bulk_delete"><i class="fa fa-minus-circle"></i> {{__('Bulk delete')}}</button>                </div>
         </div>
     </div>
 </div>
+
 
 <div class="container">
     <div class="table-responsive">
@@ -16,12 +18,11 @@
             <thead>
                 <tr>
                     <th class="not-exported"></th>
-                    <th><?php echo e(trans('file.Title')); ?></th>
-                    <th><?php echo e(trans('file.Start Date')); ?></th>
-                    <th><?php echo e(trans('file.End Date')); ?></th>
-                    <th><?php echo e(trans('file.Assigned To')); ?></th>
-                    <th><?php echo e(trans('file.Status')); ?></th>
-                    <th class="not-exported"><?php echo e(trans('file.Action')); ?></th>
+                    <th>{{trans('file.Proposal')}}</th>
+                    <th>{{trans('file.Proposal Date')}}</th>
+                    <th>{{trans('file.Valid Until')}}</th>
+                    <th>{{trans('file.Tax')}}</th>
+                    <th class="not-exported">{{trans('file.Action')}}</th>
                 </tr>
             </thead>
             <tbody id="tablecontents"></tbody>
@@ -29,20 +30,22 @@
     </div>
 </div>
 
-<?php echo $__env->make('crm.lead_section.task.create-modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-<?php echo $__env->make('crm.lead_section.task.edit-modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+@include('crm.lead_section.proposals.create-modal')
+@include('crm.lead_section.proposals.edit-modal')
 
 
-<?php $__env->stopSection(); ?>
 
-<?php $__env->startPush('scripts'); ?>
+@endsection
+
+
+@push('scripts')
 <script type="text/javascript">
-    let dataTableURL = "<?php echo e(route('lead.task.datatable', ['lead' => $lead->id])); ?>";
-    let storeURL = "<?php echo e(route('lead.task.store', ['lead' => $lead->id])); ?>";
-    var editURL = "<?php echo e(url('/leads/details')); ?>/" + "<?php echo e($lead->id); ?>/task/edit/" ;
-    var updateURL = "<?php echo e(url('/leads/details')); ?>/" + "<?php echo e($lead->id); ?>/task/update/" ;
-    let destroyURL = "<?php echo e(url('/leads/details')); ?>/" + "<?php echo e($lead->id); ?>/task/destroy/";
-    let bulkDeleteURL = '<?php echo e(route('lead.task.bulk_delete', ['lead' => $lead->id])); ?>';
+    let dataTableURL = "{{ route('lead.proposals.datatable', ['lead' => $lead->id]) }}";
+    let storeURL = "{{ route('lead.proposals.store', ['lead' => $lead->id]) }}";
+    var editURL = "{{ url('/leads/details')}}/" + "{{ $lead->id }}/proposals/edit/" ;
+    var updateURL = "{{ url('/leads/details')}}/" + "{{ $lead->id }}/proposals/update/" ;
+    let destroyURL = "{{ url('/leads/details')}}/" + "{{ $lead->id }}/proposals/destroy/";
+    let bulkDeleteURL = '{{ route('lead.proposals.bulk_delete', ['lead' => $lead->id]) }}';
 </script>
 
 <script type="text/javascript">
@@ -58,7 +61,7 @@
 
             var date = $('.date');
             date.datepicker({
-                format: '<?php echo e(env('Date_Format_JS')); ?>',
+                format: '{{ env('Date_Format_JS')}}',
                 autoclose: true,
                 todayHighlight: true
             });
@@ -98,8 +101,8 @@
                         searchable: false
                     },
                     {
-                        data: 'title',
-                        name: 'title',
+                        data: 'proposal',
+                        name: 'proposal',
                     },
                     {
                         data: 'start_date',
@@ -110,12 +113,8 @@
                         name: 'end_date',
                     },
                     {
-                        data: 'assigned_to',
-                        name: 'assigned_to',
-                    },
-                    {
-                        data: 'status',
-                        name: 'status',
+                        data: 'tax',
+                        name: 'tax',
                     },
                     {
                         data: 'action',
@@ -127,12 +126,12 @@
 
                 "order": [],
                 'language': {
-                    'lengthMenu': '_MENU_ <?php echo e(__("records per page")); ?>',
-                    "info": '<?php echo e(trans("file.Showing")); ?> _START_ - _END_ (_TOTAL_)',
-                    "search": '<?php echo e(trans("file.Search")); ?>',
+                    'lengthMenu': '_MENU_ {{__("records per page")}}',
+                    "info": '{{trans("file.Showing")}} _START_ - _END_ (_TOTAL_)',
+                    "search": '{{trans("file.Search")}}',
                     'paginate': {
-                        'previous': '<?php echo e(trans("file.Previous")); ?>',
-                        'next': '<?php echo e(trans("file.Next")); ?>'
+                        'previous': '{{trans("file.Previous")}}',
+                        'next': '{{trans("file.Next")}}'
                     }
                 },
                 'columnDefs': [
@@ -204,27 +203,12 @@
                 dataType: "json",
                 success: function (response) {
                     console.log(response);
-                    $("#modelId").val(response.leadTask.id);
-                    $("#editModal input[name='title']").val(response.leadTask.title);
-                    $("#pointsEdit").selectpicker('val', response.leadTask.points);
-                    $("#descriptionEdit").val(response.leadTask.description);
-                    $('#employeeIdEdit').selectpicker('val', response.leadTask.employee_id);
-                    $("#statusEdit").selectpicker('val', response.leadTask.status);
-                    $("#priorityEdit").selectpicker('val', response.leadTask.priority);
-                    $("#labelsEdit").selectpicker('val', response.leadTask.labels);
-                    $("#editModal input[name='start_date']").val(response.leadTask.start_date);
-                    $("#editModal input[name='end_date']").val(response.leadTask.end_date);
-
-                    $('select[name="collaborator_employee_ids[]"]').val(null);
-                    var selectedCollaboratorIds = response.leadTask.collaborator_employee_ids
-                    $('#editModal select[name="collaborator_employee_ids[]"] option').each(function() {
-                        var optionValue = $(this).val();
-                        if (selectedCollaboratorIds.indexOf(optionValue.toString()) !== -1) {
-                            $(this).prop('selected', true);
-                        }
-                    });
+                    $("#modelId").val(response.leadProposal.id);
+                    $("#editModal input[name='start_date']").val(response.leadProposal.start_date);
+                    $("#editModal input[name='end_date']").val(response.leadProposal.end_date);
+                    $("#taxIdEdit").selectpicker('val', response.leadProposal.tax_id);
+                    $("#noteEdit").val(response.leadProposal.note);
                     $('.selectpicker').selectpicker('refresh');
-
                     currentModal = '';
                     $('#editModal').modal('show');
                 }
@@ -235,11 +219,9 @@
 </script>
 
 
-<script type="text/javascript" src="<?php echo e(asset('js/common-js/store.js')); ?>"></script>
-<script type="text/javascript" src="<?php echo e(asset('js/common-js/update.js')); ?>"></script>
-<script type="text/javascript" src="<?php echo e(asset('js/common-js/delete.js')); ?>"></script>
-<script type="text/javascript" src="<?php echo e(asset('js/common-js/bulkDelete.js')); ?>"></script>
-<script type="text/javascript" src="<?php echo e(asset('js/common-js/alertMessages.js')); ?>"></script>
-<?php $__env->stopPush(); ?>
-
-<?php echo $__env->make('crm.lead_section.layout', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/html/peoplepro/peopleprocrm/resources/views/crm/lead_section/task/index.blade.php ENDPATH**/ ?>
+<script type="text/javascript" src="{{ asset('js/common-js/store.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/common-js/update.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/common-js/delete.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/common-js/bulkDelete.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/common-js/alertMessages.js') }}"></script>
+@endpush

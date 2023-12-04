@@ -46,16 +46,14 @@
                     </li>
 
                     <li class="nav-item">
-                        {{-- <a class="nav-link {{ request()->routeIs('lead.estimate.index') ? 'active' : '' }}" id="leave-tab" data-toggle="tab" href="#Leave" role="tab"
-                           aria-controls="Leave" aria-selected="false">{{trans('file.Estimates')}}</a> --}}
-
                         <a class="nav-link {{ request()->routeIs('lead.estimate.index') ? 'active' : '' }}"  href="{{ route('lead.estimate.index', $leadId) }}" role="tab"
                             >{{trans('file.Estimates')}}
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="employee_core_hr-tab" data-toggle="tab" href="#Employee_Core_hr"
-                           role="tab" aria-controls="Employee_Core_hr" aria-selected="false">{{__('Proposals')}}</a>
+                        <a class="nav-link {{ request()->routeIs('lead.proposals.index') ? 'active' : '' }}"  href="{{ route('lead.proposals.index', $leadId) }}" role="tab"
+                            >{{trans('file.Proposals')}}
+                        </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="employee_project_task-tab" data-toggle="tab"

@@ -3,6 +3,7 @@
 use App\Http\Controllers\CRM\LeadContactController;
 use App\Http\Controllers\CRM\LeadController;
 use App\Http\Controllers\CRM\LeadEstimateController;
+use App\Http\Controllers\CRM\LeadProposalController;
 use App\Http\Controllers\CRM\LeadTaskController;
 use Illuminate\Support\Facades\Route;
 
@@ -54,6 +55,28 @@ Route::group(['middleware' => ['XSS']], function () {
                         Route::post('/update/{leadEstimate}', 'update')->name('lead.estimate.update');
                         Route::get('/destroy/{leadEstimate}', 'destroy');
                         Route::post('/bulk_delete', 'bulkDelete')->name('lead.estimate.bulk_delete');
+                    });
+                });
+
+                // Route::group(['as' => 'lead.'], function () {
+                //     Route::resource('/proposals', LeadProposalController::class);
+                //     Route::controller(LeadProposalController::class)->group(function () {
+                //         Route::prefix('proposals')->group(function () {
+                //             Route::get('/datatable', 'datatable')->name('proposals.datatable');
+                //             Route::post('/bulk_delete', 'bulkDelete')->name('proposals.bulk_delete');
+                //         });
+                //     });
+                // });
+
+                Route::controller(LeadProposalController::class)->group(function () {
+                    Route::prefix('proposals')->group(function () {
+                        Route::get('/', 'index')->name('lead.proposals.index');
+                        Route::get('/datatable', 'datatable')->name('lead.proposals.datatable');
+                        Route::post('/store', 'store')->name('lead.proposals.store');
+                        Route::get('/edit/{leadProposal}', 'edit');
+                        Route::post('/update/{leadProposal}', 'update')->name('lead.proposals.update');
+                        Route::get('/destroy/{leadProposal}', 'destroy');
+                        Route::post('/bulk_delete', 'bulkDelete')->name('lead.proposals.bulk_delete');
                     });
                 });
             });
