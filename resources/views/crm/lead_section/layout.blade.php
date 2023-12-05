@@ -38,7 +38,7 @@
                         <a class="nav-link {{ request()->routeIs('lead.contact.index') ? 'active' : '' }}" href="{{ route('lead.contact.index', $leadId) }}">{{trans('file.Contact')}}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">{{trans('file.Lead Info')}}</a>
+                        <a class="nav-link {{ request()->routeIs('lead.info.show') ? 'active' : '' }}" href="{{ route('lead.info.show', $leadId) }}">{{trans('file.Lead Info')}}</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('lead.task.index') ? 'active' : '' }}" id="set_salary-tab" href="{{ route('lead.task.index', $leadId) }}" role="tab"

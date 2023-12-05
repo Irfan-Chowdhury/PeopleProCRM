@@ -3,6 +3,7 @@
 return array (
   'Id' => 'Id',
   'About' => 'About',
+  'Lead Section' => 'Lead Section',
   'Contracts' => 'Contracts',
   'Contract Date' => 'Contract Date',
   'Add Contract' => 'Add Contract',

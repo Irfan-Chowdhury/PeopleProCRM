@@ -4,6 +4,7 @@ use App\Http\Controllers\CRM\LeadContactController;
 use App\Http\Controllers\CRM\LeadContractController;
 use App\Http\Controllers\CRM\LeadController;
 use App\Http\Controllers\CRM\LeadEstimateController;
+use App\Http\Controllers\CRM\LeadInfoController;
 use App\Http\Controllers\CRM\LeadNoteController;
 use App\Http\Controllers\CRM\LeadProposalController;
 use App\Http\Controllers\CRM\LeadTaskController;
@@ -35,6 +36,20 @@ Route::group(['middleware' => ['XSS']], function () {
                         Route::post('/bulk_delete', 'bulkDelete')->name('lead.contact.bulk_delete');
                     });
                 });
+
+                Route::get('/lead-info', [LeadInfoController::class, 'show'])->name('lead.info.show');
+
+                // Route::controller(LeadContactController::class)->group(function () {
+                //     Route::prefix('contact')->group(function () {
+                //         Route::get('/', 'index')->name('lead.contact.index');
+                //         Route::get('/datatable', 'datatable')->name('lead.contact.datatable');
+                //         Route::post('/store', 'store')->name('lead.contact.store');
+                //         Route::get('/edit/{leadContact}', 'edit');
+                //         Route::post('/update/{leadContact}', 'update')->name('lead.contact.update');
+                //         Route::get('/destroy/{leadContact}', 'destroy');
+                //         Route::post('/bulk_delete', 'bulkDelete')->name('lead.contact.bulk_delete');
+                //     });
+                // });
 
                 Route::controller(LeadTaskController::class)->group(function () {
                     Route::prefix('task')->group(function () {

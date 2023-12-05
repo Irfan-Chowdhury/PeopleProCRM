@@ -33,4 +33,9 @@ class Lead extends Model
     {
 		return $this->hasOne('App\Models\Employee','id','employee_id');
 	}
+
+    public function country()
+    {
+		return $this->hasOne('App\Models\Country','id','country_id');
+	}
 }
