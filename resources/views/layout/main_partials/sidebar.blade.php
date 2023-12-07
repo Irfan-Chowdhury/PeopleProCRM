@@ -11,6 +11,12 @@
                     </a>
                 </li>
 
+                {{-- Subscription --}}
+                <li class="{{ (request()->is('subscription*')) ? 'active' : '' }}">
+                    <a href="{{route('subscription.index')}}"> <i class="dripicons-ticket"></i><span>{{__('Subscription')}}</span>
+                    </a>
+                </li>
+
                 {{-- Addons --}}
                 <li class="{{ (request()->is('addons*')) ? 'active' : '' }}">
                     <a href="{{route('addons')}}"> <i class="dripicons-ticket"></i><span>{{__('Addons')}}</span>

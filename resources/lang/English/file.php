@@ -3,6 +3,13 @@
 return array (
   'Id' => 'Id',
   'About' => 'About',
+  'Repeat Type' => 'Repeat Type',
+  'Add Subscription' => 'Add Subscription',
+  'Edit Subscription' => 'Edit Subscription',
+  'First Billing Date' => 'First Billing Date',
+  'Subscription Section' => 'Subscription Section',
+  'Repeat Every' => 'Repeat Every',
+  'Next Billing Date' => 'Next Billing Date',
   'Lead Section' => 'Lead Section',
   'Contracts' => 'Contracts',
   'Contract Date' => 'Contract Date',

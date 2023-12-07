@@ -52,9 +52,6 @@
                             'placeholderData' => 'Textarea',
                             'isRequired' => false,
                         ])
-
-
-
                     </div>
                 </div>
                 <div class="modal-footer d-flex justify-content-center">
