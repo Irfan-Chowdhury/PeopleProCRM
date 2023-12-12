@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CRM\ItemCategoryController;
 use App\Http\Controllers\CRM\LeadContactController;
 use App\Http\Controllers\CRM\LeadContractController;
 use App\Http\Controllers\CRM\LeadController;
@@ -131,11 +132,26 @@ Route::group(['middleware' => ['XSS']], function () {
             Route::get('/', 'index')->name('subscription.index');
             Route::get('/datatable', 'datatable')->name('subscription.datatable');
             Route::post('/store', 'store')->name('subscription.store');
-            Route::get('/store', 'store')->name('subscription.store');
             Route::get('/edit/{subscription}', 'edit')->name('subscription.edit');
             Route::post('/update/{subscription}', 'update')->name('subscription.update');
             Route::get('/destroy/{subscription}', 'destroy')->name('subscription.destroy');
             Route::post('/bulk_delete', 'bulkDelete')->name('subscription.bulk_delete');
+        });
+    });
+
+    Route::prefix('sales')->group(function() {
+
+        Route::prefix('item-categories')->group(function () {
+
+            Route::controller(ItemCategoryController::class)->group(function () {
+                Route::get('/', 'index')->name('itemCategory.index');
+                Route::get('/datatable', 'datatable')->name('itemCategory.datatable');
+                Route::post('/store', 'store')->name('itemCategory.store');
+                Route::get('/edit/{itemCategory}', 'edit')->name('itemCategory.edit');
+                Route::post('/update/{itemCategory}', 'update')->name('itemCategory.update');
+                Route::get('/destroy/{itemCategory}', 'destroy')->name('itemCategory.destroy');
+                Route::post('/bulk_delete', 'bulkDelete')->name('itemCategory.bulk_delete');
+            });
         });
     });
 });

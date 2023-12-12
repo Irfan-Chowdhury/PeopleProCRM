@@ -17,6 +17,22 @@
                     </a>
                 </li>
 
+                <li class="has-dropdown @if(request()->is('user*')){{ (request()->is('user*')) ? 'active' : '' }}@elseif(request()->is('add-user*')){{ (request()->is('add-user*')) ? 'active' : '' }}@endif">
+                    <a href="#users" aria-expanded="false" data-toggle="collapse">
+                        <i class="dripicons-user"></i>
+                        <span>{{trans('file.Sales')}}</span>
+                    </a>
+                    <ul id="users" class="collapse list-unstyled ">
+                        <li id="users-menu"><a href="{{route('itemCategory.index')}}">{{__('file.Item Category')}}</a></li>
+                        <li id="users-menu"><a href="{{route('users-list')}}">{{__('file.Items')}}</a></li>
+                        <li id="users-menu"><a href="{{route('users-list')}}">{{__('file.Invoices')}}</a></li>
+                        <li id="users-menu"><a href="{{route('users-list')}}">{{__('file.Order List')}}</a></li>
+                        <li id="users-menu"><a href="{{route('users-list')}}">{{__('file.Store')}}</a></li>
+                        <li id="users-menu"><a href="{{route('users-list')}}">{{__('file.Payments')}}</a></li>
+                        <li id="users-menu"><a href="{{route('users-list')}}">{{__('file.Contracts')}}</a></li>
+                    </ul>
+                </li>
+
                 {{-- Addons --}}
                 <li class="{{ (request()->is('addons*')) ? 'active' : '' }}">
                     <a href="{{route('addons')}}"> <i class="dripicons-ticket"></i><span>{{__('Addons')}}</span>

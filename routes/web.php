@@ -639,6 +639,7 @@ Route::group(['middleware' => ['XSS']], function () {
         Route::get('expense/{id}/delete', [FinanceExpenseController::class, 'destroy'])->name('expense.destroy');
         Route::get('expense/download', [FinanceExpenseController::class, 'download'])->name('expense.download');
         Route::get('expense/download/{id}', [FinanceExpenseController::class, 'download'])->name('expense.downloadFile');
+        Route::get('expense/datatable', [FinanceExpenseController::class, 'datatable'])->name('expense.datatable');
 
         Route::resource('finance_transfer', FinanceTransferController::class)->except(['destroy', 'create', 'update', 'show', 'edit']);
 

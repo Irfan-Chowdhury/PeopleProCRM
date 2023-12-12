@@ -2,7 +2,16 @@
 
 return array (
   'Id' => 'Id',
+  'Add Category' => 'Add Category',
+  'Edit Category' => 'Edit Category',
+  'Item Category' => 'Item Category',
   'About' => 'About',
+  'Sales' => 'Sales',
+  'Invoices' => 'Invoices',
+  'Order List' => 'Order List',
+  'Store' => 'Store',
+  'Payments' => 'Payments',
+  'Items' => 'Items',
   'Repeat Type' => 'Repeat Type',
   'Add Subscription' => 'Add Subscription',
   'Edit Subscription' => 'Edit Subscription',
