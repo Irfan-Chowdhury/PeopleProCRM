@@ -24,12 +24,12 @@
                     </a>
                     <ul id="users" class="collapse list-unstyled ">
                         <li id="users-menu"><a href="{{route('itemCategory.index')}}">{{__('file.Item Category')}}</a></li>
-                        <li id="users-menu"><a href="{{route('users-list')}}">{{__('file.Items')}}</a></li>
-                        <li id="users-menu"><a href="{{route('users-list')}}">{{__('file.Invoices')}}</a></li>
-                        <li id="users-menu"><a href="{{route('users-list')}}">{{__('file.Order List')}}</a></li>
-                        <li id="users-menu"><a href="{{route('users-list')}}">{{__('file.Store')}}</a></li>
-                        <li id="users-menu"><a href="{{route('users-list')}}">{{__('file.Payments')}}</a></li>
-                        <li id="users-menu"><a href="{{route('users-list')}}">{{__('file.Contracts')}}</a></li>
+                        <li id="users-menu"><a href="{{route('items.index')}}">{{__('file.Items')}}</a></li>
+                        <li id="users-menu"><a href="#">{{__('file.Invoices')}}</a></li>
+                        <li id="users-menu"><a href="#">{{__('file.Order List')}}</a></li>
+                        <li id="users-menu"><a href="#">{{__('file.Store')}}</a></li>
+                        <li id="users-menu"><a href="#">{{__('file.Payments')}}</a></li>
+                        <li id="users-menu"><a href="#">{{__('file.Contracts')}}</a></li>
                     </ul>
                 </li>
 
