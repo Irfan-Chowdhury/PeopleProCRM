@@ -26,7 +26,7 @@ class StoreRequest extends FormRequest
             'title' => 'required|string|max:255|unique:items,title,NULL,id,deleted_at,NULL',
             'description' => 'nullable|string',
             'unit_type' => 'required',
-            'rate' => 'required|numeric',
+            // 'rate' => 'required|numeric',
             'is_client_visible' => 'nullable',
             'image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:100000',
         ];

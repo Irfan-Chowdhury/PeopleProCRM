@@ -18,5 +18,9 @@ class InvoiceItem extends Model
 		return $this->hasOne('App\Models\Invoice','id','invoice_id');
 	}
 
+	public function item(){
+		return $this->hasOne('App\Models\CRM\Item','id','item_id');
+	}
+
 
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CRM\Item;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
 use App\Notifications\InvoicePaidNotification;
@@ -71,46 +72,15 @@ class InvoiceController extends Controller {
 		$projects = Project::select('id', 'title')->get();
 		$tax_types = TaxType::select('id', 'name', 'rate', 'type')->get();
 		$invoice_number = 'INV-' . Str::random('6');
+        // return $items = Item::select('id','title')->get();
+        $items = Item::all();
 
-		return view('projects.invoices.create', compact('projects', 'tax_types', 'invoice_number'));
+		return view('projects.invoices.create', compact('projects', 'tax_types', 'invoice_number','items'));
 	}
 
-	public function show(Invoice $invoice)
+    public function store(Request $request)
 	{
-		$invoice->load('project','client') ;
-
-		if (auth()->user()->can('view-invoice')||$invoice->client_id == auth()->user()->id)
-		{
-			$invoice_items = InvoiceItem::whereInvoiceId($invoice->id)->get();
-			$project = $invoice->project;
-			$client = $invoice->client;
-			$company = $project->company;
-			$location = $company->Location;
-
-			if (auth()->user()->role_users_id == 3){
-				return view('client.invoice_show', compact('invoice', 'invoice_items', 'project', 'company', 'client','location'));
-			}
-
-			return view('projects.invoices.show', compact('invoice', 'invoice_items', 'project', 'company', 'client','location'));
-		}
-		return abort('403', __('You are not authorized'));
-	}
-
-	public function edit(Invoice $invoice)
-	{
-		if (auth()->user()->can('edit-invoice'))
-		{
-			$invoice_items = InvoiceItem::whereInvoiceId($invoice->id)->get();
-			$tax_types = TaxType::select('id', 'name', 'rate', 'type')->get();
-			$projects = Project::select('id', 'title')->get();
-
-			return view('projects.invoices.edit', compact('invoice', 'invoice_items', 'tax_types', 'projects'));
-		}
-		return abort('403', __('You are not authorized'));
-	}
-
-	public function store(Request $request)
-	{
+        // return $request->all();
 		$logged_user = auth()->user();
 
 		if ($logged_user->can('store-invoice'))
@@ -126,13 +96,12 @@ class InvoiceController extends Controller {
 					'unit_price.*' => 'nullable|numeric',
 					'invoice_date' => 'required',
 					'invoice_due_date' => 'required|after_or_equal:invoice_date',
-					'item_name.*' => 'required_with_all:qty_hours,unit_price',
+					// 'item_name.*' => 'required_with_all:qty_hours,unit_price',
 				]
 			);
 
 
-			if ($validator->fails())
-			{
+			if ($validator->fails()) {
 				return response()->json(['errors' => $validator->errors()->all()]);
 			}
 
@@ -163,6 +132,7 @@ class InvoiceController extends Controller {
 
 					$qty = $request->qty_hrs;
 					$unit_price = $request->unit_price;
+					$item_id = $request->item_id; //new
 					$item_name = $request->item_name;
 					$tax_type_id = $request->tax_type_id;
 					$tax_amount = $request->tax_amount;
@@ -170,15 +140,14 @@ class InvoiceController extends Controller {
 
 					$invoice_item = [];
 
-					for ($count = 0; $count < count($qty); $count++)
-					{
-
+					for ($count = 0; $count < count($qty); $count++) {
 						$invoice_item[] = [
+							'item_id' => $item_id[$count], //new
 							'invoice_id' => $invoice->id,
 							'project_id' => $request->project_id,
 							'item_qty' => $qty[$count],
 							'item_unit_price' => $unit_price[$count],
-							'item_name' => $item_name[$count],
+							// 'item_name' => $item_name[$count], //new
 							'item_tax_type' => $tax_type_id[$count],
 							'item_tax_rate' => $tax_amount[$count],
 							'item_sub_total' => $sub_total_item[$count],
@@ -189,7 +158,6 @@ class InvoiceController extends Controller {
 							'total_discount' => $request->discount_amount,
 							'grand_total' => $request->grand_total,
 						];
-
 					}
 
 					InvoiceItem::insert($invoice_item);
@@ -211,113 +179,144 @@ class InvoiceController extends Controller {
 	}
 
 
+	public function show(Invoice $invoice)
+	{
+		$invoice->load('project','client') ;
+
+		if (auth()->user()->can('view-invoice')||$invoice->client_id == auth()->user()->id)
+		{
+			$invoice_items = InvoiceItem::whereInvoiceId($invoice->id)->get();
+			$project = $invoice->project;
+			$client = $invoice->client;
+			$company = $project->company;
+			$location = $company->Location;
+
+			if (auth()->user()->role_users_id == 3){
+				return view('client.invoice_show', compact('invoice', 'invoice_items', 'project', 'company', 'client','location'));
+			}
+
+			return view('projects.invoices.show', compact('invoice', 'invoice_items', 'project', 'company', 'client','location'));
+		}
+		return abort('403', __('You are not authorized'));
+	}
+
+	public function edit(Invoice $invoice)
+	{
+		if (auth()->user()->can('edit-invoice')) {
+			// $invoice_items = InvoiceItem::with('item')->whereInvoiceId($invoice->id)->get();
+            // $invoice->invoiceItems;
+
+            $tax_types = TaxType::select('id', 'name', 'rate', 'type')->get();
+			$projects = Project::select('id', 'title')->get();
+            $items = Item::select('id','title','rate')->get();
+
+			return view('projects.invoices.edit', compact('invoice', 'tax_types', 'projects','items'));
+		}
+		return abort('403', __('You are not authorized'));
+	}
+
+
+
 	public function update(Request $request, $id)
 	{
 		$logged_user = auth()->user();
 
-		if ($logged_user->can('edit-invoice'))
-		{
-
+		if ($logged_user->can('edit-invoice')) {
 			$validator = Validator::make($request->only('project_id', 'invoice_number', 'item_name', 'qty_hrs', 'unit_price', 'tax_type_id',
 				'tax-amount', 'sub_total_item', 'invoice_due_date', 'items_sub_total', 'items_tax_total', 'invoice_date', 'discount_type', 'discount_amount'
 				, 'discount_figure', 'invoice_note', 'grand_total'
 			),
-				[
-					'invoice_number' => 'required|unique:invoices,invoice_number,' . $id,
-					'project_id' => 'required',
-					'qty_hrs.*' => 'nullable|numeric',
-					'unit_price.*' => 'nullable|numeric',
-					'invoice_date' => 'required',
-					'invoice_due_date' => 'required|after_or_equal:invoice_date',
-					'item_name.*' => 'required_with_all:qty_hours,unit_price',
-				]
-			);
+            [
+                'invoice_number' => 'required|unique:invoices,invoice_number,' . $id,
+                'project_id' => 'required',
+                'qty_hrs.*' => 'nullable|numeric',
+                'unit_price.*' => 'nullable|numeric',
+                'invoice_date' => 'required',
+                'invoice_due_date' => 'required|after_or_equal:invoice_date',
+                'item_name.*' => 'required_with_all:qty_hours,unit_price',
+            ]);
 
 
-			if ($validator->fails())
-			{
+			if ($validator->fails()) {
 				return response()->json(['errors' => $validator->errors()->all()]);
 			}
 
 			DB::beginTransaction();
-				try
-				{
-					$data = [];
+            try {
 
-					$project = Project::findOrFail($request->project_id);
+                $this->invoiceUpdate($id, $request);
 
-					$client_id = $project->client->id;
+                $qty = $request->qty_hrs;
+                $unit_price = $request->unit_price;
+                // $item_name = $request->item_name;
+                $itemIds = $request->item_id; //new
+                $tax_type_id = $request->tax_type_id;
+                $tax_amount = $request->tax_amount;
+                $sub_total_item = $request->sub_total_item;
+                $invoiceItemId = $request->invoice_item_id;
 
-					$data['project_id'] = $request->project_id;
-					$data['invoice_number'] = $request->invoice_number;
-					$data['sub_total'] = $request->items_sub_total;
-					$data ['discount_type'] = $request->discount_type;
-					$data ['client_id'] = $client_id;
-					$data ['discount_figure'] = $request->discount_figure;
-					$data ['total_discount'] = $request->discount_amount;
-					$data ['total_tax'] = $request->items_tax_total;
-					$data ['invoice_date'] = $request->invoice_date;
-					$data ['invoice_due_date'] = $request->invoice_due_date;
-					$data['grand_total'] = $request->grand_total;
-					$data['invoice_note'] = $request->invoice_note;
+                $invoice_item = [];
+                $data = [];
 
-					Invoice::find($id)->update($data);
+                foreach ($itemIds as $count => $itemId) {
+                    $invoice_item['item_id'] = $itemId; //new
+                    $invoice_item['invoice_id'] = $id;
+                    $invoice_item['project_id'] = $request->project_id;
+                    $invoice_item['item_qty'] = $qty[$count];
+                    $invoice_item['item_unit_price'] = $unit_price[$count];
+                    // $invoice_item['item_name'] = $item_name[$count];
+                    $invoice_item['item_tax_type'] = $tax_type_id[$count];
+                    $invoice_item['item_tax_rate'] = $tax_amount[$count];
+                    $invoice_item['item_sub_total'] = $sub_total_item[$count];
+                    $invoice_item['sub_total'] = $request->items_sub_total;
+                    $invoice_item['discount_type'] = $request->discount_type;
+                    $invoice_item['discount_figure'] = $request->discount_figure;
+                    $invoice_item['total_tax'] = $request->items_tax_total;
+                    $invoice_item['total_discount'] = $request->discount_amount;
+                    $invoice_item['grand_total'] = $request->grand_total;
 
+                    if (isset($invoiceItemId[$count]) && InvoiceItem::find($invoiceItemId[$count])) {
+                        InvoiceItem::find($invoiceItemId[$count])->update($invoice_item);
+                    }
+                    else {
+                        InvoiceItem::insert($invoice_item);
+                    }
+                }
+                DB::commit();
 
-					$qty = $request->qty_hrs;
-					$unit_price = $request->unit_price;
-					$item_name = $request->item_name;
-					$tax_type_id = $request->tax_type_id;
-					$tax_amount = $request->tax_amount;
-					$sub_total_item = $request->sub_total_item;
-					$invoice_item_id = $request->invoice_item_id;
+            } catch (Exception $e) {
+                DB::rollback();
+                return response()->json(['error' =>  $e->getMessage()]);
+            } catch (Throwable $e) {
+                DB::rollback();
+                return response()->json(['error' => $e->getMessage()]);
+            }
 
-					$invoice_item = [];
-
-					foreach ($invoice_item_id as $count => $item)
-					{
-
-						$invoice_item['invoice_id'] = $id;
-						$invoice_item['project_id'] = $request->project_id;
-						$invoice_item['item_qty'] = $qty[$count];
-						$invoice_item['item_unit_price'] = $unit_price[$count];
-						$invoice_item['item_name'] = $item_name[$count];
-						$invoice_item['item_tax_type'] = $tax_type_id[$count];
-						$invoice_item['item_tax_rate'] = $tax_amount[$count];
-						$invoice_item['item_sub_total'] = $sub_total_item[$count];
-						$invoice_item['sub_total'] = $request->items_sub_total;
-						$invoice_item['discount_type'] = $request->discount_type;
-						$invoice_item['discount_figure'] = $request->discount_figure;
-						$invoice_item['total_tax'] = $request->items_tax_total;
-						$invoice_item['total_discount'] = $request->discount_amount;
-						$invoice_item['grand_total'] = $request->grand_total;
-
-
-						if (InvoiceItem::where('id', $item)->exists())
-						{
-							InvoiceItem::find($item)->update($invoice_item);
-						} else
-						{
-							InvoiceItem::create($invoice_item);
-						}
-					}
-					DB::commit();
-				} catch (Exception $e)
-				{
-					DB::rollback();
-					return response()->json(['error' =>  $e->getMessage()]);
-				} catch (Throwable $e)
-				{
-					DB::rollback();
-					return response()->json(['error' => $e->getMessage()]);
-				}
-
-				return response()->json(['success' => __('Data Added successfully.')]);
-
+            return response()->json(['success' => __('Data Updated successfully.')]);
 		}
 
 		return response()->json(['success' => __('You are not authorized')]);
 	}
+
+    protected function invoiceUpdate(int $id, $request) : void
+    {
+        $data = [];
+        $project = Project::findOrFail($request->project_id);
+        $client_id = $project->client->id;
+        $data['project_id'] = $request->project_id;
+        $data['invoice_number'] = $request->invoice_number;
+        $data['sub_total'] = $request->items_sub_total;
+        $data ['discount_type'] = $request->discount_type;
+        $data ['client_id'] = $client_id;
+        $data ['discount_figure'] = $request->discount_figure;
+        $data ['total_discount'] = $request->discount_amount;
+        $data ['total_tax'] = $request->items_tax_total;
+        $data ['invoice_date'] = $request->invoice_date;
+        $data ['invoice_due_date'] = $request->invoice_due_date;
+        $data['grand_total'] = $request->grand_total;
+        $data['invoice_note'] = $request->invoice_note;
+        Invoice::find($id)->update($data);
+    }
 
 	public function destroy($id)
 	{

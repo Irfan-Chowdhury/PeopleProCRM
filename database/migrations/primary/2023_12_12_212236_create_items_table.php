@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('title')->unique();
             $table->text('description')->nullable();
             $table->string('unit_type');
-            $table->decimal('rate');
+            // $table->decimal('rate');
             $table->boolean('is_client_visible');
             $table->string('image')->nullable();
             $table->timestamps();

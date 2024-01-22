@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Invoice extends Model
 {
@@ -17,6 +18,10 @@ class Invoice extends Model
 	}
 	public function client(){
 		return $this->hasOne('App\Models\Client','id','client_id');
+	}
+	public function invoiceItems(): HasMany
+    {
+		return $this->hasMany(InvoiceItem::class);
 	}
 
 

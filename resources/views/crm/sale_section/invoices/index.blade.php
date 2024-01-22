@@ -3,7 +3,7 @@
 
 <div class="container-fluid">
     <div class="card">
-        <div class="card-header"><h3>{{__('file.Items')}}</h3></div>
+        <div class="card-header"><h3>{{__('file.Invoice')}}</h3></div>
         <div class="card-header">
             <button type="button" class="btn btn-info" data-toggle="modal" data-target="#createModal"><i class="fa fa-plus"></i> {{__('file.Add New')}}</button>
             <button type="button" class="btn btn-danger" name="bulk_delete" id="bulk_delete"><i class="fa fa-minus-circle"></i> {{__('Bulk delete')}}</button>                </div>
@@ -22,6 +22,7 @@
                     <th>{{trans('file.Title')}}</th>
                     <th>{{trans('file.Category')}}</th>
                     <th>{{trans('file.Unit Type')}}</th>
+                    <th>{{trans('file.Rate')}}</th>
                     <th class="not-exported">{{trans('file.Action')}}</th>
                 </tr>
             </thead>
@@ -30,8 +31,8 @@
     </div>
 </div>
 
-@include('crm.sale_section.items.create-modal')
-@include('crm.sale_section.items.edit-modal')
+@include('crm.sale_section.invoices.create-modal')
+@include('crm.sale_section.invoices.edit-modal')
 
 
 @endsection
@@ -56,6 +57,13 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
+            });
+
+            var date = $('.date');
+            date.datepicker({
+                format: '{{ env('Date_Format_JS')}}',
+                autoclose: true,
+                todayHighlight: true
             });
 
             let table = $('#dataListTable').DataTable({
@@ -109,6 +117,10 @@
                         name: 'unit_type',
                     },
                     {
+                        data: 'rate',
+                        name: 'rate',
+                    },
+                    {
                         data: 'action',
                         name: 'action',
                         orderable: false
@@ -129,7 +141,7 @@
                 'columnDefs': [
                     {
                         "orderable": false,
-                        'targets': [0,3]
+                        'targets': [0,4]
                     },
                     {
                         'render': function (data, type, row, meta) {
@@ -210,6 +222,30 @@
                     $('#editModal').modal('show');
                 }
             });
+        });
+
+
+        $('.dependentClient').change(function() {
+            if ($(this).val() !== '') {
+                let clientId = $(this).val();
+                let _token = $('input[name="_token"]').val();
+                $.ajax({
+                    url:"{{ route('dynamic_project') }}",
+                    method:"POST",
+                    data:{ client_id:clientId},
+                    success:function(result)
+                    {
+                        $('select').selectpicker("destroy");
+                        if (currentModal==='edit') {
+                            $('#projectIdEdit').html(result);
+                        }else {
+                            $('#projectId').html(result);
+                        }
+
+                        $('select').selectpicker();
+                    }
+                });
+            }
         });
 
     })(jQuery);

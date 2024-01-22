@@ -25,7 +25,7 @@ class ItemController extends Controller
     public function datatable()
     {
         if (request()->ajax()) {
-			return datatables()->of(Item::orderBy('id','DESC')->get())
+			return datatables()->of(Item::with('itemCategory')->orderBy('id','DESC')->get())
 				->setRowId(function ($row)
 				{
 					return $row->id;
@@ -48,16 +48,16 @@ class ItemController extends Controller
                 })
                 ->addColumn('category',function ($row)
                 {
-                    return 'category';
+                    return $row->itemCategory->name;
                 })
                 ->addColumn('unit_type',function ($row)
                 {
                     return $row->unit_type;
                 })
-                ->addColumn('rate',function ($row)
-                {
-                    return $row->rate;
-                })
+                // ->addColumn('rate',function ($row)
+                // {
+                //     return $row->rate;
+                // })
 				->addColumn('action', function ($data)
                 {
                     $button = '<button type="button" data-id="'. $data->id . '" class="edit btn btn-primary btn-sm"><i class="dripicons-pencil"></i></button>';

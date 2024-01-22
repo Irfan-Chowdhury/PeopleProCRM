@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CRM\InvoiceController;
 use App\Http\Controllers\CRM\ItemCategoryController;
 use App\Http\Controllers\CRM\ItemController;
 use App\Http\Controllers\CRM\LeadContactController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\CRM\LeadNoteController;
 use App\Http\Controllers\CRM\LeadProposalController;
 use App\Http\Controllers\CRM\LeadTaskController;
 use App\Http\Controllers\CRM\SubscriptionController;
+use App\Http\Controllers\DynamicDependent;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['XSS']], function () {
@@ -164,7 +166,21 @@ Route::group(['middleware' => ['XSS']], function () {
                 Route::get('/destroy/{item}', 'destroy')->name('items.destroy');
                 Route::post('/bulk_delete', 'bulkDelete')->name('items.bulk_delete');
             });
-
         });
+
+        // Route::prefix('invoices')->group(function () {
+        //     Route::controller(InvoiceController::class)->group(function () {
+        //         Route::get('/', 'index')->name('invoices.index');
+        //         Route::get('/datatable', 'datatable')->name('invoices.datatable');
+        //         Route::post('/store', 'store')->name('invoices.store');
+        //         Route::get('/edit/{invoice}', 'edit')->name('invoices.edit');
+        //         Route::post('/update/{invoice}', 'update')->name('invoices.update');
+        //         Route::get('/destroy/{invoice}', 'destroy')->name('invoices.destroy');
+        //         Route::post('/bulk_delete', 'bulkDelete')->name('invoices.bulk_delete');
+        //     });
+        // });
+        // Route::post('dynamic_dependent/fetch_project', [DynamicDependent::class, 'fetchProject'])->name('dynamic_project');
+
+
     });
 });

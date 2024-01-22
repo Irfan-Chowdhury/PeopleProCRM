@@ -25,7 +25,7 @@
                     <ul id="users" class="collapse list-unstyled ">
                         <li id="users-menu"><a href="{{route('itemCategory.index')}}">{{__('file.Item Category')}}</a></li>
                         <li id="users-menu"><a href="{{route('items.index')}}">{{__('file.Items')}}</a></li>
-                        <li id="users-menu"><a href="#">{{__('file.Invoices')}}</a></li>
+                        <li id="users-menu"><a href="{{route('invoices.index')}}">{{__('file.Invoices')}}</a></li>
                         <li id="users-menu"><a href="#">{{__('file.Order List')}}</a></li>
                         <li id="users-menu"><a href="#">{{__('file.Store')}}</a></li>
                         <li id="users-menu"><a href="#">{{__('file.Payments')}}</a></li>

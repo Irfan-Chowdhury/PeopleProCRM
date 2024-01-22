@@ -8,6 +8,7 @@ use App\Models\Employee;
 use App\Models\FinanceBankCash;
 use App\Models\JobCandidate;
 use App\Models\office_shift;
+use App\Models\Project;
 use App\Models\SupportTicket;
 use App\Models\TaxType;
 use Illuminate\Http\Request;
@@ -155,5 +156,21 @@ class DynamicDependent extends Controller {
 
 		return $output;
 	}
+
+
+    public function fetchProject(Request $request)
+	{
+		$client_id = $request->get('client_id');
+		$projects = Project::select('id','title')->where('client_id',$client_id)->get();
+		$output = '';
+
+		foreach ($projects as $row) {
+			$output .= '<option value='.$row->id.'>'.$row->title.'</option>';
+		}
+
+		return $output;
+	}
+
+
 
 }
