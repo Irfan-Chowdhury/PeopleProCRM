@@ -27,7 +27,7 @@
                         <li id="users-menu"><a href="{{route('items.index')}}">{{__('file.Items')}}</a></li>
                         <li id="users-menu"><a href="{{route('invoices.index')}}">{{__('file.Invoices')}}</a></li>
                         <li id="users-menu"><a href="#">{{__('file.Order List')}}</a></li>
-                        <li id="users-menu"><a href="#">{{__('file.Store')}}</a></li>
+                        <li id="users-menu"><a href="{{ route('store.index') }}">{{__('file.Store')}}</a></li>
                         <li id="users-menu"><a href="#">{{__('file.Payments')}}</a></li>
                         <li id="users-menu"><a href="#">{{__('file.Contracts')}}</a></li>
                     </ul>

@@ -11,6 +11,7 @@ use App\Http\Controllers\CRM\LeadInfoController;
 use App\Http\Controllers\CRM\LeadNoteController;
 use App\Http\Controllers\CRM\LeadProposalController;
 use App\Http\Controllers\CRM\LeadTaskController;
+use App\Http\Controllers\CRM\StoreController;
 use App\Http\Controllers\CRM\SubscriptionController;
 use App\Http\Controllers\DynamicDependent;
 use Illuminate\Support\Facades\Route;
@@ -167,6 +168,16 @@ Route::group(['middleware' => ['XSS']], function () {
                 Route::post('/bulk_delete', 'bulkDelete')->name('items.bulk_delete');
             });
         });
+
+        Route::controller(StoreController::class)->group(function () {
+            Route::prefix('store')->group(function () {
+                Route::get('/', 'index')->name('store.index');
+                Route::post('/add-to-cart/{item}', 'addToCart')->name('store.addToCart');
+                Route::get('/process_order', 'processOrder')->name('store.processOrder');
+            });
+        });
+
+
 
         // Route::prefix('invoices')->group(function () {
         //     Route::controller(InvoiceController::class)->group(function () {

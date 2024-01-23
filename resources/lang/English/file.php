@@ -2,6 +2,11 @@
 
 return array (
   'Id' => 'Id',
+  'Clients' => 'Clients',
+  'Place Order' => 'Place Order',
+  'Sub-Total' => 'Sub-Total',
+  'Quantity' => 'Quantity',
+  'Process Order' => 'Process Order',
   'Add Category' => 'Add Category',
   'Edit Category' => 'Edit Category',
   'Item Category' => 'Item Category',
