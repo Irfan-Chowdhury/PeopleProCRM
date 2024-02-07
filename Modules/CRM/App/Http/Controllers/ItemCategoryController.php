@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\CRM;
+namespace Modules\CRM\App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ItemCategory\StoreRequest;
-use App\Http\Requests\ItemCategory\UpdateRequest;
-use App\Models\CRM\ItemCategory;
+use Modules\CRM\App\Http\Requests\ItemCategory\StoreRequest;
+use Modules\CRM\App\Http\Requests\ItemCategory\UpdateRequest;
+use Modules\CRM\App\Models\ItemCategory;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -13,7 +13,7 @@ class ItemCategoryController extends Controller
 {
     public function index()
     {
-        return view('crm.sale_section.item_category.index');
+        return view('crm::sale_section.item_category.index');
     }
 
     public function datatable()

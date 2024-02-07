@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\CRM;
+namespace Modules\CRM\App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\CRM\Order;
+use Modules\CRM\App\Models\Order;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
     public function index()
     {
-        return view('crm.sale_section.order.index');
+        return view('crm::sale_section.order.index');
     }
 
     public function datatable()

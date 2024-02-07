@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\ItemCategory;
+namespace Modules\CRM\App\Http\Requests\ItemCategory;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateRequest extends FormRequest
+class StoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,7 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|unique:item_categories,name,'.$this->model_id.',id,deleted_at,NULL',
+            'name' => 'required|string|max:255|unique:item_categories,name,NULL,id,deleted_at,NULL',
         ];
     }
 }

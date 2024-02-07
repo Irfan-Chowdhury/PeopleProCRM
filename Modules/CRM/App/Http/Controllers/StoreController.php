@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\CRM;
+namespace Modules\CRM\App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Client;
-use App\Models\CRM\Item;
-use App\Models\CRM\Order;
-use App\Models\CRM\OrderDetail;
+use Modules\CRM\App\Models\Item;
+use Modules\CRM\App\Models\Order;
+use Modules\CRM\App\Models\OrderDetail;
 use App\Models\TaxType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -15,14 +15,12 @@ class StoreController extends Controller
 {
     public function index()
     {
-        // Session::forget('items');
-
         $sessionItems = Session::get('items');
         $totalAmount = self::totalAmount($sessionItems);
         $sessionItemsIds = self::getAllSessionItemsIds($sessionItems);
         $items = Item::select('id','title','description','unit_type','rate','image')->get();
 
-        return view('crm.sale_section.store.index', compact('items','sessionItems','totalAmount','sessionItemsIds'));
+        return view('crm::sale_section.store.index', compact('items','sessionItems','totalAmount','sessionItemsIds'));
     }
 
     public function addToCart(Item $item)
@@ -47,7 +45,7 @@ class StoreController extends Controller
         $clients = Client::select('id','first_name','last_name')->get();
         $taxTypes = TaxType::select('id', 'name', 'rate', 'type')->get();
 
-        return view('crm.sale_section.store.chekout',compact('sessionItems','totalAmount','clients','taxTypes'));
+        return view('crm::sale_section.store.chekout',compact('sessionItems','totalAmount','clients','taxTypes'));
     }
 
     public function processOrder(Request $request)

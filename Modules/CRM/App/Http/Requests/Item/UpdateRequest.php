@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Item;
+namespace Modules\CRM\App\Http\Requests\Item;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +23,7 @@ class StoreRequest extends FormRequest
     {
         return [
             'item_category_id' => 'required',
-            'title' => 'required|string|max:255|unique:items,title,NULL,id,deleted_at,NULL',
+            'title' => 'required|string|max:255|unique:items,title,'.$this->model_id.',id,deleted_at,NULL',
             'description' => 'nullable|string',
             'unit_type' => 'required',
             // 'rate' => 'required|numeric',

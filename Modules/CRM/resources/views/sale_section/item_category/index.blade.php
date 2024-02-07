@@ -27,8 +27,8 @@
     </div>
 </div>
 
-@include('crm.sale_section.item_category.create-modal')
-@include('crm.sale_section.item_category.edit-modal')
+@include('crm::sale_section.item_category.create-modal')
+@include('crm::sale_section.item_category.edit-modal')
 
 
 

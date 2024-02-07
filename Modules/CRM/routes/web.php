@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\CRM\App\Http\Controllers\CRMController;
+use Modules\CRM\App\Http\Controllers\ItemCategoryController;
 use Modules\CRM\App\Http\Controllers\ItemController;
 use Modules\CRM\App\Http\Controllers\LeadContactController;
 use Modules\CRM\App\Http\Controllers\LeadContractController;
@@ -11,6 +12,7 @@ use Modules\CRM\App\Http\Controllers\LeadInfoController;
 use Modules\CRM\App\Http\Controllers\LeadNoteController;
 use Modules\CRM\App\Http\Controllers\LeadProposalController;
 use Modules\CRM\App\Http\Controllers\LeadTaskController;
+use Modules\CRM\App\Http\Controllers\StoreController;
 use Modules\CRM\App\Http\Controllers\SubscriptionController;
 
 /*
@@ -130,6 +132,19 @@ Route::prefix('subscriptions')->group(function() {
 });
 
 Route::prefix('sales')->group(function() {
+
+    Route::prefix('item-categories')->group(function () {
+        Route::controller(ItemCategoryController::class)->group(function () {
+            Route::get('/', 'index')->name('itemCategory.index');
+            Route::get('/datatable', 'datatable')->name('itemCategory.datatable');
+            Route::post('/store', 'store')->name('itemCategory.store');
+            Route::get('/edit/{itemCategory}', 'edit')->name('itemCategory.edit');
+            Route::post('/update/{itemCategory}', 'update')->name('itemCategory.update');
+            Route::get('/destroy/{itemCategory}', 'destroy')->name('itemCategory.destroy');
+            Route::post('/bulk_delete', 'bulkDelete')->name('itemCategory.bulk_delete');
+        });
+    });
+
     Route::controller(ItemController::class)->group(function () {
         Route::prefix('items')->group(function () {
             Route::get('/', 'index')->name('items.index');
@@ -139,6 +154,22 @@ Route::prefix('sales')->group(function() {
             Route::post('/update/{item}', 'update')->name('items.update');
             Route::get('/destroy/{item}', 'destroy')->name('items.destroy');
             Route::post('/bulk_delete', 'bulkDelete')->name('items.bulk_delete');
+        });
+    });
+
+    Route::controller(StoreController::class)->group(function () {
+        Route::prefix('store')->group(function () {
+            Route::get('/', 'index')->name('store.index');
+            Route::post('/add-to-cart/{item}', 'addToCart')->name('store.addToCart');
+            Route::get('/chekout', 'chekout')->name('store.chekout');
+            Route::post('/process_order', 'processOrder')->name('store.processOrder');
+        });
+    });
+
+    Route::controller(OrderController::class)->group(function () {
+        Route::prefix('orders')->group(function () {
+            Route::get('/', 'index')->name('order.index');
+            Route::get('/datatable', 'datatable')->name('order.datatable');
         });
     });
 });

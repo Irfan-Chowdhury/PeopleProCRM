@@ -146,17 +146,17 @@ Route::group(['middleware' => ['XSS']], function () {
 
     Route::prefix('sales')->group(function() {
 
-        Route::prefix('item-categories')->group(function () {
-            Route::controller(ItemCategoryController::class)->group(function () {
-                Route::get('/', 'index')->name('itemCategory.index');
-                Route::get('/datatable', 'datatable')->name('itemCategory.datatable');
-                Route::post('/store', 'store')->name('itemCategory.store');
-                Route::get('/edit/{itemCategory}', 'edit')->name('itemCategory.edit');
-                Route::post('/update/{itemCategory}', 'update')->name('itemCategory.update');
-                Route::get('/destroy/{itemCategory}', 'destroy')->name('itemCategory.destroy');
-                Route::post('/bulk_delete', 'bulkDelete')->name('itemCategory.bulk_delete');
-            });
-        });
+        // Route::prefix('item-categories')->group(function () {
+        //     Route::controller(ItemCategoryController::class)->group(function () {
+        //         Route::get('/', 'index')->name('itemCategory.index');
+        //         Route::get('/datatable', 'datatable')->name('itemCategory.datatable');
+        //         Route::post('/store', 'store')->name('itemCategory.store');
+        //         Route::get('/edit/{itemCategory}', 'edit')->name('itemCategory.edit');
+        //         Route::post('/update/{itemCategory}', 'update')->name('itemCategory.update');
+        //         Route::get('/destroy/{itemCategory}', 'destroy')->name('itemCategory.destroy');
+        //         Route::post('/bulk_delete', 'bulkDelete')->name('itemCategory.bulk_delete');
+        //     });
+        // });
 
         // Route::controller(ItemController::class)->group(function () {
         //     Route::prefix('items')->group(function () {
@@ -170,14 +170,14 @@ Route::group(['middleware' => ['XSS']], function () {
         //     });
         // });
 
-        Route::controller(StoreController::class)->group(function () {
-            Route::prefix('store')->group(function () {
-                Route::get('/', 'index')->name('store.index');
-                Route::post('/add-to-cart/{item}', 'addToCart')->name('store.addToCart');
-                Route::get('/chekout', 'chekout')->name('store.chekout');
-                Route::post('/process_order', 'processOrder')->name('store.processOrder');
-            });
-        });
+        // Route::controller(StoreController::class)->group(function () {
+        //     Route::prefix('store')->group(function () {
+        //         Route::get('/', 'index')->name('store.index');
+        //         Route::post('/add-to-cart/{item}', 'addToCart')->name('store.addToCart');
+        //         Route::get('/chekout', 'chekout')->name('store.chekout');
+        //         Route::post('/process_order', 'processOrder')->name('store.processOrder');
+        //     });
+        // });
 
         Route::controller(OrderController::class)->group(function () {
             Route::prefix('orders')->group(function () {

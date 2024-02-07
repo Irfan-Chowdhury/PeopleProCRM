@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Item;
+namespace Modules\CRM\App\Http\Requests\ItemCategory;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -22,13 +22,7 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'item_category_id' => 'required',
-            'title' => 'required|string|max:255|unique:items,title,'.$this->model_id.',id,deleted_at,NULL',
-            'description' => 'nullable|string',
-            'unit_type' => 'required',
-            // 'rate' => 'required|numeric',
-            'is_client_visible' => 'nullable',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:100000',
+            'name' => 'required|string|unique:item_categories,name,'.$this->model_id.',id,deleted_at,NULL',
         ];
     }
 }

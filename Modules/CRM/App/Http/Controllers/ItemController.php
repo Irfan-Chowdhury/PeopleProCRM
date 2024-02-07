@@ -3,14 +3,12 @@
 namespace Modules\CRM\App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Item\StoreRequest;
-use App\Http\Requests\Item\UpdateRequest;
+use Modules\CRM\App\Http\Requests\Item\StoreRequest;
+use Modules\CRM\App\Http\Requests\Item\UpdateRequest;
 use App\Http\traits\FileHandleTrait;
-// use App\Models\CRM\Item;
-use App\Models\CRM\ItemCategory;
+use Modules\CRM\App\Models\ItemCategory;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
 use Modules\CRM\App\Models\Item;
 use Nwidart\Modules\Facades\Module;
 
