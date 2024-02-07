@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Subscription;
+namespace Modules\CRM\App\Http\Requests\Subscription;
 
 use Illuminate\Foundation\Http\FormRequest;
 

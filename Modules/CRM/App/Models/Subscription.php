@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\CRM;
+namespace Modules\CRM\App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

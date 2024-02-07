@@ -11,6 +11,7 @@ use Modules\CRM\App\Http\Controllers\LeadInfoController;
 use Modules\CRM\App\Http\Controllers\LeadNoteController;
 use Modules\CRM\App\Http\Controllers\LeadProposalController;
 use Modules\CRM\App\Http\Controllers\LeadTaskController;
+use Modules\CRM\App\Http\Controllers\SubscriptionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -114,8 +115,18 @@ Route::prefix('leads')->group(function() {
             });
         });
     });
+});
 
-
+Route::prefix('subscriptions')->group(function() {
+    Route::controller(SubscriptionController::class)->group(function () {
+        Route::get('/', 'index')->name('subscription.index');
+        Route::get('/datatable', 'datatable')->name('subscription.datatable');
+        Route::post('/store', 'store')->name('subscription.store');
+        Route::get('/edit/{subscription}', 'edit')->name('subscription.edit');
+        Route::post('/update/{subscription}', 'update')->name('subscription.update');
+        Route::get('/destroy/{subscription}', 'destroy')->name('subscription.destroy');
+        Route::post('/bulk_delete', 'bulkDelete')->name('subscription.bulk_delete');
+    });
 });
 
 Route::prefix('sales')->group(function() {

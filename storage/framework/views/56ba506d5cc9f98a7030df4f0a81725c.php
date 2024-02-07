@@ -1,13 +1,12 @@
-@extends('layout.main')
-@section('content')
+<?php $__env->startSection('content'); ?>
 
     <section>
         <div class="container-fluid mb-3">
             <div class="card">
-                <div class="card-header"><h3>{{__('file.Subscription Section')}}</h3></div>
+                <div class="card-header"><h3><?php echo e(__('file.Subscription Section')); ?></h3></div>
                 <div class="card-body">
-                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#createModal"><i class="fa fa-plus"></i> {{__('file.Add New')}}</button>
-                    <button type="button" class="btn btn-danger" name="bulk_delete" id="bulk_delete"><i class="fa fa-minus-circle"></i> {{__('Bulk delete')}}</button>                </div>
+                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#createModal"><i class="fa fa-plus"></i> <?php echo e(__('file.Add New')); ?></button>
+                    <button type="button" class="btn btn-danger" name="bulk_delete" id="bulk_delete"><i class="fa fa-minus-circle"></i> <?php echo e(__('Bulk delete')); ?></button>                </div>
             </div>
         </div>
 
@@ -18,11 +17,11 @@
                     <thead>
                         <tr>
                             <th class="not-exported"></th>
-                            <th>{{trans('file.Title')}}</th>
-                            <th>{{trans('file.Client')}}</th>
-                            <th>{{trans('file.Next Billing Date')}}</th>
-                            <th>{{trans('file.Repeat Every')}}</th>
-                            <th class="not-exported">{{trans('file.Action')}}</th>
+                            <th><?php echo e(trans('file.Title')); ?></th>
+                            <th><?php echo e(trans('file.Client')); ?></th>
+                            <th><?php echo e(trans('file.Next Billing Date')); ?></th>
+                            <th><?php echo e(trans('file.Repeat Every')); ?></th>
+                            <th class="not-exported"><?php echo e(trans('file.Action')); ?></th>
                         </tr>
                     </thead>
                     <tbody id="tablecontents"></tbody>
@@ -32,20 +31,20 @@
 
     </section>
 
-    @include('crm.subscription_section.subscription.create-modal')
-    @include('crm.subscription_section.subscription.edit-modal')
+    <?php echo $__env->make('crm::subscription_section.subscription.create-modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+    <?php echo $__env->make('crm::subscription_section.subscription.edit-modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
 
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script type="text/javascript">
-    let dataTableURL = "{{ route('subscription.datatable') }}";
-    let storeURL = "{{ route('subscription.store') }}";
+    let dataTableURL = "<?php echo e(route('subscription.datatable')); ?>";
+    let storeURL = "<?php echo e(route('subscription.store')); ?>";
     let editURL = "/subscriptions/edit/";
     let updateURL = '/subscriptions/update/';
     let destroyURL = '/subscriptions/destroy/';
-    let bulkDeleteURL = '{{route('subscription.bulk_delete')}}';
+    let bulkDeleteURL = '<?php echo e(route('subscription.bulk_delete')); ?>';
 </script>
 
 
@@ -57,7 +56,7 @@
 
             var date = $('.date');
             date.datepicker({
-                format: '{{ env('Date_Format_JS')}}',
+                format: '<?php echo e(env('Date_Format_JS')); ?>',
                 autoclose: true,
                 todayHighlight: true
             });
@@ -128,12 +127,12 @@
 
                 "order": [],
                 'language': {
-                    'lengthMenu': '_MENU_ {{__("records per page")}}',
-                    "info": '{{trans("file.Showing")}} _START_ - _END_ (_TOTAL_)',
-                    "search": '{{trans("file.Search")}}',
+                    'lengthMenu': '_MENU_ <?php echo e(__("records per page")); ?>',
+                    "info": '<?php echo e(trans("file.Showing")); ?> _START_ - _END_ (_TOTAL_)',
+                    "search": '<?php echo e(trans("file.Search")); ?>',
                     'paginate': {
-                        'previous': '{{trans("file.Previous")}}',
-                        'next': '{{trans("file.Next")}}'
+                        'previous': '<?php echo e(trans("file.Previous")); ?>',
+                        'next': '<?php echo e(trans("file.Next")); ?>'
                     }
                 },
 
@@ -222,10 +221,12 @@
     })(jQuery);
 </script>
 
-<script type="text/javascript" src="{{ asset('js/common-js/store.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/common-js/update.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/common-js/delete.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/common-js/bulkDelete.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/common-js/alertMessages.js') }}"></script>
+<script type="text/javascript" src="<?php echo e(asset('js/common-js/store.js')); ?>"></script>
+<script type="text/javascript" src="<?php echo e(asset('js/common-js/update.js')); ?>"></script>
+<script type="text/javascript" src="<?php echo e(asset('js/common-js/delete.js')); ?>"></script>
+<script type="text/javascript" src="<?php echo e(asset('js/common-js/bulkDelete.js')); ?>"></script>
+<script type="text/javascript" src="<?php echo e(asset('js/common-js/alertMessages.js')); ?>"></script>
 
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layout.main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/html/peoplepro/peopleprocrm/Modules/CRM/resources/views/subscription_section/subscription/index.blade.php ENDPATH**/ ?>

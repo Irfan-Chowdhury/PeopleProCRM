@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\CRM;
+namespace Modules\CRM\App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Subscription\StoreRequest;
-use App\Http\Requests\Subscription\UpdateRequest;
+use Modules\CRM\App\Http\Requests\Subscription\StoreRequest;
+use Modules\CRM\App\Http\Requests\Subscription\UpdateRequest;
 use App\Models\Client;
-use App\Models\CRM\Subscription;
-use App\Models\CRM\Tax;
+use Modules\CRM\App\Models\Subscription;
+use Modules\CRM\App\Models\Tax;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -17,7 +17,7 @@ class SubscriptionController extends Controller
     {
         $clients = Client::select('id','first_name','last_name')->get();
         $taxes =  Tax::all();
-        return view('crm.subscription_section.subscription.index',compact('clients','taxes'));
+        return view('crm::subscription_section.subscription.index',compact('clients','taxes'));
     }
 
     public function datatable()
