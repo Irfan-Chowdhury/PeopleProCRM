@@ -11,6 +11,7 @@ use App\Http\Controllers\CRM\LeadInfoController;
 use App\Http\Controllers\CRM\LeadNoteController;
 use App\Http\Controllers\CRM\LeadProposalController;
 use App\Http\Controllers\CRM\LeadTaskController;
+use App\Http\Controllers\CRM\OrderController;
 use App\Http\Controllers\CRM\StoreController;
 use App\Http\Controllers\CRM\SubscriptionController;
 use App\Http\Controllers\DynamicDependent;
@@ -19,31 +20,17 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => ['XSS']], function () {
 
     Route::prefix('leads')->group(function() {
-        Route::controller(LeadController::class)->group(function () {
-            Route::get('/', 'index')->name('lead.index');
-            Route::get('/datatable', 'datatable')->name('lead.datatable');
-            Route::post('/store', 'store')->name('lead.store');
-            Route::get('/store', 'store')->name('lead.store');
-            Route::get('/edit/{lead}', 'edit')->name('lead.edit');
-            Route::post('/update/{lead}', 'update')->name('lead.update');
-            Route::get('/destroy/{lead}', 'destroy')->name('lead.destroy');
-            Route::post('/bulk_delete', 'bulkDelete')->name('lead.bulk_delete');
-        });
+        // Route::controller(LeadController::class)->group(function () {
+        //     Route::get('/', 'index')->name('lead.index');
+        //     Route::get('/datatable', 'datatable')->name('lead.datatable');
+        //     Route::post('/store', 'store')->name('lead.store');
+        //     Route::get('/store', 'store')->name('lead.store');
+        //     Route::get('/edit/{lead}', 'edit')->name('lead.edit');
+        //     Route::post('/update/{lead}', 'update')->name('lead.update');
+        //     Route::get('/destroy/{lead}', 'destroy')->name('lead.destroy');
+        //     Route::post('/bulk_delete', 'bulkDelete')->name('lead.bulk_delete');
+        // });
         Route::prefix('details/{lead}')->group(function () {
-
-            Route::controller(LeadContactController::class)->group(function () {
-                Route::prefix('contact')->group(function () {
-                    Route::get('/', 'index')->name('lead.contact.index');
-                    Route::get('/datatable', 'datatable')->name('lead.contact.datatable');
-                    Route::post('/store', 'store')->name('lead.contact.store');
-                    Route::get('/edit/{leadContact}', 'edit');
-                    Route::post('/update/{leadContact}', 'update')->name('lead.contact.update');
-                    Route::get('/destroy/{leadContact}', 'destroy');
-                    Route::post('/bulk_delete', 'bulkDelete')->name('lead.contact.bulk_delete');
-                });
-            });
-
-            Route::get('/lead-info', [LeadInfoController::class, 'show'])->name('lead.info.show');
 
             // Route::controller(LeadContactController::class)->group(function () {
             //     Route::prefix('contact')->group(function () {
@@ -57,29 +44,43 @@ Route::group(['middleware' => ['XSS']], function () {
             //     });
             // });
 
-            Route::controller(LeadTaskController::class)->group(function () {
-                Route::prefix('task')->group(function () {
-                    Route::get('/', 'index')->name('lead.task.index');
-                    Route::get('/datatable', 'datatable')->name('lead.task.datatable');
-                    Route::post('/store', 'store')->name('lead.task.store');
-                    Route::get('/edit/{leadTask}', 'edit');
-                    Route::post('/update/{leadTask}', 'update')->name('lead.task.update');
-                    Route::get('/destroy/{leadTask}', 'destroy');
-                    Route::post('/bulk_delete', 'bulkDelete')->name('lead.task.bulk_delete');
-                });
-            });
+            // Route::get('/lead-info', [LeadInfoController::class, 'show'])->name('lead.info.show');
 
-            Route::controller(LeadEstimateController::class)->group(function () {
-                Route::prefix('estimate')->group(function () {
-                    Route::get('/', 'index')->name('lead.estimate.index');
-                    Route::get('/datatable', 'datatable')->name('lead.estimate.datatable');
-                    Route::post('/store', 'store')->name('lead.estimate.store');
-                    Route::get('/edit/{leadEstimate}', 'edit');
-                    Route::post('/update/{leadEstimate}', 'update')->name('lead.estimate.update');
-                    Route::get('/destroy/{leadEstimate}', 'destroy');
-                    Route::post('/bulk_delete', 'bulkDelete')->name('lead.estimate.bulk_delete');
-                });
-            });
+            // Route::controller(LeadContactController::class)->group(function () {
+            //     Route::prefix('contact')->group(function () {
+            //         Route::get('/', 'index')->name('lead.contact.index');
+            //         Route::get('/datatable', 'datatable')->name('lead.contact.datatable');
+            //         Route::post('/store', 'store')->name('lead.contact.store');
+            //         Route::get('/edit/{leadContact}', 'edit');
+            //         Route::post('/update/{leadContact}', 'update')->name('lead.contact.update');
+            //         Route::get('/destroy/{leadContact}', 'destroy');
+            //         Route::post('/bulk_delete', 'bulkDelete')->name('lead.contact.bulk_delete');
+            //     });
+            // });
+
+            // Route::controller(LeadTaskController::class)->group(function () {
+            //     Route::prefix('task')->group(function () {
+            //         Route::get('/', 'index')->name('lead.task.index');
+            //         Route::get('/datatable', 'datatable')->name('lead.task.datatable');
+            //         Route::post('/store', 'store')->name('lead.task.store');
+            //         Route::get('/edit/{leadTask}', 'edit');
+            //         Route::post('/update/{leadTask}', 'update')->name('lead.task.update');
+            //         Route::get('/destroy/{leadTask}', 'destroy');
+            //         Route::post('/bulk_delete', 'bulkDelete')->name('lead.task.bulk_delete');
+            //     });
+            // });
+
+            // Route::controller(LeadEstimateController::class)->group(function () {
+            //     Route::prefix('estimate')->group(function () {
+            //         Route::get('/', 'index')->name('lead.estimate.index');
+            //         Route::get('/datatable', 'datatable')->name('lead.estimate.datatable');
+            //         Route::post('/store', 'store')->name('lead.estimate.store');
+            //         Route::get('/edit/{leadEstimate}', 'edit');
+            //         Route::post('/update/{leadEstimate}', 'update')->name('lead.estimate.update');
+            //         Route::get('/destroy/{leadEstimate}', 'destroy');
+            //         Route::post('/bulk_delete', 'bulkDelete')->name('lead.estimate.bulk_delete');
+            //     });
+            // });
 
             // Route::group(['as' => 'lead.'], function () {
             //     Route::resource('/proposals', LeadProposalController::class);
@@ -157,23 +158,31 @@ Route::group(['middleware' => ['XSS']], function () {
             });
         });
 
-        Route::controller(ItemController::class)->group(function () {
-            Route::prefix('items')->group(function () {
-                Route::get('/', 'index')->name('items.index');
-                Route::get('/datatable', 'datatable')->name('items.datatable');
-                Route::post('/store', 'store')->name('items.store');
-                Route::get('/edit/{item}', 'edit')->name('items.edit');
-                Route::post('/update/{item}', 'update')->name('items.update');
-                Route::get('/destroy/{item}', 'destroy')->name('items.destroy');
-                Route::post('/bulk_delete', 'bulkDelete')->name('items.bulk_delete');
-            });
-        });
+        // Route::controller(ItemController::class)->group(function () {
+        //     Route::prefix('items')->group(function () {
+        //         Route::get('/', 'index')->name('items.index');
+        //         Route::get('/datatable', 'datatable')->name('items.datatable');
+        //         Route::post('/store', 'store')->name('items.store');
+        //         Route::get('/edit/{item}', 'edit')->name('items.edit');
+        //         Route::post('/update/{item}', 'update')->name('items.update');
+        //         Route::get('/destroy/{item}', 'destroy')->name('items.destroy');
+        //         Route::post('/bulk_delete', 'bulkDelete')->name('items.bulk_delete');
+        //     });
+        // });
 
         Route::controller(StoreController::class)->group(function () {
             Route::prefix('store')->group(function () {
                 Route::get('/', 'index')->name('store.index');
                 Route::post('/add-to-cart/{item}', 'addToCart')->name('store.addToCart');
-                Route::get('/process_order', 'processOrder')->name('store.processOrder');
+                Route::get('/chekout', 'chekout')->name('store.chekout');
+                Route::post('/process_order', 'processOrder')->name('store.processOrder');
+            });
+        });
+
+        Route::controller(OrderController::class)->group(function () {
+            Route::prefix('orders')->group(function () {
+                Route::get('/', 'index')->name('order.index');
+                Route::get('/datatable', 'datatable')->name('order.datatable');
             });
         });
 

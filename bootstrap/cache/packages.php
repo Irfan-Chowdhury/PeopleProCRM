@@ -76,6 +76,17 @@
       0 => 'Termwind\\Laravel\\TermwindServiceProvider',
     ),
   ),
+  'nwidart/laravel-modules' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Nwidart\\Modules\\LaravelModulesServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'Module' => 'Nwidart\\Modules\\Facades\\Module',
+    ),
+  ),
   'spatie/laravel-ignition' => 
   array (
     'providers' => 

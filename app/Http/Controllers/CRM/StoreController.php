@@ -5,6 +5,9 @@ namespace App\Http\Controllers\CRM;
 use App\Http\Controllers\Controller;
 use App\Models\Client;
 use App\Models\CRM\Item;
+use App\Models\CRM\Order;
+use App\Models\CRM\OrderDetail;
+use App\Models\TaxType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -37,13 +40,43 @@ class StoreController extends Controller
         return redirect()->back();
     }
 
-    public function processOrder()
+    public function chekout()
     {
         $sessionItems = Session::get('items');
         $totalAmount = self::totalAmount($sessionItems);
         $clients = Client::select('id','first_name','last_name')->get();
+        $taxTypes = TaxType::select('id', 'name', 'rate', 'type')->get();
 
-        return view('crm.sale_section.store.process_order',compact('sessionItems','totalAmount','clients'));
+        return view('crm.sale_section.store.chekout',compact('sessionItems','totalAmount','clients','taxTypes'));
+    }
+
+    public function processOrder(Request $request)
+    {
+        $getAllRequest =  $request->all();
+        $orderDetails = [];
+        // return count($getAllRequest['item_id']);
+
+
+        $order = Order::create([
+            'client_id' => $request->client_id,
+            'tax_type_id' => $request->tax_type_id,
+            'tax' => $request->tax,
+            'total' => $request->total,
+        ]);
+
+        for ($i=0; $i < count($getAllRequest['item_id']); $i++) {
+            $orderDetails[$i] = [
+                'order_id' => $order->id,
+                'item_id' => $getAllRequest['item_id'][$i],
+                'quantity' => $getAllRequest['quantity'][$i],
+                'rate' => $getAllRequest['rate'][$i],
+                'subtotal' => $getAllRequest['subtotal'][$i],
+            ];
+        }
+        OrderDetail::insert($orderDetails);
+
+        return redirect()->route('order.index'); //$request->all();
+
     }
 
 

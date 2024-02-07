@@ -26,7 +26,7 @@
                         <li id="users-menu"><a href="<?php echo e(route('itemCategory.index')); ?>"><?php echo e(__('file.Item Category')); ?></a></li>
                         <li id="users-menu"><a href="<?php echo e(route('items.index')); ?>"><?php echo e(__('file.Items')); ?></a></li>
                         <li id="users-menu"><a href="<?php echo e(route('invoices.index')); ?>"><?php echo e(__('file.Invoices')); ?></a></li>
-                        <li id="users-menu"><a href="#"><?php echo e(__('file.Order List')); ?></a></li>
+                        <li id="users-menu"><a href="<?php echo e(route('order.index')); ?>"><?php echo e(__('file.Order List')); ?></a></li>
                         <li id="users-menu"><a href="<?php echo e(route('store.index')); ?>"><?php echo e(__('file.Store')); ?></a></li>
                         <li id="users-menu"><a href="#"><?php echo e(__('file.Payments')); ?></a></li>
                         <li id="users-menu"><a href="#"><?php echo e(__('file.Contracts')); ?></a></li>

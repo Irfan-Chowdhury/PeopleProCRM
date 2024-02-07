@@ -69,7 +69,7 @@
                                 <div class="form-group mb-1 col-sm-12 col-md-2">
                                     <label for="unit_price"><?php echo e(__('Unit Price')); ?></label>
                                     <br>
-                                    <input readonly class="form-control unit_price calc" required name="unit_price[]" value="0" />
+                                    <input readonly class="form-control unit_price calc" name="unit_price[]" value="0" />
                                 </div>
                                 <div class="form-group mb-1 col-sm-12 col-md-2">
                                     <label for="tax_type"><?php echo e(__('Tax Type')); ?></label>
