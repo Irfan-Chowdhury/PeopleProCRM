@@ -20,6 +20,6 @@ class LeadEstimate extends Model
 
     public function tax()
     {
-		return $this->hasOne('App\Models\CRM\Tax','id','tax_id');
+		return $this->hasOne('Modules\CRM\App\Models\Tax','id','tax_id');
 	}
 }

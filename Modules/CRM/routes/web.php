@@ -5,7 +5,9 @@ use Modules\CRM\App\Http\Controllers\CRMController;
 use Modules\CRM\App\Http\Controllers\ItemController;
 use Modules\CRM\App\Http\Controllers\LeadContactController;
 use Modules\CRM\App\Http\Controllers\LeadController;
+use Modules\CRM\App\Http\Controllers\LeadEstimateController;
 use Modules\CRM\App\Http\Controllers\LeadInfoController;
+use Modules\CRM\App\Http\Controllers\LeadProposalController;
 use Modules\CRM\App\Http\Controllers\LeadTaskController;
 
 /*
@@ -71,6 +73,18 @@ Route::prefix('leads')->group(function() {
                 Route::post('/update/{leadEstimate}', 'update')->name('lead.estimate.update');
                 Route::get('/destroy/{leadEstimate}', 'destroy');
                 Route::post('/bulk_delete', 'bulkDelete')->name('lead.estimate.bulk_delete');
+            });
+        });
+
+        Route::controller(LeadProposalController::class)->group(function () {
+            Route::prefix('proposals')->group(function () {
+                Route::get('/', 'index')->name('lead.proposals.index');
+                Route::get('/datatable', 'datatable')->name('lead.proposals.datatable');
+                Route::post('/store', 'store')->name('lead.proposals.store');
+                Route::get('/edit/{leadProposal}', 'edit');
+                Route::post('/update/{leadProposal}', 'update')->name('lead.proposals.update');
+                Route::get('/destroy/{leadProposal}', 'destroy');
+                Route::post('/bulk_delete', 'bulkDelete')->name('lead.proposals.bulk_delete');
             });
         });
     });

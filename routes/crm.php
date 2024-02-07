@@ -93,17 +93,17 @@ Route::group(['middleware' => ['XSS']], function () {
             // });
 
             // New
-            Route::controller(LeadProposalController::class)->group(function () {
-                Route::prefix('proposals')->group(function () {
-                    Route::get('/', 'index')->name('lead.proposals.index');
-                    Route::get('/datatable', 'datatable')->name('lead.proposals.datatable');
-                    Route::post('/store', 'store')->name('lead.proposals.store');
-                    Route::get('/edit/{leadProposal}', 'edit');
-                    Route::post('/update/{leadProposal}', 'update')->name('lead.proposals.update');
-                    Route::get('/destroy/{leadProposal}', 'destroy');
-                    Route::post('/bulk_delete', 'bulkDelete')->name('lead.proposals.bulk_delete');
-                });
-            });
+            // Route::controller(LeadProposalController::class)->group(function () {
+            //     Route::prefix('proposals')->group(function () {
+            //         Route::get('/', 'index')->name('lead.proposals.index');
+            //         Route::get('/datatable', 'datatable')->name('lead.proposals.datatable');
+            //         Route::post('/store', 'store')->name('lead.proposals.store');
+            //         Route::get('/edit/{leadProposal}', 'edit');
+            //         Route::post('/update/{leadProposal}', 'update')->name('lead.proposals.update');
+            //         Route::get('/destroy/{leadProposal}', 'destroy');
+            //         Route::post('/bulk_delete', 'bulkDelete')->name('lead.proposals.bulk_delete');
+            //     });
+            // });
 
             Route::controller(LeadContractController::class)->group(function () {
                 Route::prefix('contracts')->group(function () {

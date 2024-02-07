@@ -7,7 +7,7 @@ use Modules\CRM\App\Http\Requests\LeadEstimate\StoreRequest;
 use Modules\CRM\App\Http\Requests\LeadEstimate\UpdateRequest;
 use Modules\CRM\App\Models\Lead;
 use Modules\CRM\App\Models\LeadEstimate;
-use App\Models\CRM\Tax;
+use Modules\CRM\App\Models\Tax;
 use Exception;
 use Illuminate\Http\Request;
 

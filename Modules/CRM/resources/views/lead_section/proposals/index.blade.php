@@ -30,8 +30,8 @@
     </div>
 </div>
 
-@include('crm.lead_section.proposals.create-modal')
-@include('crm.lead_section.proposals.edit-modal')
+@include('crm::lead_section.proposals.create-modal')
+@include('crm::lead_section.proposals.edit-modal')
 
 
 

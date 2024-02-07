@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\CRM;
+namespace Modules\CRM\App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\LeadProposal\StoreRequest;
-use App\Http\Requests\LeadProposal\UpdateRequest;
-use App\Models\CRM\Lead;
-use App\Models\CRM\LeadProposal;
-use App\Models\CRM\Tax;
+use Modules\CRM\App\Http\Requests\LeadProposal\StoreRequest;
+use Modules\CRM\App\Http\Requests\LeadProposal\UpdateRequest;
+use Modules\CRM\App\Models\Lead;
+use Modules\CRM\App\Models\LeadProposal;
+use Modules\CRM\App\Models\Tax;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -16,7 +16,7 @@ class LeadProposalController extends Controller
     public function index(Lead $lead)
     {
         $taxes = Tax::all();
-        return view('crm.lead_section.proposals.index', compact('lead','taxes'));
+        return view('crm::lead_section.proposals.index', compact('lead','taxes'));
     }
 
 

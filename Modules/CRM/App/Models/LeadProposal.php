@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Models\CRM;
+namespace Modules\CRM\App\Models;
 
-use App\Models\CRM\Tax;
+use Modules\CRM\App\Models\Tax;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
