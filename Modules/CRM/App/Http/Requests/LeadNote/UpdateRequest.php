@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\LeadNote;
+namespace Modules\CRM\App\Http\Requests\LeadNote;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,7 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string|max:255|unique:lead_notes,title,NULL,id,deleted_at,NULL',
+            'title' => 'required|string|unique:lead_notes,title,'.$this->model_id.',id,deleted_at,NULL',
             'note' => 'required',
         ];
     }

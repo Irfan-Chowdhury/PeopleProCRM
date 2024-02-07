@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\CRM;
+namespace Modules\CRM\App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\LeadNote\StoreRequest;
-use App\Http\Requests\LeadNote\UpdateRequest;
-use App\Models\CRM\Lead;
-use App\Models\CRM\LeadNote;
+use Modules\CRM\App\Http\Requests\LeadNote\StoreRequest;
+use Modules\CRM\App\Http\Requests\LeadNote\UpdateRequest;
+use Modules\CRM\App\Models\Lead;
+use Modules\CRM\App\Models\LeadNote;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -14,7 +14,7 @@ class LeadNoteController extends Controller
 {
     public function index(Lead $lead)
     {
-        return view('crm.lead_section.notes.index', compact('lead'));
+        return view('crm::lead_section.notes.index', compact('lead'));
     }
 
     public function datatable()

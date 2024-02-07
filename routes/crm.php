@@ -105,29 +105,29 @@ Route::group(['middleware' => ['XSS']], function () {
             //     });
             // });
 
-            Route::controller(LeadContractController::class)->group(function () {
-                Route::prefix('contracts')->group(function () {
-                    Route::get('/', 'index')->name('lead.contracts.index');
-                    Route::get('/datatable', 'datatable')->name('lead.contracts.datatable');
-                    Route::post('/store', 'store')->name('lead.contracts.store');
-                    Route::get('/edit/{leadContract}', 'edit');
-                    Route::post('/update/{leadContract}', 'update')->name('lead.contracts.update');
-                    Route::get('/destroy/{leadContract}', 'destroy');
-                    Route::post('/bulk_delete', 'bulkDelete')->name('lead.contracts.bulk_delete');
-                });
-            });
+            // Route::controller(LeadContractController::class)->group(function () {
+            //     Route::prefix('contracts')->group(function () {
+            //         Route::get('/', 'index')->name('lead.contracts.index');
+            //         Route::get('/datatable', 'datatable')->name('lead.contracts.datatable');
+            //         Route::post('/store', 'store')->name('lead.contracts.store');
+            //         Route::get('/edit/{leadContract}', 'edit');
+            //         Route::post('/update/{leadContract}', 'update')->name('lead.contracts.update');
+            //         Route::get('/destroy/{leadContract}', 'destroy');
+            //         Route::post('/bulk_delete', 'bulkDelete')->name('lead.contracts.bulk_delete');
+            //     });
+            // });
 
-            Route::controller(LeadNoteController::class)->group(function () {
-                Route::prefix('notes')->group(function () {
-                    Route::get('/', 'index')->name('lead.notes.index');
-                    Route::get('/datatable', 'datatable')->name('lead.notes.datatable');
-                    Route::post('/store', 'store')->name('lead.notes.store');
-                    Route::get('/edit/{leadNote}', 'edit');
-                    Route::post('/update/{leadNote}', 'update')->name('lead.notes.update');
-                    Route::get('/destroy/{leadNote}', 'destroy');
-                    Route::post('/bulk_delete', 'bulkDelete')->name('lead.notes.bulk_delete');
-                });
-            });
+            // Route::controller(LeadNoteController::class)->group(function () {
+            //     Route::prefix('notes')->group(function () {
+            //         Route::get('/', 'index')->name('lead.notes.index');
+            //         Route::get('/datatable', 'datatable')->name('lead.notes.datatable');
+            //         Route::post('/store', 'store')->name('lead.notes.store');
+            //         Route::get('/edit/{leadNote}', 'edit');
+            //         Route::post('/update/{leadNote}', 'update')->name('lead.notes.update');
+            //         Route::get('/destroy/{leadNote}', 'destroy');
+            //         Route::post('/bulk_delete', 'bulkDelete')->name('lead.notes.bulk_delete');
+            //     });
+            // });
         });
 
     });

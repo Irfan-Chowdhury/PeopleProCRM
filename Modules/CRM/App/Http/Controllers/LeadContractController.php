@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\CRM;
+namespace Modules\CRM\App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\LeadContract\StoreRequest;
-use App\Http\Requests\LeadContract\UpdateRequest;
-use App\Models\CRM\Lead;
-use App\Models\CRM\LeadContract;
-use App\Models\CRM\Tax;
+use Modules\CRM\App\Http\Requests\LeadContract\StoreRequest;
+use Modules\CRM\App\Http\Requests\LeadContract\UpdateRequest;
+use Modules\CRM\App\Models\Lead;
+use Modules\CRM\App\Models\LeadContract;
+use Modules\CRM\App\Models\Tax;
 use App\Models\Project;
 use Exception;
 use Illuminate\Http\Request;
@@ -19,7 +19,7 @@ class LeadContractController extends Controller
         $projects = Project::all();
         $taxes = Tax::all();
 
-        return view('crm.lead_section.contracts.index', compact('lead','taxes','projects'));
+        return view('crm::lead_section.contracts.index', compact('lead','taxes','projects'));
     }
 
     public function datatable()

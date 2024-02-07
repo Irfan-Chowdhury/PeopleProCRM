@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\LeadContract;
+namespace Modules\CRM\App\Http\Requests\LeadContract;
 
 use Illuminate\Foundation\Http\FormRequest;
 

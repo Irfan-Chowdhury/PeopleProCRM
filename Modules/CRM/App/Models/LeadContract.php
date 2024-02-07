@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\CRM;
+namespace Modules\CRM\App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -22,7 +22,7 @@ class LeadContract extends Model
 
     public function tax()
     {
-		return $this->hasOne('App\Models\CRM\Tax','id','tax_id');
+        return $this->hasOne(Tax::class,'id','tax_id');
 	}
 
     public function project()
