@@ -1,6 +1,8 @@
 <?php
 
 return array (
+  'Order Date' => 'Order Date',
+  'OrderId' => 'OrderId',
   'Id' => 'Id',
   'Clients' => 'Clients',
   'Place Order' => 'Place Order',

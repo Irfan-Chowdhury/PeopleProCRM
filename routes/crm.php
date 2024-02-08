@@ -144,7 +144,7 @@ Route::group(['middleware' => ['XSS']], function () {
     //     });
     // });
 
-    Route::prefix('sales')->group(function() {
+    // Route::prefix('sales')->group(function() {
 
         // Route::prefix('item-categories')->group(function () {
         //     Route::controller(ItemCategoryController::class)->group(function () {
@@ -179,12 +179,12 @@ Route::group(['middleware' => ['XSS']], function () {
         //     });
         // });
 
-        Route::controller(OrderController::class)->group(function () {
-            Route::prefix('orders')->group(function () {
-                Route::get('/', 'index')->name('order.index');
-                Route::get('/datatable', 'datatable')->name('order.datatable');
-            });
-        });
+        // Route::controller(OrderController::class)->group(function () {
+        //     Route::prefix('orders')->group(function () {
+        //         Route::get('/', 'index')->name('order.index');
+        //         Route::get('/datatable', 'datatable')->name('order.datatable');
+        //     });
+        // });
 
 
 
@@ -202,5 +202,5 @@ Route::group(['middleware' => ['XSS']], function () {
         // Route::post('dynamic_dependent/fetch_project', [DynamicDependent::class, 'fetchProject'])->name('dynamic_project');
 
 
-    });
+    // });
 });

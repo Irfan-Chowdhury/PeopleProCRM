@@ -12,6 +12,7 @@ use Modules\CRM\App\Http\Controllers\LeadInfoController;
 use Modules\CRM\App\Http\Controllers\LeadNoteController;
 use Modules\CRM\App\Http\Controllers\LeadProposalController;
 use Modules\CRM\App\Http\Controllers\LeadTaskController;
+use Modules\CRM\App\Http\Controllers\OrderController;
 use Modules\CRM\App\Http\Controllers\StoreController;
 use Modules\CRM\App\Http\Controllers\SubscriptionController;
 
@@ -29,6 +30,11 @@ use Modules\CRM\App\Http\Controllers\SubscriptionController;
 Route::group([], function () {
     Route::resource('crm', CRMController::class)->names('crm');
 });
+
+// Route::get('/test', function(OrderController $orderController) {
+//     return var_dump($orderController->test());
+//     return dd($orderController->test());
+// });
 
 Route::prefix('leads')->group(function() {
     Route::controller(LeadController::class)->group(function () {
@@ -170,6 +176,7 @@ Route::prefix('sales')->group(function() {
         Route::prefix('orders')->group(function () {
             Route::get('/', 'index')->name('order.index');
             Route::get('/datatable', 'datatable')->name('order.datatable');
+            Route::get('/{order_id}/{status}','orderStatusChange')->name('order.status_change');
         });
     });
 });
