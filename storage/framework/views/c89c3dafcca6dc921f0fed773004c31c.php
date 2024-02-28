@@ -16,13 +16,11 @@
             <thead>
                 <tr>
                     <th class="not-exported"></th>
-                    
                     <th><?php echo e(trans('file.Start Date')); ?></th>
                     <th><?php echo e(trans('file.End Date')); ?></th>
                     <th><?php echo e(trans('file.Assigned To')); ?></th>
                     <th><?php echo e(trans('file.Tax')); ?></th>
                     <th><?php echo e(trans('file.Amount')); ?></th>
-                    <th><?php echo e(trans('file.Status')); ?></th>
                     <th class="not-exported"><?php echo e(trans('file.Action')); ?></th>
                 </tr>
             </thead>
@@ -99,10 +97,6 @@
                         orderable: false,
                         searchable: false
                     },
-                    // {
-                    //     data: 'id',
-                    //     name: 'id',
-                    // },
                     {
                         data: 'start_date',
                         name: 'start_date',
@@ -122,10 +116,6 @@
                     {
                         data: 'amount',
                         name: 'amount',
-                    },
-                    {
-                        data: 'status',
-                        name: 'status',
                     },
                     {
                         data: 'action',

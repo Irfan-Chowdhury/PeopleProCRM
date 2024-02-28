@@ -34,8 +34,8 @@ class ProposalController extends Controller
 
         $taxTypes = TaxType::select('id', 'name', 'rate', 'type')->get();
 
-        // $proposal = Proposal::with('client','lead','tax')->select('id','start_date','end_date','client_id','lead_id','tax_type_id')->latest()->first();
-        // return $proposal->tax->rate;
+        // $proposal = Proposal::with('client','lead','tax','proposalItems')->select('id','start_date','end_date','client_id','lead_id','tax_type_id')->latest()->first();
+        // return $proposal->proposalItems->sum('rate');
 
         return view('crm::prospects.proposal.index',compact('taxTypes','clientsOrLeads'));
     }
@@ -44,7 +44,7 @@ class ProposalController extends Controller
     {
         if (request()->ajax())
 		{
-			return datatables()->of(Proposal::with('client','lead','tax')->select('id','start_date','end_date','client_id','lead_id','tax_type_id')->get())
+			return datatables()->of(Proposal::with('client','lead','tax','proposalItems')->select('id','start_date','end_date','client_id','lead_id','tax_type_id')->get())
 				->setRowId(function ($row)
 				{
 					return $row->id;
@@ -70,15 +70,14 @@ class ProposalController extends Controller
                 })
                 ->addColumn('amount',function ($row)
                 {
-                    return'amount';
-                })
-                ->addColumn('status',function ($row)
-                {
-                    return'status';
+                    if($row->proposalItems)
+                        return $row->proposalItems->sum('rate') + ($row->proposalItems->sum('rate') * ($row->tax->rate/100));
+                    else
+                        return 0;
                 })
 				->addColumn('action', function ($data)
                 {
-                    $button = '<a href="proposals/details/'.$data->id.'/items"  class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="View Details"><i class="dripicons-preview"></i></button></a>';
+                    $button = '<a href="proposals/'.$data->id.'/items"  class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="View Details"><i class="dripicons-preview"></i></button></a>';
                     $button .= '&nbsp;&nbsp;';
                     $button .= '<button type="button" data-id="'. $data->id . '" class="edit btn btn-primary btn-sm"><i class="dripicons-pencil"></i></button>';
                     $button .= '&nbsp;&nbsp;';

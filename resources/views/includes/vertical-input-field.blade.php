@@ -8,6 +8,9 @@
             @case('text')
                 <input {{ $isRequired ? 'required':'' }} type="text" name="{{ $nameData }}" id="{{ isset($idData) ? $idData : null }}" @if(isset($valueData)) value="{{ $valueData }}" @else placeholder="{{ $placeholderData }}" @endif class="form-control">
                 @break
+            @case('radonly')
+                <input type="radonly" name="{{ $nameData }}" id="{{ isset($idData) ? $idData : null }}" @if(isset($valueData)) value="{{ $valueData }}" @else placeholder="{{ $placeholderData }}" @endif class="form-control">
+                @break
             @case('date')
                 <input {{ $isRequired ? 'required':'' }} name="{{ $nameData }}" id="{{ isset($idData) ? $idData : null }}" @if(isset($valueData)) value="{{ $valueData }}" @else placeholder="{{ $placeholderData }}" @endif class="date form-control">
                 @break

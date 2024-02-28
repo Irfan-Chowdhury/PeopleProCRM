@@ -75,6 +75,11 @@ class ItemController extends Controller
 		}
     }
 
+    public function show(Item $item)
+    {
+        return response()->json($item);
+    }
+
     public function store(StoreRequest $request)
     {
         try {

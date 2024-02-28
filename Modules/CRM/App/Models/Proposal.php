@@ -43,4 +43,10 @@ class Proposal extends Model
                 ->select('id','name', 'rate', 'type');
 	}
 
+    public function proposalItems()
+    {
+		return $this->hasMany(ProposalItem::class,'proposal_id');
+	}
+
+
 }

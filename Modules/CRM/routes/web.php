@@ -159,6 +159,7 @@ Route::prefix('sales')->group(function() {
             Route::get('/', 'index')->name('items.index');
             Route::get('/datatable', 'datatable')->name('items.datatable');
             Route::post('/store', 'store')->name('items.store');
+            Route::get('/show/{item}', 'show')->name('items.show');
             Route::get('/edit/{item}', 'edit')->name('items.edit');
             Route::post('/update/{item}', 'update')->name('items.update');
             Route::get('/destroy/{item}', 'destroy')->name('items.destroy');
@@ -197,9 +198,14 @@ Route::prefix('prospects')->group(function() {
             Route::post('/bulk_delete', 'bulkDelete')->name('prospects.proposals.bulk_delete');
         });
 
-        Route::prefix('details/{proposal}')->group(function () {
+        Route::prefix('{proposal}')->group(function () {
             Route::controller(ProposalItemController::class)->group(function () {
                 Route::get('items', 'index')->name('prospects.proposals.items');
+                Route::post('store', 'store')->name('prospects.proposals.items.store');
+                Route::get('/edit/{proposalItem}', 'edit')->name('prospects.proposals.items.edit');
+                Route::post('/update/{proposalItem}', 'update')->name('prospects.proposals.items.update');
+                Route::get('/destroy/{proposalItem}', 'destroy')->name('prospects.proposals.items.destroy');
+                Route::post('/bulk_delete', 'bulkDelete')->name('prospects.proposals.items.bulk_delete');
             });
         });
 

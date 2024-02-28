@@ -8,6 +8,9 @@
             case ('text'): ?>
                 <input <?php echo e($isRequired ? 'required':''); ?> type="text" name="<?php echo e($nameData); ?>" id="<?php echo e(isset($idData) ? $idData : null); ?>" <?php if(isset($valueData)): ?> value="<?php echo e($valueData); ?>" <?php else: ?> placeholder="<?php echo e($placeholderData); ?>" <?php endif; ?> class="form-control">
                 <?php break; ?>
+            <?php case ('radonly'): ?>
+                <input type="radonly" name="<?php echo e($nameData); ?>" id="<?php echo e(isset($idData) ? $idData : null); ?>" <?php if(isset($valueData)): ?> value="<?php echo e($valueData); ?>" <?php else: ?> placeholder="<?php echo e($placeholderData); ?>" <?php endif; ?> class="form-control">
+                <?php break; ?>
             <?php case ('date'): ?>
                 <input <?php echo e($isRequired ? 'required':''); ?> name="<?php echo e($nameData); ?>" id="<?php echo e(isset($idData) ? $idData : null); ?>" <?php if(isset($valueData)): ?> value="<?php echo e($valueData); ?>" <?php else: ?> placeholder="<?php echo e($placeholderData); ?>" <?php endif; ?> class="date form-control">
                 <?php break; ?>
