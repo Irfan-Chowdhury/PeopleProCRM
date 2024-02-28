@@ -13,6 +13,9 @@ use Modules\CRM\App\Http\Controllers\LeadNoteController;
 use Modules\CRM\App\Http\Controllers\LeadProposalController;
 use Modules\CRM\App\Http\Controllers\LeadTaskController;
 use Modules\CRM\App\Http\Controllers\OrderController;
+use Modules\CRM\App\Http\Controllers\ProposalController;
+use Modules\CRM\App\Http\Controllers\ProposalItemController;
+use Modules\CRM\App\Http\Controllers\ProspectsController;
 use Modules\CRM\App\Http\Controllers\StoreController;
 use Modules\CRM\App\Http\Controllers\SubscriptionController;
 
@@ -180,3 +183,29 @@ Route::prefix('sales')->group(function() {
         });
     });
 });
+
+// prospects
+Route::prefix('prospects')->group(function() {
+    Route::prefix('proposals')->group(function() {
+        Route::controller(ProposalController::class)->group(function () {
+            Route::get('/', 'index')->name('prospects.proposals.index');
+            Route::get('/datatable', 'datatable')->name('prospects.proposals.datatable');
+            Route::post('/store', 'store')->name('prospects.proposals.store');
+            Route::get('/edit/{proposal}', 'edit')->name('prospects.proposals.edit');
+            Route::post('/update/{proposal}', 'update')->name('prospects.proposals.update');
+            Route::get('/destroy/{proposal}', 'destroy')->name('prospects.proposals.destroy');
+            Route::post('/bulk_delete', 'bulkDelete')->name('prospects.proposals.bulk_delete');
+        });
+
+        Route::prefix('details/{proposal}')->group(function () {
+            Route::controller(ProposalItemController::class)->group(function () {
+                Route::get('items', 'index')->name('prospects.proposals.items');
+            });
+        });
+
+    });
+});
+
+
+
+// php artisan module:make-controller ProposalController CRM

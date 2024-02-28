@@ -34,6 +34,18 @@
                 </li>
 
                 
+                <li class="has-dropdown <?php if(request()->is('prospects*')): ?><?php echo e((request()->is('prospects*')) ? 'active' : ''); ?><?php elseif(request()->is('add-user*')): ?><?php echo e((request()->is('add-user*')) ? 'active' : ''); ?><?php endif; ?>">
+                    <a href="#prospect" aria-expanded="false" data-toggle="collapse">
+                        <i class="dripicons-user"></i>
+                        <span><?php echo e(trans('file.Prospects')); ?></span>
+                    </a>
+                    <ul id="prospect" class="collapse list-unstyled ">
+                        <li id="prospect-menu"><a href="<?php echo e(route('prospects.proposals.index')); ?>"><?php echo e(__('file.Proposals')); ?></a></li>
+                        
+                    </ul>
+                </li>
+
+                
                 <li class="<?php echo e((request()->is('addons*')) ? 'active' : ''); ?>">
                     <a href="<?php echo e(route('addons')); ?>"> <i class="dripicons-ticket"></i><span><?php echo e(__('Addons')); ?></span>
                     </a>

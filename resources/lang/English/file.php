@@ -3,6 +3,7 @@
 return array (
   'Order Date' => 'Order Date',
   'OrderId' => 'OrderId',
+  'Client/Lead' => 'Client/Lead',
   'Id' => 'Id',
   'Clients' => 'Clients',
   'Place Order' => 'Place Order',
