@@ -22,4 +22,10 @@ class ProposalItem extends Model
         'description'
     ];
 
+    public function item()
+    {
+		return $this->belongsTo(Item::class,'item_id')
+                ->select('id','title');
+	}
+
 }

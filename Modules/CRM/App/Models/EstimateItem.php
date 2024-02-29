@@ -10,13 +10,18 @@ class EstimateItem extends Model
 {
     use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     */
-    protected $fillable = [];
-    
-    protected static function newFactory(): EstimateItemFactory
+    protected $fillable = [
+        'estimate_id',
+        'item_id',
+        'quantity',
+        'unit_type',
+        'rate',
+        'description'
+    ];
+
+    public function item()
     {
-        //return EstimateItemFactory::new();
-    }
+		return $this->belongsTo(Item::class,'item_id')
+                ->select('id','title');
+	}
 }

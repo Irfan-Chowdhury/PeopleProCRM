@@ -24,8 +24,6 @@ class EstimateController extends Controller
 
         $taxTypes = TaxType::select('id', 'name', 'rate', 'type')->get();
 
-        // return Estimate::with('client','tax','estimateItems')->select('id','start_date','end_date','client_id','tax_type_id')->get();
-
         return view('crm::prospects.estimate.index',compact('clients','taxTypes'));
     }
 

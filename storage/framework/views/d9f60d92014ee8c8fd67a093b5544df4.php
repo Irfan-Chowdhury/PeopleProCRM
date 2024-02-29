@@ -39,14 +39,10 @@
     let dataTableURL = "<?php echo e(route('prospects.proposals.items', ['proposal' => $proposal->id])); ?>";
     let storeURL = "<?php echo e(route('prospects.proposals.items.store', ['proposal' => $proposal->id])); ?>";
     let itemShowURL = "/sales/items/show/";
-
     var editURL = "<?php echo e(url('/prospects/proposals')); ?>/" + "<?php echo e($proposal->id); ?>/edit/" ;
     var updateURL = "<?php echo e(url('/prospects/proposals')); ?>/" + "<?php echo e($proposal->id); ?>/update/" ;
-
     let destroyURL = "<?php echo e(url('/prospects/proposals')); ?>/" + "<?php echo e($proposal->id); ?>/destroy/";
     let bulkDeleteURL = '<?php echo e(route('prospects.proposals.items.bulk_delete', ['proposal' => $proposal->id])); ?>';
-
-
 </script>
 
 <script type="text/javascript">
@@ -200,15 +196,25 @@
                     }
                 });
             });
-        });
+            $('#updateForm select[name="item_id"]').change(function() {
+                let id = $(this).val();
+                $.get({
+                    url: itemShowURL + id,
+                    success: function(response) {
+                        console.log(response);
+                        $("#updateForm input[name='rate']").val(response.rate);
+                        $("#updateForm input[name='unit_type']").val(response.unit_type);
 
+                    }
+                });
+            });
+        });
 
         let currentModal;
         //--------- Edit -------
         $(document).on('click', '.edit', function() {
             let id = $(this).data("id");
             currentModal = 'edit';
-
             $.get({
                 url: editURL + id,
                 success: function(response) {
@@ -219,26 +225,11 @@
                     $("#editModal input[name='unit_type']").val(response.unit_type);
                     $("#editModal input[name='rate']").val(response.rate);
                     $("#editModal textarea[name='description']").val(response.description);
-
-
-                    // $("#editModal input[name='end_date']").val(response.end_date);
-                    // if (response.client_id) {
-                    //     $("#editModal input[name='candidate_type']").val('client');
-                    //     $("#editModal input[name='candidate_id']").val(response.client_id);
-                    //     $("#editModal select[name='candidate']").selectpicker('val',response.client_id);
-                    // }else{
-                    //     $("#editModal input[name='candidate_type']").val('lead');
-                    //     $("#editModal input[name='candidate_id']").val(response.lead_id);
-                    //     $("#editModal select[name='candidate']").selectpicker('val',response.lead_id);
-                    // }
-                    // $("#editModal select[name='tax_type_id']").selectpicker('val',response.tax_type_id);
-                    // $("#editModal textarea[name='note']").val(response.note);
                     currentModal = '';
                     $('#editModal').modal('show');
                 }
             })
         });
-
 
     })(jQuery);
 </script>

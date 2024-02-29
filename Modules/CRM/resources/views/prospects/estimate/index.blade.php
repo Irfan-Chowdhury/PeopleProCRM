@@ -21,7 +21,7 @@
                     <th>{{trans('file.End Date')}}</th>
                     <th>{{trans('file.Client')}}</th>
                     <th>{{trans('file.Tax')}}</th>
-                    <th>{{trans('file.Amount')}}</th>
+                    <th>{{trans('file.Total (+Tax)')}}</th>
                     <th class="not-exported">{{trans('file.Action')}}</th>
                 </tr>
             </thead>

@@ -226,9 +226,9 @@ Route::prefix('prospects')->group(function() {
             Route::controller(EstimateItemController::class)->group(function () {
                 Route::get('items', 'index')->name('prospects.estimates.items');
                 Route::post('store', 'store')->name('prospects.estimates.items.store');
-                Route::get('/edit/{proposalItem}', 'edit')->name('prospects.estimates.items.edit');
-                Route::post('/update/{proposalItem}', 'update')->name('prospects.estimates.items.update');
-                Route::get('/destroy/{proposalItem}', 'destroy')->name('prospects.estimates.items.destroy');
+                Route::get('/edit/{estimateItem}', 'edit')->name('prospects.estimates.items.edit');
+                Route::post('/update/{estimateItem}', 'update')->name('prospects.estimates.items.update');
+                Route::get('/destroy/{estimateItem}', 'destroy')->name('prospects.estimates.items.destroy');
                 Route::post('/bulk_delete', 'bulkDelete')->name('prospects.estimates.items.bulk_delete');
             });
         });

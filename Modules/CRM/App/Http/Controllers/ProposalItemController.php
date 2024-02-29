@@ -21,14 +21,14 @@ class ProposalItemController extends Controller
         $items = Item::select('id','title','description','unit_type','rate')->get();
 
         if (request()->ajax()) {
-			return datatables()->of(ProposalItem::where('proposal_id',$proposal->id)->get())
+			return datatables()->of(ProposalItem::with('item')->where('proposal_id',$proposal->id)->get())
 				->setRowId(function ($row)
 				{
 					return $row->id;
 				})
                 ->addColumn('item',function ($row)
                 {
-                    return $row->item_id;
+                    return $row->item->title;
                 })
                 ->addColumn('rate',function ($row)
                 {
@@ -77,7 +77,7 @@ class ProposalItemController extends Controller
         return response()->json($proposalItem);
     }
 
-  
+
     public function update($proposal,ProposalItem $proposalItem, Request $request)
     {
         $proposalItem->update([

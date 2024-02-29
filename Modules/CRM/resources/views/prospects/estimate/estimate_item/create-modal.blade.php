@@ -5,7 +5,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="createModalLabel"> {{ __('file.Add Proposal') }}</h5>
+                <h5 class="modal-title" id="createModalLabel"> {{ __('file.Add Item') }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -15,7 +15,7 @@
                 @csrf
                 <div class="modal-body">
                     <div class="row">
-                        <input type="hidden" name="proposal_id" value="{{ $proposal->id }}" class="form-control">
+                        <input type="hidden" name="estimate_id" value="{{ $estimate->id }}" class="form-control">
 
                         <div class="col-md-6">
                             <div class="form-group">

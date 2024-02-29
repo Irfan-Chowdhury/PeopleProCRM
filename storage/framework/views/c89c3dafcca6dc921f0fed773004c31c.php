@@ -20,7 +20,7 @@
                     <th><?php echo e(trans('file.End Date')); ?></th>
                     <th><?php echo e(trans('file.Assigned To')); ?></th>
                     <th><?php echo e(trans('file.Tax')); ?></th>
-                    <th><?php echo e(trans('file.Amount')); ?></th>
+                    <th><?php echo e(trans('file.Total (+Tax)')); ?></th>
                     <th class="not-exported"><?php echo e(trans('file.Action')); ?></th>
                 </tr>
             </thead>

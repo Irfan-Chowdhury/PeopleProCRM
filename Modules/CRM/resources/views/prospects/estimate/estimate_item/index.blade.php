@@ -3,7 +3,7 @@
 
 <div class="container-fluid">
     <div class="card">
-        <div class="card-header"><h3>{{__('file.Proposal Items')}}</h3></div>
+        <div class="card-header"><h3>{{__('file.Estimate Items')}}</h3></div>
         <div class="card-header">
             <button type="button" class="btn btn-info" data-toggle="modal" data-target="#createModal"><i class="fa fa-plus"></i> {{__('file.Add New')}}</button>
             <button type="button" class="btn btn-danger" name="bulk_delete" id="bulk_delete"><i class="fa fa-minus-circle"></i> {{__('Bulk delete')}}</button>                </div>
@@ -29,21 +29,21 @@
     </div>
 </div>
 
-@include('crm::prospects.proposal_item.create-modal')
-@include('crm::prospects.proposal_item.edit-modal')
+@include('crm::prospects.estimate.estimate_item.create-modal')
+@include('crm::prospects.estimate.estimate_item.edit-modal')
 
 @endsection
 
 
 @push('scripts')
 <script type="text/javascript">
-    let dataTableURL = "{{ route('prospects.proposals.items', ['proposal' => $proposal->id]) }}";
-    let storeURL = "{{ route('prospects.proposals.items.store', ['proposal' => $proposal->id]) }}";
+    let dataTableURL = "{{ route('prospects.estimates.items', ['estimate' => $estimate->id]) }}";
+    let storeURL = "{{ route('prospects.estimates.items.store', ['estimate' => $estimate->id]) }}";
     let itemShowURL = "/sales/items/show/";
-    var editURL = "{{ url('/prospects/proposals')}}/" + "{{ $proposal->id }}/edit/" ;
-    var updateURL = "{{ url('/prospects/proposals')}}/" + "{{ $proposal->id }}/update/" ;
-    let destroyURL = "{{ url('/prospects/proposals')}}/" + "{{ $proposal->id }}/destroy/";
-    let bulkDeleteURL = '{{ route('prospects.proposals.items.bulk_delete', ['proposal' => $proposal->id]) }}';
+    var editURL = "{{ url('/prospects/estimates')}}/" + "{{ $estimate->id }}/edit/" ;
+    var updateURL = "{{ url('/prospects/estimates')}}/" + "{{ $estimate->id }}/update/" ;
+    let destroyURL = "{{ url('/prospects/estimates')}}/" + "{{ $estimate->id }}/destroy/";
+    let bulkDeleteURL = '{{ route('prospects.estimates.items.bulk_delete', ['estimate' => $estimate->id]) }}';
 </script>
 
 <script type="text/javascript">
@@ -184,6 +184,7 @@
             new $.fn.dataTable.FixedHeader(table);
         });
 
+
         $(document).ready(function() {
             $('#submitForm select[name="item_id"]').change(function() {
                 let id = $(this).val();
@@ -197,7 +198,20 @@
                     }
                 });
             });
+            $('#updateForm select[name="item_id"]').change(function() {
+                let id = $(this).val();
+                $.get({
+                    url: itemShowURL + id,
+                    success: function(response) {
+                        console.log(response);
+                        $("#updateForm input[name='rate']").val(response.rate);
+                        $("#updateForm input[name='unit_type']").val(response.unit_type);
+
+                    }
+                });
+            });
         });
+
 
         let currentModal;
         //--------- Edit -------
