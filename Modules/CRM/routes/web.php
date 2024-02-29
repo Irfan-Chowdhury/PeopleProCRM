@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Modules\CRM\App\Http\Controllers\CRMController;
 use Modules\CRM\App\Http\Controllers\EstimateController;
+use Modules\CRM\App\Http\Controllers\EstimateFormController;
 use Modules\CRM\App\Http\Controllers\EstimateItemController;
 use Modules\CRM\App\Http\Controllers\ItemCategoryController;
 use Modules\CRM\App\Http\Controllers\ItemController;
@@ -233,6 +234,18 @@ Route::prefix('prospects')->group(function() {
             });
         });
 
+    });
+
+    Route::prefix('estimate-forms')->group(function() {
+        Route::controller(EstimateFormController::class)->group(function () {
+            Route::get('/', 'index')->name('prospects.estimate-forms.index');
+            Route::get('/datatable', 'datatable')->name('prospects.estimate-forms.datatable');
+            Route::post('/store', 'store')->name('prospects.estimate-forms.store');
+            Route::get('/edit/{estimateForm}', 'edit')->name('prospects.estimate-forms.edit');
+            Route::post('/update/{estimateForm}', 'update')->name('prospects.estimate-forms.update');
+            Route::get('/destroy/{estimateForm}', 'destroy')->name('prospects.estimate-forms.destroy');
+            Route::post('/bulk_delete', 'bulkDelete')->name('prospects.estimate-forms.bulk_delete');
+        });
     });
 });
 

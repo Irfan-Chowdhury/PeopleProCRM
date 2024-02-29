@@ -42,6 +42,7 @@
                     <ul id="prospect" class="collapse list-unstyled ">
                         <li id="prospect-menu"><a href="<?php echo e(route('prospects.proposals.index')); ?>"><?php echo e(__('file.Proposals')); ?></a></li>
                         <li id="prospect-menu"><a href="<?php echo e(route('prospects.estimates.index')); ?>"><?php echo e(__('file.Estimates')); ?></a></li>
+                        <li id="prospect-menu"><a href="<?php echo e(route('prospects.estimate-forms.index')); ?>"><?php echo e(__('file.Estimate Forms')); ?></a></li>
                         
                     </ul>
                 </li>
