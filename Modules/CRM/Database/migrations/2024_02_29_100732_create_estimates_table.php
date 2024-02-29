@@ -11,26 +11,24 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('proposals', function (Blueprint $table) {
+        Schema::create('estimates', function (Blueprint $table) {
             $table->id();
             $table->date('start_date');
             $table->date('end_date');
             $table->foreignId('client_id')->nullable();
-            $table->foreignId('lead_id')->nullable();
             $table->foreignId('tax_type_id')->nullable();
             $table->text('note')->nullable();
 
-            $table->foreign('client_id', 'proposals_client_id_foreign')->references('id')->on('clients')->onDelete('set NULL');
-            $table->foreign('lead_id', 'proposals_lead_id_foreign')->references('id')->on('leads')->onDelete('set NULL');
+            $table->foreign('client_id', 'estimates_client_id_foreign')->references('id')->on('clients')->onDelete('set NULL');
             $table->timestamps();
         });
     }
 
+
     public function down(): void
     {
-        Schema::table('proposals', function (Blueprint $table) {
-            $table->dropForeign('proposals_client_id_foreign');
-            $table->dropForeign('proposals_lead_id_foreign');
+        Schema::table('estimates', function (Blueprint $table) {
+            $table->dropForeign('estimates_client_id_foreign');
             $table->dropIfExists();
         });
     }

@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\CRM\App\Http\Controllers\CRMController;
+use Modules\CRM\App\Http\Controllers\EstimateController;
+use Modules\CRM\App\Http\Controllers\EstimateItemController;
 use Modules\CRM\App\Http\Controllers\ItemCategoryController;
 use Modules\CRM\App\Http\Controllers\ItemController;
 use Modules\CRM\App\Http\Controllers\LeadContactController;
@@ -197,7 +199,6 @@ Route::prefix('prospects')->group(function() {
             Route::get('/destroy/{proposal}', 'destroy')->name('prospects.proposals.destroy');
             Route::post('/bulk_delete', 'bulkDelete')->name('prospects.proposals.bulk_delete');
         });
-
         Route::prefix('{proposal}')->group(function () {
             Route::controller(ProposalItemController::class)->group(function () {
                 Route::get('items', 'index')->name('prospects.proposals.items');
@@ -206,6 +207,29 @@ Route::prefix('prospects')->group(function() {
                 Route::post('/update/{proposalItem}', 'update')->name('prospects.proposals.items.update');
                 Route::get('/destroy/{proposalItem}', 'destroy')->name('prospects.proposals.items.destroy');
                 Route::post('/bulk_delete', 'bulkDelete')->name('prospects.proposals.items.bulk_delete');
+            });
+        });
+
+    });
+
+    Route::prefix('estimates')->group(function() {
+        Route::controller(EstimateController::class)->group(function () {
+            Route::get('/', 'index')->name('prospects.estimates.index');
+            Route::get('/datatable', 'datatable')->name('prospects.estimates.datatable');
+            Route::post('/store', 'store')->name('prospects.estimates.store');
+            Route::get('/edit/{estimate}', 'edit')->name('prospects.estimates.edit');
+            Route::post('/update/{estimate}', 'update')->name('prospects.estimates.update');
+            Route::get('/destroy/{estimate}', 'destroy')->name('prospects.estimates.destroy');
+            Route::post('/bulk_delete', 'bulkDelete')->name('prospects.estimates.bulk_delete');
+        });
+        Route::prefix('{estimate}')->group(function () {
+            Route::controller(EstimateItemController::class)->group(function () {
+                Route::get('items', 'index')->name('prospects.estimates.items');
+                Route::post('store', 'store')->name('prospects.estimates.items.store');
+                Route::get('/edit/{proposalItem}', 'edit')->name('prospects.estimates.items.edit');
+                Route::post('/update/{proposalItem}', 'update')->name('prospects.estimates.items.update');
+                Route::get('/destroy/{proposalItem}', 'destroy')->name('prospects.estimates.items.destroy');
+                Route::post('/bulk_delete', 'bulkDelete')->name('prospects.estimates.items.bulk_delete');
             });
         });
 

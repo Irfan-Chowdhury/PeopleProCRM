@@ -41,6 +41,7 @@
                     </a>
                     <ul id="prospect" class="collapse list-unstyled ">
                         <li id="prospect-menu"><a href="{{route('prospects.proposals.index')}}">{{__('file.Proposals')}}</a></li>
+                        <li id="prospect-menu"><a href="{{route('prospects.estimates.index')}}">{{__('file.Estimates')}}</a></li>
                         {{-- <li id="users-menu"><a href="{{route('items.index')}}">{{__('file.Items')}}</a></li>
                         <li id="users-menu"><a href="{{route('invoices.index')}}">{{__('file.Invoices')}}</a></li>
                         <li id="users-menu"><a href="{{ route('order.index') }}">{{__('file.Order List')}}</a></li>
