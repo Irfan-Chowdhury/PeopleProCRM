@@ -3,6 +3,7 @@
 use App\Http\Controllers\ClientController;
 use Illuminate\Support\Facades\Route;
 use Modules\CRM\App\Http\Controllers\ContractController;
+use Modules\CRM\App\Http\Controllers\ContractItemController;
 use Modules\CRM\App\Http\Controllers\CRMController;
 use Modules\CRM\App\Http\Controllers\EstimateController;
 use Modules\CRM\App\Http\Controllers\EstimateFormController;
@@ -198,6 +199,17 @@ Route::prefix('sales')->group(function() {
             Route::post('/update/{contract}', 'update')->name('contracts.update');
             Route::get('/destroy/{contract}', 'destroy');
             Route::post('/bulk_delete', 'bulkDelete')->name('contracts.bulk_delete');
+
+            Route::prefix('{contract}')->group(function () {
+                Route::controller(ContractItemController::class)->group(function () {
+                    Route::get('items', 'index')->name('contracts.items');
+                    Route::post('store', 'store')->name('contracts.items.store');
+                    Route::get('/edit/{contractItem}', 'edit')->name('contracts.items.edit');
+                    Route::post('/update/{contractItem}', 'update')->name('contracts.items.update');
+                    Route::get('/destroy/{contractItem}', 'destroy')->name('contracts.items.destroy');
+                    Route::post('/bulk_delete', 'bulkDelete')->name('contracts.items.bulk_delete');
+                });
+            });
         });
     });
 });

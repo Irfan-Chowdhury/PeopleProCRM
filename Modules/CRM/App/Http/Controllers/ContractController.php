@@ -73,7 +73,9 @@ class ContractController extends Controller
                 })
 				->addColumn('action', function ($data)
                 {
-                    $button = '<button type="button" data-id="'. $data->id . '" class="edit btn btn-primary btn-sm"><i class="dripicons-pencil"></i></button>';
+                    $button = '<a href="contracts/'.$data->id.'/items"  class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="View Details"><i class="dripicons-preview"></i></button></a>';
+                    $button .= '&nbsp;&nbsp;';
+                    $button .= '<button type="button" data-id="'. $data->id . '" class="edit btn btn-primary btn-sm"><i class="dripicons-pencil"></i></button>';
                     $button .= '&nbsp;&nbsp;';
                     $button .= '<button type="button" data-id="'.$data->id.'" class="delete btn btn-danger btn-sm"><i class="dripicons-trash"></i></button>';
                     return $button;

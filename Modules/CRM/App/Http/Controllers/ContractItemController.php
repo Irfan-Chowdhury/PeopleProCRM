@@ -7,18 +7,18 @@ use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Modules\CRM\App\Models\Contract;
+use Modules\CRM\App\Models\ContractItem;
 use Modules\CRM\App\Models\Item;
-use Modules\CRM\App\Models\Proposal;
-use Modules\CRM\App\Models\ProposalItem;
 
-class ProposalItemController extends Controller
+class ContractItemController extends Controller
 {
-    public function index(Proposal $proposal)
+    public function index(Contract $contract)
     {
         $items = Item::select('id','title','description','unit_type','rate')->get();
 
         if (request()->ajax()) {
-			return datatables()->of(ProposalItem::with('item')->where('proposal_id',$proposal->id)->get())
+			return datatables()->of(ContractItem::with('item')->where('contract_id',$contract->id)->get())
 				->setRowId(function ($row)
 				{
 					return $row->id;
@@ -50,13 +50,13 @@ class ProposalItemController extends Controller
                 ->make(true);
 		}
 
-        return view('crm::prospects.proposal_item.index', compact('items','proposal'));
+        return view('crm::sale_section.contracts.contract_item.index', compact('items','contract'));
     }
 
     public function store(Request $request)
     {
-        ProposalItem::create([
-            'proposal_id'=>$request->proposal_id,
+        ContractItem::create([
+            'contract_id'=>$request->contract_id,
             'item_id'=>$request->item_id,
             'quantity'=>$request->quantity,
             'unit_type'=>$request->unit_type,
@@ -65,20 +65,16 @@ class ProposalItemController extends Controller
         ]);
 
         return response()->json(['success' =>'Data Submitted Successfully'], 200);
-
+    }
+    public function edit($contract, ContractItem $contractItem)
+    {
+        return response()->json($contractItem);
     }
 
-
-    public function edit($proposal, ProposalItem $proposalItem)
+    public function update($contract, ContractItem $contractItem, Request $request)
     {
-        return response()->json($proposalItem);
-    }
-
-
-    public function update($proposal,ProposalItem $proposalItem, Request $request)
-    {
-        $proposalItem->update([
-            'proposal_id'=>$proposal,
+        $contractItem->update([
+            'contract_id'=>$contract, //id
             'item_id'=>$request->item_id,
             'quantity'=>$request->quantity,
             'unit_type'=>$request->unit_type,
@@ -89,9 +85,9 @@ class ProposalItemController extends Controller
         return response()->json(['success' =>'Data Updated Successfully'], 200);
     }
 
-    public function destroy($proposal, ProposalItem $proposalItem)
+    public function destroy($contract,  ContractItem $contractItem)
     {
-        $proposalItem->delete();
+        $contractItem->delete();
 
         return response()->json(['success' =>'Data Deleted Successfully'], 200);
     }
@@ -101,8 +97,8 @@ class ProposalItemController extends Controller
         $idsArray = $request['idsArray'];
 
         try {
-            $proposalItem = ProposalItem::whereIntegerInRaw('id', $idsArray);
-            $proposalItem->delete();
+            $contractItem = ContractItem::whereIntegerInRaw('id', $idsArray);
+            $contractItem->delete();
             return response()->json(['success' =>'Data Deleted Successfully'], 200);
 
         } catch (Exception $e) {

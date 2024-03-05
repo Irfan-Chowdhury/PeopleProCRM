@@ -13,9 +13,6 @@ use Modules\CRM\App\Models\Item;
 
 class EstimateItemController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Estimate $estimate)
     {
         $items = Item::select('id','title','description','unit_type','rate')->get();
@@ -69,7 +66,6 @@ class EstimateItemController extends Controller
         ]);
 
         return response()->json(['success' =>'Data Submitted Successfully'], 200);
-
     }
 
     public function edit($estimate, EstimateItem $estimateItem)
