@@ -17,6 +17,7 @@
                     </a>
                 </li>
 
+
                 <li class="has-dropdown <?php if(request()->is('user*')): ?><?php echo e((request()->is('user*')) ? 'active' : ''); ?><?php elseif(request()->is('add-user*')): ?><?php echo e((request()->is('add-user*')) ? 'active' : ''); ?><?php endif; ?>">
                     <a href="#users" aria-expanded="false" data-toggle="collapse">
                         <i class="dripicons-user"></i>
@@ -29,7 +30,7 @@
                         <li id="users-menu"><a href="<?php echo e(route('order.index')); ?>"><?php echo e(__('file.Order List')); ?></a></li>
                         <li id="users-menu"><a href="<?php echo e(route('store.index')); ?>"><?php echo e(__('file.Store')); ?></a></li>
                         <li id="users-menu"><a href="#"><?php echo e(__('file.Payments')); ?></a></li>
-                        <li id="users-menu"><a href="#"><?php echo e(__('file.Contracts')); ?></a></li>
+                        <li id="users-menu"><a href="<?php echo e(route('contracts.index')); ?>"><?php echo e(__('file.Contracts')); ?></a></li>
                     </ul>
                 </li>
 
@@ -504,6 +505,9 @@
                                                 href="<?php echo e(route('clients.index')); ?>"><?php echo e(trans(('file.Client'))); ?></a>
                                     </li>
                                 <?php endif; ?>
+
+                                <li id="clients"><a href="<?php echo e(route('client.overview')); ?>"><?php echo e(trans(('file.Client Overview'))); ?></a></li>
+
                                 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('view-invoice')): ?>
                                     <li id="invoices"><a
                                                 href="<?php echo e(route('invoices.index')); ?>"><?php echo e(trans(('file.Invoice'))); ?></a>

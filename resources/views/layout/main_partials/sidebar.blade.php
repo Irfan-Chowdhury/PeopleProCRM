@@ -17,6 +17,7 @@
                     </a>
                 </li>
 
+
                 <li class="has-dropdown @if(request()->is('user*')){{ (request()->is('user*')) ? 'active' : '' }}@elseif(request()->is('add-user*')){{ (request()->is('add-user*')) ? 'active' : '' }}@endif">
                     <a href="#users" aria-expanded="false" data-toggle="collapse">
                         <i class="dripicons-user"></i>
@@ -29,7 +30,7 @@
                         <li id="users-menu"><a href="{{ route('order.index') }}">{{__('file.Order List')}}</a></li>
                         <li id="users-menu"><a href="{{ route('store.index') }}">{{__('file.Store')}}</a></li>
                         <li id="users-menu"><a href="#">{{__('file.Payments')}}</a></li>
-                        <li id="users-menu"><a href="#">{{__('file.Contracts')}}</a></li>
+                        <li id="users-menu"><a href="{{ route('contracts.index') }}">{{__('file.Contracts')}}</a></li>
                     </ul>
                 </li>
 
@@ -532,6 +533,9 @@
                                                 href="{{route('clients.index')}}">{{trans(('file.Client'))}}</a>
                                     </li>
                                 @endcan
+
+                                <li id="clients"><a href="{{route('client.overview')}}">{{trans(('file.Client Overview'))}}</a></li>
+
                                 @can('view-invoice')
                                     <li id="invoices"><a
                                                 href="{{route('invoices.index')}}">{{trans(('file.Invoice'))}}</a>

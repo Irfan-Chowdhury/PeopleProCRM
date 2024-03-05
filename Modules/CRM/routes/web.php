@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\ClientController;
 use Illuminate\Support\Facades\Route;
+use Modules\CRM\App\Http\Controllers\ContractController;
 use Modules\CRM\App\Http\Controllers\CRMController;
 use Modules\CRM\App\Http\Controllers\EstimateController;
 use Modules\CRM\App\Http\Controllers\EstimateFormController;
@@ -186,6 +188,18 @@ Route::prefix('sales')->group(function() {
             Route::get('/{order_id}/{status}','orderStatusChange')->name('order.status_change');
         });
     });
+
+    Route::controller(ContractController::class)->group(function () {
+        Route::prefix('contracts')->group(function () {
+            Route::get('/', 'index')->name('contracts.index');
+            Route::get('/datatable', 'datatable')->name('contracts.datatable');
+            Route::post('/store', 'store')->name('contracts.store');
+            Route::get('/edit/{contract}', 'edit');
+            Route::post('/update/{contract}', 'update')->name('contracts.update');
+            Route::get('/destroy/{contract}', 'destroy');
+            Route::post('/bulk_delete', 'bulkDelete')->name('contracts.bulk_delete');
+        });
+    });
 });
 
 // prospects
@@ -249,6 +263,4 @@ Route::prefix('prospects')->group(function() {
     });
 });
 
-
-
-// php artisan module:make-controller ProposalController CRM
+Route::get('/client-overview', [ClientController::class, 'overview'])->name('client.overview');

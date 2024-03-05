@@ -9,8 +9,18 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Modules\CRM\App\Models\Subscription;
 
 class ClientController extends Controller {
+
+    public function overview()
+    {
+        $clients = Client::where('is_active',true)->get();
+        $subscriptions = Subscription::all();
+
+        return view('crm::client.overview', compact('clients','subscriptions'));
+    }
+
 
 	public function index()
 	{
