@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\GeneralSetting;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
@@ -24,7 +25,8 @@ class ViewComposerServiceProvider extends ServiceProvider
         if (Schema::hasTable('general_settings')){
 
             $general_settings = GeneralSetting::latest()->first();
-            
+            $isCrmModuleExist = File::exists(base_path('Modules/CRM'));
+
             // Procedure - 1
             // view()->composer('layout.main_partials.header', function ($view) use ($generalSetting) {
             //     $view->with('generalSetting', $generalSetting);
@@ -41,10 +43,10 @@ class ViewComposerServiceProvider extends ServiceProvider
                 'frontend.Layout.navigation',
                 'documentation.index',
                 'vendor.translation.layout',
-
                 'vendor.translation.languages.create'
-            ], function ($view) use ($general_settings) {
-                $view->with('general_settings', $general_settings);
+            ], function ($view) use ($general_settings, $isCrmModuleExist) {
+                // $view->with('general_settings', $general_settings);
+                $view->with(['general_settings'=>$general_settings, 'isCrmModuleExist'=> $isCrmModuleExist]);
             });
         }
     }

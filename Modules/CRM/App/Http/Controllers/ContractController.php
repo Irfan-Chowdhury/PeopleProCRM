@@ -3,11 +3,6 @@
 namespace Modules\CRM\App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Modules\CRM\App\Http\Requests\LeadContract\StoreRequest;
-use Modules\CRM\App\Http\Requests\LeadContract\UpdateRequest;
-use Modules\CRM\App\Models\Lead;
-use Modules\CRM\App\Models\LeadContract;
-use Modules\CRM\App\Models\Tax;
 use App\Models\Project;
 use App\Models\TaxType;
 use Exception;

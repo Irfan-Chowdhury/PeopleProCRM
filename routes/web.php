@@ -867,16 +867,18 @@ Route::group(['middleware' => ['XSS']], function () {
         Route::post('file_config', [FileManagerSettingController::class, 'store'])->name('file_config.store');
     });
 
-    Route::get('/client/profile', [DashboardController::class, 'clientProfile'])->name('clientProfile');
-    Route::get('/client/invoices', [ClientInvoiceController::class, 'invoices'])->name('clientInvoice');
-    Route::get('/client/invoices/payment', [ClientInvoiceController::class, 'paidInvoices'])->name('clientInvoicePaid');
-    Route::get('/client/projects', [ClientProjectController::class, 'index'])->name('clientProject');
-    Route::post('/client/projects/store', [ClientProjectController::class, 'store'])->name('clientProject.store');
-    Route::get('/client/projects/status', [ClientProjectController::class, 'status'])->name('clientProjectStatus');
-    Route::get('/client/tasks', [ClientTaskController::class, 'index'])->name('clientTask');
-    Route::post('/client/tasks', [ClientTaskController::class, 'store'])->name('clientTask.store');
-    Route::get('/client/tasks/{id}/edit', [ClientTaskController::class, 'edit'])->name('clientTask.edit');
-    Route::post('/client/tasks/update', [ClientTaskController::class, 'update'])->name('clientTask.update');
+    Route::prefix('client')->group(function() {
+        Route::get('/profile', [DashboardController::class, 'clientProfile'])->name('clientProfile');
+        Route::get('/invoices', [ClientInvoiceController::class, 'invoices'])->name('clientInvoice');
+        Route::get('/invoices/payment', [ClientInvoiceController::class, 'paidInvoices'])->name('clientInvoicePaid');
+        Route::get('/projects', [ClientProjectController::class, 'index'])->name('clientProject');
+        Route::post('/projects/store', [ClientProjectController::class, 'store'])->name('clientProject.store');
+        Route::get('/projects/status', [ClientProjectController::class, 'status'])->name('clientProjectStatus');
+        Route::get('/tasks', [ClientTaskController::class, 'index'])->name('clientTask');
+        Route::post('/tasks', [ClientTaskController::class, 'store'])->name('clientTask.store');
+        Route::get('/tasks/{id}/edit', [ClientTaskController::class, 'edit'])->name('clientTask.edit');
+        Route::post('/tasks/update', [ClientTaskController::class, 'update'])->name('clientTask.update');
+    });
 
     //Performance Feature By - Md Irfan Chowdhury
 

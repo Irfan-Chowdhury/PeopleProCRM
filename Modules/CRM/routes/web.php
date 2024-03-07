@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ClientController;
 use Illuminate\Support\Facades\Route;
+use Modules\CRM\App\Http\Controllers\ClientContractController;
 use Modules\CRM\App\Http\Controllers\ContractController;
 use Modules\CRM\App\Http\Controllers\ContractItemController;
 use Modules\CRM\App\Http\Controllers\CRMController;
@@ -276,3 +277,10 @@ Route::prefix('prospects')->group(function() {
 });
 
 Route::get('/client-overview', [ClientController::class, 'overview'])->name('client.overview');
+
+
+Route::prefix('client')->group(function() {
+    Route::get('/contracts', [ClientContractController::class, 'index'])->name('client.contracts.index');
+    Route::get('/contracts/datatable', [ClientContractController::class, 'datatable'])->name('client.contracts.datatable');
+    Route::get('/contracts/{contract}', [ClientContractController::class, 'contractItemDetails'])->name('client.contracts.contractItemDetails');
+});

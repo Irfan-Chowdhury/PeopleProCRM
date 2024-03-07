@@ -32,4 +32,11 @@ class Contract extends Model
 		return $this->belongsTo(TaxType::class,'tax_type_id')
                 ->select('id','name', 'rate', 'type');
 	}
+
+
+    public function contractItems()
+    {
+		return $this->hasMany(ContractItem::class,'contract_id')
+                    ->with('item');
+	}
 }

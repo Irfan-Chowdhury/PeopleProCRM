@@ -44,8 +44,6 @@ class ClientController extends Controller {
             ->first();
 
 
-
-
         return view('crm::client.overview', compact('clients','subscriptions','contracts','invoices','orderResult'));
     }
 
