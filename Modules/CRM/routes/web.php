@@ -3,6 +3,7 @@
 use App\Http\Controllers\ClientController;
 use Illuminate\Support\Facades\Route;
 use Modules\CRM\App\Http\Controllers\ClientContractController;
+use Modules\CRM\App\Http\Controllers\ClientEstimateController;
 use Modules\CRM\App\Http\Controllers\ClientProposalController;
 use Modules\CRM\App\Http\Controllers\ClientSubscriptionController;
 use Modules\CRM\App\Http\Controllers\ContractController;

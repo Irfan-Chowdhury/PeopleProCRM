@@ -54,9 +54,13 @@ class EstimateController extends Controller
                 })
                 ->addColumn('amount',function ($row)
                 {
-                    if($row->estimateItems)
-                        return $row->estimateItems->sum('rate') + ($row->estimateItems->sum('rate') * ($row->tax->rate/100));
-                    else
+                    if($row->estimateItems) {
+                        $total = 0;
+                        foreach($row->estimateItems as $item) {
+                            $total += $item->rate * $item->quantity;
+                        }
+                        return $total + ($total * ($row->tax->rate/100));
+                    }else
                         return 0;
                 })
 				->addColumn('action', function ($data)

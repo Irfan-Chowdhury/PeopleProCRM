@@ -278,6 +278,9 @@
                     <li><a href="{{route('client.subscription.index')}}"> <i
                         class="dripicons-meter"></i><span>{{trans('file.Subscription')}}</span></a>
                     </li>
+                    <li><a href="{{route('client.estimates.index')}}"> <i
+                        class="dripicons-meter"></i><span>{{trans('file.Estimates')}}</span></a>
+                    </li>
                 @endif
 
             </ul>
