@@ -210,7 +210,7 @@
                     $("#editModal input[name='first_billing_date']").val(response.subscription.first_billing_date);
                     $("#editModal input[name='note']").val(response.subscription.first_billing_date);
                     $('#clientIdEdit').selectpicker('val', response.subscription.client_id);
-                    $('#taxIdEdit').selectpicker('val', response.subscription.tax_id);
+                    $('#taxIdEdit').selectpicker('val', response.subscription.tax_type_id);
                     $('#repeatTypeEdit').selectpicker('val', response.subscription.repeat_type);
                     $("#noteEdit").val(response.subscription.note);
                     currentModal = '';

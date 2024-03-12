@@ -3,6 +3,8 @@
 use App\Http\Controllers\ClientController;
 use Illuminate\Support\Facades\Route;
 use Modules\CRM\App\Http\Controllers\ClientContractController;
+use Modules\CRM\App\Http\Controllers\ClientProposalController;
+use Modules\CRM\App\Http\Controllers\ClientSubscriptionController;
 use Modules\CRM\App\Http\Controllers\ContractController;
 use Modules\CRM\App\Http\Controllers\ContractItemController;
 use Modules\CRM\App\Http\Controllers\CRMController;
@@ -280,7 +282,32 @@ Route::get('/client-overview', [ClientController::class, 'overview'])->name('cli
 
 
 Route::prefix('client')->group(function() {
-    Route::get('/contracts', [ClientContractController::class, 'index'])->name('client.contracts.index');
-    Route::get('/contracts/datatable', [ClientContractController::class, 'datatable'])->name('client.contracts.datatable');
-    Route::get('/contracts/{contract}', [ClientContractController::class, 'contractItemDetails'])->name('client.contracts.contractItemDetails');
+
+    Route::prefix('contracts')->group(function() {
+        Route::get('/', [ClientContractController::class, 'index'])->name('client.contracts.index');
+        Route::get('/datatable', [ClientContractController::class, 'datatable'])->name('client.contracts.datatable');
+        Route::get('/{contract}', [ClientContractController::class, 'contractItemDetails'])->name('client.contracts.contractItemDetails');
+    });
+
+    Route::prefix('proposals')->group(function() {
+        Route::get('/', [ClientProposalController::class, 'index'])->name('client.proposals.index');
+        Route::get('/datatable', [ClientProposalController::class, 'datatable'])->name('client.proposals.datatable');
+        Route::get('/{proposal}', [ClientProposalController::class, 'proposalItemDetails'])->name('client.proposals.proposalItemDetails');
+    });
+
+    Route::prefix('subscriptions')->group(function() {
+        Route::controller(ClientSubscriptionController::class)->group(function () {
+            Route::get('/', 'index')->name('client.subscription.index');
+            Route::get('/datatable', 'datatable')->name('client.subscription.datatable');
+        });
+    });
+
+    Route::prefix('estimates')->group(function() {
+        Route::get('/', [ClientEstimateController::class, 'index'])->name('client.estimates.index');
+        Route::get('/datatable', [ClientEstimateController::class, 'datatable'])->name('client.estimates.datatable');
+        Route::get('/{estimate}', [ClientEstimateController::class, 'estimateItemDetails'])->name('client.estimates.estimateItemDetails');
+    });
+
 });
+
+

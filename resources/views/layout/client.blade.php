@@ -272,6 +272,12 @@
                     <li><a href="{{route('client.contracts.index')}}"> <i
                         class="dripicons-meter"></i><span>{{trans('file.Contracts')}}</span></a>
                     </li>
+                    <li><a href="{{route('client.proposals.index')}}"> <i
+                        class="dripicons-meter"></i><span>{{trans('file.Proposals')}}</span></a>
+                    </li>
+                    <li><a href="{{route('client.subscription.index')}}"> <i
+                        class="dripicons-meter"></i><span>{{trans('file.Subscription')}}</span></a>
+                    </li>
                 @endif
 
             </ul>

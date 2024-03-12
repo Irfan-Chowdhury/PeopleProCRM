@@ -1,14 +1,12 @@
-<?php $__env->startSection('content'); ?>
+@extends('layout.main')
+@section('content')
 
 <div class="container-fluid">
     <div class="card">
-        <div class="card-header"><h3><?php echo e(__('file.Proposals')); ?></h3></div>
-        <div class="card-header">
-            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#createModal"><i class="fa fa-plus"></i> <?php echo e(__('file.Add New')); ?></button>
-            <button type="button" class="btn btn-danger" name="bulk_delete" id="bulk_delete"><i class="fa fa-minus-circle"></i> <?php echo e(__('Bulk delete')); ?></button>                </div>
-        </div>
+        <div class="card-header"><h3>{{__('file.Proposal')}}</h3></div>
     </div>
 </div>
+
 
 <div class="container">
     <div class="table-responsive">
@@ -16,12 +14,12 @@
             <thead>
                 <tr>
                     <th class="not-exported"></th>
-                    <th><?php echo e(trans('file.Start Date')); ?></th>
-                    <th><?php echo e(trans('file.End Date')); ?></th>
-                    <th><?php echo e(trans('file.Assigned To')); ?></th>
-                    <th><?php echo e(trans('file.Tax')); ?></th>
-                    <th><?php echo e(trans('file.Total (+Tax)')); ?></th>
-                    <th class="not-exported"><?php echo e(trans('file.Action')); ?></th>
+                    <th>{{trans('file.Start Date')}}</th>
+                    <th>{{trans('file.End Date')}}</th>
+                    <th>{{trans('file.Assigned To')}}</th>
+                    <th>{{trans('file.Tax')}}</th>
+                    <th>{{trans('file.Total (+Tax)')}}</th>
+                    <th class="not-exported">{{trans('file.Action')}}</th>
                 </tr>
             </thead>
             <tbody id="tablecontents"></tbody>
@@ -29,20 +27,13 @@
     </div>
 </div>
 
-<?php echo $__env->make('crm::prospects.proposal.create-modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-<?php echo $__env->make('crm::prospects.proposal.edit-modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
-<?php $__env->stopSection(); ?>
+@endsection
 
 
-<?php $__env->startPush('scripts'); ?>
+@push('scripts')
 <script type="text/javascript">
-    let dataTableURL = "<?php echo e(route('prospects.proposals.datatable')); ?>";
-    let storeURL = "<?php echo e(route('prospects.proposals.store')); ?>";
-    let editURL = "/prospects/proposals/edit/";
-    let updateURL = '/prospects/proposals/update/';
-    let destroyURL = '/prospects/proposals/destroy/';
-    let bulkDeleteURL = '<?php echo e(route('prospects.proposals.bulk_delete')); ?>';
+    let dataTableURL = "{{ route('client.proposals.datatable') }}";
 </script>
 
 <script type="text/javascript">
@@ -58,10 +49,11 @@
 
             var date = $('.date');
             date.datepicker({
-                format: '<?php echo e(env('Date_Format_JS')); ?>',
+                format: '{{ env('Date_Format_JS')}}',
                 autoclose: true,
                 todayHighlight: true
             });
+
 
             let table = $('#dataListTable').DataTable({
                 initComplete: function () {
@@ -127,18 +119,18 @@
 
                 "order": [],
                 'language': {
-                    'lengthMenu': '_MENU_ <?php echo e(__("records per page")); ?>',
-                    "info": '<?php echo e(trans("file.Showing")); ?> _START_ - _END_ (_TOTAL_)',
-                    "search": '<?php echo e(trans("file.Search")); ?>',
+                    'lengthMenu': '_MENU_ {{__("records per page")}}',
+                    "info": '{{trans("file.Showing")}} _START_ - _END_ (_TOTAL_)',
+                    "search": '{{trans("file.Search")}}',
                     'paginate': {
-                        'previous': '<?php echo e(trans("file.Previous")); ?>',
-                        'next': '<?php echo e(trans("file.Next")); ?>'
+                        'previous': '{{trans("file.Previous")}}',
+                        'next': '{{trans("file.Next")}}'
                     }
                 },
                 'columnDefs': [
                     {
                         "orderable": false,
-                        'targets': [0,4]
+                        'targets': [0,6]
                     },
                     {
                         'render': function (data, type, row, meta) {
@@ -193,66 +185,7 @@
             new $.fn.dataTable.FixedHeader(table);
         });
 
-        $(document).ready(function() {
-            $('#submitForm select[name="candidate"]').change(function() {
-                var selectedOption = $(this).find(':selected');
-                var type = selectedOption.data('type');
-                var id = selectedOption.data('id');
-
-                $('#submitForm input[name="candidate_type"]').val(type);
-                $('#submitForm input[name="candidate_id"]').val(id);
-            });
-            $('#updateForm select[name="candidate"]').change(function() {
-                var selectedOption = $(this).find(':selected');
-                var type = selectedOption.data('type');
-                var id = selectedOption.data('id');
-
-                $('#updateForm input[name="candidate_type"]').val(type);
-                $('#updateForm input[name="candidate_id"]').val(id);
-            });
-        });
-
-
-        let currentModal;
-        //--------- Edit -------
-        $(document).on('click', '.edit', function() {
-            let id = $(this).data("id");
-            currentModal = 'edit';
-
-            $.get({
-                url: editURL + id,
-                success: function(response) {
-                    console.log(response);
-                    $("#modelId").val(response.id);
-                    $("#editModal input[name='start_date']").val(response.start_date);
-                    $("#editModal input[name='end_date']").val(response.end_date);
-                    if (response.client_id) {
-                        $("#editModal input[name='candidate_type']").val('client');
-                        $("#editModal input[name='candidate_id']").val(response.client_id);
-                        $("#editModal select[name='candidate']").selectpicker('val',response.client_id);
-                    }else{
-                        $("#editModal input[name='candidate_type']").val('lead');
-                        $("#editModal input[name='candidate_id']").val(response.lead_id);
-                        $("#editModal select[name='candidate']").selectpicker('val',response.lead_id);
-                    }
-                    $("#editModal select[name='tax_type_id']").selectpicker('val',response.tax_type_id);
-                    $("#editModal textarea[name='note']").val(response.note);
-                    currentModal = '';
-                    $('#editModal').modal('show');
-                }
-            })
-        });
-
-
     })(jQuery);
 </script>
 
-<script type="text/javascript" src="<?php echo e(asset('js/common-js/store.js')); ?>"></script>
-<script type="text/javascript" src="<?php echo e(asset('js/common-js/update.js')); ?>"></script>
-<script type="text/javascript" src="<?php echo e(asset('js/common-js/delete.js')); ?>"></script>
-<script type="text/javascript" src="<?php echo e(asset('js/common-js/bulkDelete.js')); ?>"></script>
-<script type="text/javascript" src="<?php echo e(asset('js/common-js/alertMessages.js')); ?>"></script>
-
-<?php $__env->stopPush(); ?>
-
-<?php echo $__env->make('layout.main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/html/peoplepro/peopleprocrm/Modules/CRM/resources/views/prospects/proposal/index.blade.php ENDPATH**/ ?>
+@endpush

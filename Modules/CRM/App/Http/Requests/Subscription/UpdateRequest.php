@@ -19,7 +19,7 @@ class UpdateRequest extends FormRequest
             'first_billing_date' => 'required|date',
             'repeat_type' => 'required',
             'client_id' => 'required',
-            'tax_id' => 'required',
+            'tax_type_id' => 'required',
             'note' => 'nullable',
         ];
     }

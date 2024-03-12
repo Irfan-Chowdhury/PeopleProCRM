@@ -3,11 +3,11 @@
 namespace Modules\CRM\App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\TaxType;
 use Modules\CRM\App\Http\Requests\Subscription\StoreRequest;
 use Modules\CRM\App\Http\Requests\Subscription\UpdateRequest;
 use App\Models\Client;
 use Modules\CRM\App\Models\Subscription;
-use Modules\CRM\App\Models\Tax;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -16,7 +16,8 @@ class SubscriptionController extends Controller
     public function index()
     {
         $clients = Client::select('id','first_name','last_name')->get();
-        $taxes =  Tax::all();
+        $taxes = TaxType::select('id','name', 'rate', 'type')->get();
+
         return view('crm::subscription_section.subscription.index',compact('clients','taxes'));
     }
 
@@ -61,7 +62,7 @@ class SubscriptionController extends Controller
     {
         $data = [
             'client_id' => $request->client_id,
-            'tax_id' => $request->tax_id,
+            'tax_type_id' => $request->tax_type_id,
             'title' => $request->title,
             'first_billing_date' => date('Y-m-d', strtotime($request->first_billing_date)),
             'repeat_type' => $request->repeat_type,
@@ -86,7 +87,7 @@ class SubscriptionController extends Controller
     {
         $subscription->update([
             'client_id' => $request->client_id,
-            'tax_id' => $request->tax_id,
+            'tax_type_id' => $request->tax_type_id,
             'title' => $request->title,
             'first_billing_date' => date('Y-m-d', strtotime($request->first_billing_date)),
             'repeat_type' => $request->repeat_type,

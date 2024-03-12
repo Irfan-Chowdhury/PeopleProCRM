@@ -15,22 +15,8 @@ class ClientContractController extends Controller
 {
     public function index()
     {
-        $clientsOrLeads = DB::table(DB::raw('(
-            SELECT id, CONCAT(first_name," ",last_name) AS name, "client" AS type
-            FROM clients
-            UNION ALL
-            SELECT leads.id AS id, CONCAT(employees.first_name," ",employees.last_name), "lead" AS type
-            FROM leads
-            JOIN employees ON employees.id = leads.employee_id
-            WHERE leads.deleted_at IS NULL
-        ) AS combined_result'))
-        ->select('id', 'name', 'type')
-        ->get();
 
-        $projects = Project::all();
-        $taxTypes = TaxType::select('id', 'name', 'rate', 'type')->get();
-
-        return view('crm::client.contracts.index',compact('projects','taxTypes','clientsOrLeads'));
+        return view('crm::client.contracts.index');
     }
 
     public function datatable()

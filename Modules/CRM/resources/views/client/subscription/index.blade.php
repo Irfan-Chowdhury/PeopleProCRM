@@ -1,40 +1,43 @@
-<?php $__env->startSection('content'); ?>
+@extends('layout.main')
+@section('content')
 
-<div class="container-fluid">
-    <div class="card">
-        <div class="card-header"><h3><?php echo e(__('file.Contracts')); ?></h3></div>
+<section>
+    <div class="container-fluid mb-3">
+        <div class="card">
+            <div class="card-header"><h3>{{__('file.Subscription Section')}}</h3></div>
+            <div class="card-body">
+        </div>
     </div>
-</div>
 
 
-<div class="container">
-    <div class="table-responsive">
-        <table id="dataListTable" class="table ">
-            <thead>
-                <tr>
-                    <th class="not-exported"></th>
-                    <th><?php echo e(trans('file.Id')); ?></th>
-                    <th><?php echo e(trans('file.Title')); ?></th>
-                    <th><?php echo e(trans('file.Project')); ?></th>
-                    <th><?php echo e(trans('file.Contract Date')); ?></th>
-                    <th><?php echo e(trans('file.Valid Until')); ?></th>
-                    <th><?php echo e(trans('file.Tax')); ?></th>
-                    <th><?php echo e(trans('file.Amount (Including Tax)')); ?></th>
-                    <th class="not-exported"><?php echo e(trans('file.Action')); ?></th>
-                </tr>
-            </thead>
-            <tbody id="tablecontents"></tbody>
-        </table>
+    <div class="container">
+        <div class="table-responsive">
+            <table id="dataListTable" class="table ">
+                <thead>
+                    <tr>
+                        <th class="not-exported"></th>
+                        <th>{{trans('file.Title')}}</th>
+                        <th>{{trans('file.Client')}}</th>
+                        <th>{{trans('file.Next Billing Date')}}</th>
+                        <th>{{trans('file.Repeat Every')}}</th>
+                        <th class="not-exported">{{trans('file.Action')}}</th>
+                    </tr>
+                </thead>
+                <tbody id="tablecontents"></tbody>
+            </table>
+        </div>
     </div>
-</div>
 
+</section>
+@include('crm::client.subscription.show-modal')
 
-<?php $__env->stopSection(); ?>
+@endsection
 
-
-<?php $__env->startPush('scripts'); ?>
+@push('scripts')
 <script type="text/javascript">
-    let dataTableURL = "<?php echo e(route('client.contracts.datatable')); ?>";
+    let dataTableURL = "{{ route('client.subscription.index') }}";
+    let editURL = "/subscriptions/edit/";
+
 </script>
 
 <script type="text/javascript">
@@ -42,19 +45,19 @@
         "use strict";
 
         $(document).ready(function () {
+
+            var date = $('.date');
+            date.datepicker({
+                format: '{{ env('Date_Format_JS')}}',
+                autoclose: true,
+                todayHighlight: true
+            });
+
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-
-            var date = $('.date');
-            date.datepicker({
-                format: '<?php echo e(env('Date_Format_JS')); ?>',
-                autoclose: true,
-                todayHighlight: true
-            });
-
 
             let table = $('#dataListTable').DataTable({
                 initComplete: function () {
@@ -91,32 +94,20 @@
                         searchable: false
                     },
                     {
-                        data: 'contract',
-                        name: 'contract',
-                    },
-                    {
                         data: 'title',
                         name: 'title',
                     },
                     {
-                        data: 'project',
-                        name: 'project',
+                        data: 'client',
+                        name: 'client',
                     },
                     {
-                        data: 'start_date',
-                        name: 'start_date',
+                        data: 'next_billing_date',
+                        name: 'next_billing_date',
                     },
                     {
-                        data: 'end_date',
-                        name: 'end_date',
-                    },
-                    {
-                        data: 'tax',
-                        name: 'tax',
-                    },
-                    {
-                        data: 'amount',
-                        name: 'amount',
+                        data: 'repeat_type',
+                        name: 'repeat_type',
                     },
                     {
                         data: 'action',
@@ -128,18 +119,19 @@
 
                 "order": [],
                 'language': {
-                    'lengthMenu': '_MENU_ <?php echo e(__("records per page")); ?>',
-                    "info": '<?php echo e(trans("file.Showing")); ?> _START_ - _END_ (_TOTAL_)',
-                    "search": '<?php echo e(trans("file.Search")); ?>',
+                    'lengthMenu': '_MENU_ {{__("records per page")}}',
+                    "info": '{{trans("file.Showing")}} _START_ - _END_ (_TOTAL_)',
+                    "search": '{{trans("file.Search")}}',
                     'paginate': {
-                        'previous': '<?php echo e(trans("file.Previous")); ?>',
-                        'next': '<?php echo e(trans("file.Next")); ?>'
+                        'previous': '{{trans("file.Previous")}}',
+                        'next': '{{trans("file.Next")}}'
                     }
                 },
+
                 'columnDefs': [
                     {
                         "orderable": false,
-                        'targets': [0,6]
+                        'targets': [0,4]
                     },
                     {
                         'render': function (data, type, row, meta) {
@@ -192,11 +184,35 @@
                 ],
             });
             new $.fn.dataTable.FixedHeader(table);
+
+
+            let currentModal;
+            //--------- Edit -------
+            $(document).on('click', '.edit', function() {
+            let id = $(this).data("id");
+            currentModal = 'edit';
+
+            $.get({
+                    url: editURL + id,
+                    success: function(response) {
+                        console.log(response);
+                        $("#modelId").val(response.subscription.id);
+                        $("#editModal input[name='title']").val(response.subscription.title);
+                        $("#editModal input[name='first_billing_date']").val(response.subscription.first_billing_date);
+                        $("#editModal input[name='note']").val(response.subscription.first_billing_date);
+                        $('#clientIdEdit').selectpicker('val', response.subscription.client_id);
+                        $('#taxIdEdit').selectpicker('val', response.subscription.tax_type_id);
+                        $('#repeatTypeEdit').selectpicker('val', response.subscription.repeat_type);
+                        $("#noteEdit").val(response.subscription.note);
+                        currentModal = '';
+                        $('#editModal').modal('show');
+                    }
+                })
+            });
         });
 
     })(jQuery);
 </script>
 
-<?php $__env->stopPush(); ?>
 
-<?php echo $__env->make('layout.main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/html/peoplepro/peopleprocrm/Modules/CRM/resources/views/client/contracts/index.blade.php ENDPATH**/ ?>
+@endpush

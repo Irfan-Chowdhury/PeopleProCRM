@@ -2,6 +2,7 @@
 
 namespace Modules\CRM\App\Models;
 
+use App\Models\TaxType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -17,7 +18,7 @@ class Subscription extends Model
 
     protected $fillable = [
         'client_id',
-        'tax_id',
+        'tax_type_id',
         'title',
         'first_billing_date',
         'repeat_type',
@@ -29,9 +30,15 @@ class Subscription extends Model
 		return $this->hasOne('App\Models\Client','id','client_id');
 	}
 
+    // public function tax()
+    // {
+	// 	return $this->hasOne(Tax::class,'id','tax_id');
+	// }
+
     public function tax()
     {
-		return $this->hasOne(Tax::class,'id','tax_id');
+		return $this->belongsTo(TaxType::class,'tax_type_id')
+                ->select('id','name', 'rate', 'type');
 	}
 
 }
