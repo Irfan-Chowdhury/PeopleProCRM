@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Modules\CRM\App\Models\Item;
 
 class InvoiceItem extends Model
 {
@@ -19,7 +20,7 @@ class InvoiceItem extends Model
 	}
 
 	public function item(){
-		return $this->hasOne('App\Models\CRM\Item','id','item_id');
+		return $this->hasOne(Item::class,'id','item_id');
 	}
 
 

@@ -66,20 +66,18 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($invoice_items as $key=>$invoice_item)
+                            @foreach($invoice->invoiceItems as $key => $invoiceItem)
                                 <tr>
-
                                     <td class="py-3">
                                         <div class="font-weight-semibold">{{$key+1}}</div>
                                     </td>
                                     <td class="py-3">
-                                        <div class="font-weight-semibold">{{$invoice_item->item_name}}</div>
+                                        <div class="font-weight-semibold">{{isset($invoiceItem->item) ? $invoiceItem->item->title : ''}}</div>
                                     </td>
-                                    <td class="py-3"><strong>{{$invoice_item->item_qty}}</strong></td>
-                                    <td class="py-3"><strong>{{$invoice_item->item_unit_price}}</strong></td>
-                                    <td class="py-3"><strong>{{$invoice_item->item_tax_rate}}</strong></td>
-                                    <td class="py-3"><strong>{{$invoice_item->item_sub_total}}</strong></td>
-
+                                    <td class="py-3"><strong>{{$invoiceItem->item_qty}}</strong></td>
+                                    <td class="py-3"><strong>{{$invoiceItem->item_unit_price}}</strong></td>
+                                    <td class="py-3"><strong>{{$invoiceItem->item_tax_rate}}</strong></td>
+                                    <td class="py-3"><strong>{{$invoiceItem->item_sub_total}}</strong></td>
                                 </tr>
                             @endforeach
                             </tbody>

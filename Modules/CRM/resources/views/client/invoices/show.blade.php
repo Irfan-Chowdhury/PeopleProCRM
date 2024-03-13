@@ -1,4 +1,4 @@
-@extends('layout.client')
+@extends('layout.main')
 
 @section('content')
     <div class="col-md-12 p-3">
@@ -66,18 +66,20 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($invoice->invoiceItems as $key => $invoiceItem)
+                            @foreach($invoice_items as $key=>$invoice_item)
                                 <tr>
+
                                     <td class="py-3">
                                         <div class="font-weight-semibold">{{$key+1}}</div>
                                     </td>
                                     <td class="py-3">
-                                        <div class="font-weight-semibold">{{isset($invoiceItem->item) ? $invoiceItem->item->title : ''}}</div>
+                                        <div class="font-weight-semibold">{{$invoice_item->item_name}}</div>
                                     </td>
-                                    <td class="py-3"><strong>{{$invoiceItem->item_qty}}</strong></td>
-                                    <td class="py-3"><strong>{{$invoiceItem->item_unit_price}}</strong></td>
-                                    <td class="py-3"><strong>{{$invoiceItem->item_tax_rate}}</strong></td>
-                                    <td class="py-3"><strong>{{$invoiceItem->item_sub_total}}</strong></td>
+                                    <td class="py-3"><strong>{{$invoice_item->item_qty}}</strong></td>
+                                    <td class="py-3"><strong>{{$invoice_item->item_unit_price}}</strong></td>
+                                    <td class="py-3"><strong>{{$invoice_item->item_tax_rate}}</strong></td>
+                                    <td class="py-3"><strong>{{$invoice_item->item_sub_total}}</strong></td>
+
                                 </tr>
                             @endforeach
                             </tbody>
@@ -118,30 +120,32 @@
                     </div>
                     <!-- /.col -->
                 </div>
-
                 <!-- /.row -->
-
                 <!-- /.row (main row) -->
             </div>
         </div>
     </div>
 
-    <script>
-        (function($) {
-            "use strict";
 
-            $("#print-btn").on("click", function () {
-                let divToPrint = document.getElementById('invoice_details');
-                let newWin = window.open('', 'Print-Window');
-                newWin.document.open();
-                newWin.document.write('<link rel="stylesheet" href="<?php echo asset('vendor/bootstrap/css/bootstrap.min.css') ?>" type="text/css"><style type="text/css">@media print {.invoice_details { max-width:100%;} }</style><body onload="window.print()">' + divToPrint.innerHTML + '</body>');
-                newWin.document.close();
-                setTimeout(function () {
-                    newWin.close();
-                }, 10);
-            });
-
-        })(jQuery);
-    </script>
 
 @endsection
+
+@push('scripts')
+<script>
+    (function($) {
+        "use strict";
+        $("#print-btn").on("click", function () {
+            var divToPrint = document.getElementById('invoice_details');
+            var newWin = window.open('', 'Print-Window');
+            newWin.document.open();
+            newWin.document.write('<link rel="stylesheet" href="<?php echo asset('vendor/bootstrap/css/bootstrap.min.css') ?>" type="text/css"><style type="text/css">@media print {.invoice_details { max-width:100%;} }</style><body onload="window.print()">' + divToPrint.innerHTML + '</body>');
+            newWin.document.close();
+            setTimeout(function () {
+                newWin.close();
+            }, 10);
+        });
+
+
+    })(jQuery);
+</script>
+@endpush

@@ -4,6 +4,7 @@ use App\Http\Controllers\ClientController;
 use Illuminate\Support\Facades\Route;
 use Modules\CRM\App\Http\Controllers\ClientContractController;
 use Modules\CRM\App\Http\Controllers\ClientEstimateController;
+use Modules\CRM\App\Http\Controllers\ClientInvoiceController;
 use Modules\CRM\App\Http\Controllers\ClientProposalController;
 use Modules\CRM\App\Http\Controllers\ClientSubscriptionController;
 use Modules\CRM\App\Http\Controllers\ContractController;
@@ -308,7 +309,6 @@ Route::prefix('client')->group(function() {
         Route::get('/datatable', [ClientEstimateController::class, 'datatable'])->name('client.estimates.datatable');
         Route::get('/{estimate}', [ClientEstimateController::class, 'estimateItemDetails'])->name('client.estimates.estimateItemDetails');
     });
-
 });
 
 

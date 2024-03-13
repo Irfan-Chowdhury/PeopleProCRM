@@ -101,7 +101,7 @@
                                 <div class="form-group mb-1 col-sm-12 col-md-3">
                                     <label for="item_name">{{trans('file.Item')}}</label>
                                     <br>
-                                    <select name="item_id[]" id="item_id" class="invoiceItemId form-control selectpicker "
+                                    <select name="item_id[]" id="item_id" class="itemId form-control selectpicker "
                                             data-live-search="true" data-live-search-style="contains"
                                             title='{{__('Selecting',['key'=>trans('file.Item')])}}...'>
                                         @foreach($items as $item)
@@ -267,7 +267,6 @@ foreach($items as $item) {
 
         $(document).on('click', '#add-invoice-item', function(){
             var item_id = parseInt($('#item-list .item:last').attr('id'))+1;
-
             let html =
             `<div id="item-list">
                 <div id="${item_id}" class="item">
@@ -338,31 +337,16 @@ foreach($items as $item) {
             });
         });
 
-
-        $('.invoiceItemId').change(function () {
-            let itemId = parseInt($(this).val());
-            let rowId = parseInt($(this).closest('.item').attr('id'));
-            let item = items.find(function(item) {
-                return parseInt(item.id) === itemId;
-            });
-            let itemRate = item ? item.rate : 0;
-            $('#'+rowId+' .unit_price').val(itemRate);
-        });
-
-
         $(document).on('change', '.itemId', function() {
             let itemId = parseInt($(this).val());
+            // let rowId = parseInt($(this).parent().parent().parent().attr('id'));
             let rowId = parseInt($(this).closest('.item').attr('id'));
             let item = items.find(function(item) {
                 return parseInt(item.id) === itemId;
             });
-
             let itemRate = item ? item.rate : 0;
             $('#'+rowId+' .unit_price').val(itemRate);
         });
-
-
-
 
 
 

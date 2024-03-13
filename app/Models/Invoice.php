@@ -21,7 +21,8 @@ class Invoice extends Model
 	}
 	public function invoiceItems(): HasMany
     {
-		return $this->hasMany(InvoiceItem::class);
+		return $this->hasMany(InvoiceItem::class)
+                    ->with('item');
 	}
 
 

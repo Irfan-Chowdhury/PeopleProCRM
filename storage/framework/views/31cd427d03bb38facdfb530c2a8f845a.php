@@ -283,6 +283,7 @@
                     <li><a href="<?php echo e(route('client.estimates.index')); ?>"> <i
                         class="dripicons-meter"></i><span><?php echo e(trans('file.Estimates')); ?></span></a>
                     </li>
+                    
                 <?php endif; ?>
 
             </ul>

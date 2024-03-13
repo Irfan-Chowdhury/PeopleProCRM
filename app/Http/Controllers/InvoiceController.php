@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CRM\Item;
+// use App\Models\CRM\Item;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
 use App\Notifications\InvoicePaidNotification;
@@ -15,7 +15,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Modules\CRM\App\Models\Item;
 use Throwable;
+use Illuminate\Support\Facades\File;
 
 
 class InvoiceController extends Controller {
@@ -28,7 +30,7 @@ class InvoiceController extends Controller {
 		{
 			if (request()->ajax())
 			{
-				return datatables()->of(Invoice::with('project:id,title')->get())
+				return datatables()->of(Invoice::with('project:id,title')->orderBy('id','DESC')->get())
 					->setRowId(function ($invoice)
 					{
 						return $invoice->id;
@@ -73,7 +75,12 @@ class InvoiceController extends Controller {
 		$tax_types = TaxType::select('id', 'name', 'rate', 'type')->get();
 		$invoice_number = 'INV-' . Str::random('6');
         // return $items = Item::select('id','title')->get();
-        $items = Item::all();
+
+        $isCrmModuleExist = File::exists(base_path('Modules/CRM'));
+
+        if($isCrmModuleExist) {
+            $items = Item::all();
+        }
 
 		return view('projects.invoices.create', compact('projects', 'tax_types', 'invoice_number','items'));
 	}
@@ -181,21 +188,20 @@ class InvoiceController extends Controller {
 
 	public function show(Invoice $invoice)
 	{
-		$invoice->load('project','client') ;
+		$invoice->load('project','client','invoiceItems') ;
 
 		if (auth()->user()->can('view-invoice')||$invoice->client_id == auth()->user()->id)
 		{
-			$invoice_items = InvoiceItem::whereInvoiceId($invoice->id)->get();
 			$project = $invoice->project;
 			$client = $invoice->client;
 			$company = $project->company;
 			$location = $company->Location;
 
 			if (auth()->user()->role_users_id == 3){
-				return view('client.invoice_show', compact('invoice', 'invoice_items', 'project', 'company', 'client','location'));
+				return view('client.invoice_show', compact('invoice', 'project', 'company', 'client','location'));
 			}
 
-			return view('projects.invoices.show', compact('invoice', 'invoice_items', 'project', 'company', 'client','location'));
+			return view('projects.invoices.show', compact('invoice', 'project', 'company', 'client','location'));
 		}
 		return abort('403', __('You are not authorized'));
 	}
