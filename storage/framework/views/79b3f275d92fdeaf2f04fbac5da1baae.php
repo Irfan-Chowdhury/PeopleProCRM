@@ -187,4 +187,4 @@
 
 <?php $__env->stopPush(); ?>
 
-<?php echo $__env->make('layout.main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/html/peoplepro/peopleprocrm/Modules/CRM/resources/views/client/estimates/index.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layout.client', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/html/peoplepro/peopleprocrm/Modules/CRM/resources/views/client/estimates/index.blade.php ENDPATH**/ ?>

@@ -281,9 +281,13 @@
                     <li><a href="{{route('client.estimates.index')}}"> <i
                         class="dripicons-meter"></i><span>{{trans('file.Estimates')}}</span></a>
                     </li>
-                    {{-- <li><a href="{{route('client.invoices.index')}}"> <i
-                        class="dripicons-meter"></i><span>{{trans('file.Invoices')}}</span></a>
-                    </li> --}}
+                    <li><a href="{{route('client.store.index')}}"> <i
+                        class="dripicons-meter"></i><span>{{trans('file.Store')}}</span></a>
+                    </li>
+                    <li><a href="{{route('client.clientOrders')}}"> <i
+                        class="dripicons-meter"></i><span>{{trans('file.Orders')}}</span></a>
+                    </li>
+
                 @endif
 
             </ul>
@@ -302,6 +306,8 @@
         </div>
     </footer>
 </div>
+
+@stack('scripts')
 
 
 <script type="text/javascript">

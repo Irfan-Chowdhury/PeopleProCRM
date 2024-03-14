@@ -30,7 +30,7 @@ class InvoiceController extends Controller {
 		{
 			if (request()->ajax())
 			{
-				return datatables()->of(Invoice::with('project:id,title')->orderBy('id','DESC')->get())
+				return datatables()->of(Invoice::with('project:id,title','invoicePayment')->orderBy('id','DESC')->get())
 					->setRowId(function ($invoice)
 					{
 						return $invoice->id;
@@ -41,6 +41,24 @@ class InvoiceController extends Controller {
 
 						return $project_name;
 					})
+                    ->addColumn('payment_status',function ($row)
+                    {
+                        if (!$row->invoicePayment) {
+                            return '<span class="p-1 badge badge-pill badge-secondary">None</span>';
+                        }
+                        else {
+
+                            $btnColor = '';
+                            if($row->invoicePayment->payment_status=='pending'){
+                                $btnColor = 'danger';
+                            }else if($row->invoicePayment->payment_status=='canceled'){
+                                $btnColor = 'warning';
+                            }else if($row->invoicePayment->payment_status=='completed'){
+                                $btnColor = 'success';
+                            }
+                            return '<span class="p-1 badge badge-pill badge-'.$btnColor.'">'.ucwords(str_replace('_', ' ',$row->invoicePayment->payment_status))."</span>";
+                        }
+                    })
 					->addColumn('action', function ($data)
 					{
 						$button = '<a  class="show btn btn-success btn-sm" href="' . route('invoices.show', $data) . '"><i class="dripicons-preview"></i></a>';
@@ -58,7 +76,7 @@ class InvoiceController extends Controller {
 						return $button;
 
 					})
-					->rawColumns(['action'])
+					->rawColumns(['action','payment_status'])
 					->make(true);
 			}
 
@@ -87,7 +105,6 @@ class InvoiceController extends Controller {
 
     public function store(Request $request)
 	{
-        // return $request->all();
 		$logged_user = auth()->user();
 
 		if ($logged_user->can('store-invoice'))
@@ -188,7 +205,7 @@ class InvoiceController extends Controller {
 
 	public function show(Invoice $invoice)
 	{
-		$invoice->load('project','client','invoiceItems') ;
+		$invoice->load('project','client','invoicePayment','invoiceItems') ;
 
 		if (auth()->user()->can('view-invoice')||$invoice->client_id == auth()->user()->id)
 		{

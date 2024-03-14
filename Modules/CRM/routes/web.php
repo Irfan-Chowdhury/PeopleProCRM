@@ -6,6 +6,7 @@ use Modules\CRM\App\Http\Controllers\ClientContractController;
 use Modules\CRM\App\Http\Controllers\ClientEstimateController;
 use Modules\CRM\App\Http\Controllers\ClientInvoiceController;
 use Modules\CRM\App\Http\Controllers\ClientProposalController;
+use Modules\CRM\App\Http\Controllers\ClientStoreController;
 use Modules\CRM\App\Http\Controllers\ClientSubscriptionController;
 use Modules\CRM\App\Http\Controllers\ContractController;
 use Modules\CRM\App\Http\Controllers\ContractItemController;
@@ -13,6 +14,7 @@ use Modules\CRM\App\Http\Controllers\CRMController;
 use Modules\CRM\App\Http\Controllers\EstimateController;
 use Modules\CRM\App\Http\Controllers\EstimateFormController;
 use Modules\CRM\App\Http\Controllers\EstimateItemController;
+use Modules\CRM\App\Http\Controllers\InvoicePaymentController;
 use Modules\CRM\App\Http\Controllers\ItemCategoryController;
 use Modules\CRM\App\Http\Controllers\ItemController;
 use Modules\CRM\App\Http\Controllers\LeadContactController;
@@ -24,6 +26,7 @@ use Modules\CRM\App\Http\Controllers\LeadNoteController;
 use Modules\CRM\App\Http\Controllers\LeadProposalController;
 use Modules\CRM\App\Http\Controllers\LeadTaskController;
 use Modules\CRM\App\Http\Controllers\OrderController;
+use Modules\CRM\App\Http\Controllers\PaymentController;
 use Modules\CRM\App\Http\Controllers\ProposalController;
 use Modules\CRM\App\Http\Controllers\ProposalItemController;
 use Modules\CRM\App\Http\Controllers\ProspectsController;
@@ -195,6 +198,17 @@ Route::prefix('sales')->group(function() {
         });
     });
 
+
+    Route::controller(InvoicePaymentController::class)->group(function () {
+        Route::prefix('invoice-payments')->group(function () {
+            Route::get('/', 'index')->name('invoice-payments.index');
+            Route::get('/datatable', 'datatable')->name('invoice-payments.datatable');
+            Route::post('/store', 'store')->name('invoice-payments.store');
+            Route::get('/destroy/{invoicePayment}', 'destroy');
+            Route::post('/bulk_delete', 'bulkDelete')->name('invoice-payments.bulk_delete');
+        });
+    });
+
     Route::controller(ContractController::class)->group(function () {
         Route::prefix('contracts')->group(function () {
             Route::get('/', 'index')->name('contracts.index');
@@ -308,6 +322,18 @@ Route::prefix('client')->group(function() {
         Route::get('/', [ClientEstimateController::class, 'index'])->name('client.estimates.index');
         Route::get('/datatable', [ClientEstimateController::class, 'datatable'])->name('client.estimates.datatable');
         Route::get('/{estimate}', [ClientEstimateController::class, 'estimateItemDetails'])->name('client.estimates.estimateItemDetails');
+    });
+
+    Route::prefix('orders')->group(function() {
+        Route::get('/', [OrderController::class, 'clientOrders'])->name('client.clientOrders');
+    });
+
+    Route::controller(ClientStoreController::class)->group(function () {
+        Route::prefix('store')->group(function () {
+            Route::get('/', 'index')->name('client.store.index');
+            Route::get('/chekout', 'chekout')->name('client.store.chekout');
+            Route::post('/process_order', 'processOrder')->name('client.store.processOrder');
+        });
     });
 });
 

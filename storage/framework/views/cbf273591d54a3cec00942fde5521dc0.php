@@ -1,4 +1,3 @@
-
 <?php $__env->startSection('content'); ?>
 
 
@@ -9,7 +8,7 @@
                 <thead>
                 <tr>
                     <th class="not-exported"></th>
-                    <th><?php echo e(trans('file.Invoice')); ?>#</th>
+                    <th><?php echo e(trans('file.Invoice')); ?></th>
                     <th><?php echo e(trans('file.Project')); ?></th>
                     <th><?php echo e(trans('file.Total')); ?></th>
                     <th><?php echo e(__('Invoice Date')); ?></th>
@@ -24,8 +23,8 @@
     </section>
 
     <script type="text/javascript">
-        (function($) {  
-         
+        (function($) {
+
             "use strict";
 
             $(document).ready(function () {
@@ -94,17 +93,21 @@
                             name: 'invoice_due_date',
                         },
                         {
-                            data: 'status',
-                            name: 'status',
-                            render: function (data, type, row) {
-                                if (data == 1) {
-                                    return "<td><div class = 'badge badge-success'><?php echo e(trans('file.Paid')); ?></div></td>";
-                                }
-                                else {
-                                    return "<td><div class = 'badge badge-info'><?php echo e(trans('file.Unpaid')); ?></div></td>";
-                                }
-                            }
+                            data: 'payment_status',
+                            name: 'payment_status',
                         },
+                        // {
+                        //     data: 'status',
+                        //     name: 'status',
+                        //     render: function (data, type, row) {
+                        //         if (data == 1) {
+                        //             return "<td><div class = 'badge badge-success'><?php echo e(trans('file.Paid')); ?></div></td>";
+                        //         }
+                        //         else {
+                        //             return "<td><div class = 'badge badge-info'><?php echo e(trans('file.Unpaid')); ?></div></td>";
+                        //         }
+                        //     }
+                        // },
                         {
                             data: 'action',
                             name: 'action',
@@ -188,4 +191,5 @@
     </script>
 
 <?php $__env->stopSection(); ?>
+
 <?php echo $__env->make('layout.client', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/html/peoplepro/peopleprocrm/resources/views/client/invoice.blade.php ENDPATH**/ ?>

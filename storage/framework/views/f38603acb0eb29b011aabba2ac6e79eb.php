@@ -39,17 +39,18 @@
 
                             # <?php echo e($invoice->invoice_number); ?></b><br>
                         <br>
-                        <b><?php echo e(trans('file.Date')); ?>: </b><?php echo e($invoice->invoice_date); ?> <br>
-                        <b><?php echo e(__('Payment Due')); ?>: </b> <?php echo e($invoice->invoice_due_date); ?><br/>
+                        <b><?php echo e(__('Payment Date')); ?>: </b> <?php echo e(isset($invoice->invoicePayment->date) ? $invoice->invoicePayment->date : 'NONE'); ?><br/>
                         <span class="label label-danger">
-                        <?php if($invoice->status == 1): ?>
-                                <?php echo e(trans('file.Paid')); ?>
-
-
+                        <b><?php echo e(__('Payment Status')); ?>: </b>
+                        <?php if(isset($invoice->invoicePayment)): ?>
+                            <?php if($invoice->invoicePayment->payment_status == 'pending'): ?>
+                                <span class="p-1 badge badge-pill badge-warning"><?php echo e(ucwords(str_replace('_', ' ',$invoice->invoicePayment->payment_status))); ?></span>
+                            <?php elseif($invoice->invoicePayment->payment_status == 'completed'): ?>
+                                <span class="p-1 badge badge-pill badge-success"><?php echo e(ucwords(str_replace('_', ' ',$invoice->invoicePayment->payment_status))); ?></span>
                             <?php else: ?>
-                                <?php echo e(trans('file.UnPaid')); ?>
-
+                                <span class="p-1 badge badge-pill badge-danger"><?php echo e(ucwords(str_replace('_', ' ',$invoice->invoicePayment->payment_status))); ?></span>
                             <?php endif; ?>
+                        <?php endif; ?>
                     </span>
                     </div>
                     <!-- /.col -->
@@ -76,7 +77,7 @@
                                         <div class="font-weight-semibold"><?php echo e($key+1); ?></div>
                                     </td>
                                     <td class="py-3">
-                                        <div class="font-weight-semibold"><?php echo e($invoiceItem->item->title); ?></div>
+                                        <div class="font-weight-semibold"><?php echo e(isset($invoiceItem->item) ? $invoiceItem->item->title : ''); ?></div>
                                     </td>
                                     <td class="py-3"><strong><?php echo e($invoiceItem->item_qty); ?></strong></td>
                                     <td class="py-3"><strong><?php echo e($invoiceItem->item_unit_price); ?></strong></td>

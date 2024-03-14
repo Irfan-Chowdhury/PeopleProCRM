@@ -291,22 +291,7 @@ foreach($items as $item) {
         });
 
 
-
-        let getItemRate = (element) => {
-            let itemId = parseInt($(element).val());
-            let rowId = parseInt($(element).closest('.item').attr('id'));
-            let item = items.find(function(item) {
-                return parseInt(item.id) === itemId;
-            });
-
-            return itemRate = item ? item.rate : 0;
-        }
-
-
         $('.invoiceItemId').change(function () {
-            // let itemRate = getItemRate(this);
-            // return console.log(itemRate);
-
             let itemId = parseInt($(this).val());
             let rowId = parseInt($(this).closest('.item').attr('id'));
             let item = items.find(function(item) {

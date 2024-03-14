@@ -63,4 +63,4 @@
 </div>
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('layout.main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/html/peoplepro/peopleprocrm/Modules/CRM/resources/views/client/estimates/estimate_items_details.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layout.client', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/html/peoplepro/peopleprocrm/Modules/CRM/resources/views/client/estimates/estimate_items_details.blade.php ENDPATH**/ ?>

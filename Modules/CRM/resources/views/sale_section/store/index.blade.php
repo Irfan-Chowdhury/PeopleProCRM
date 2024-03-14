@@ -5,16 +5,18 @@
     <div class="card">
         <div class="d-flex justify-content-between">
             <div class="card-header"><h3>{{__('file.Store')}}</h3></div>
-            <div class="card-header">
-                <a href="{{ route('store.chekout') }}" class="btn btn-info">
-                Checkout
-                @if(config('variable.currency_format') =='suffix')
-                    ( {{ number_format($totalAmount, 2) }} {{config('variable.currency')}} )
-                @else
-                    ( {{ config('variable.currency')}} {{ number_format($totalAmount, 2) }} )
-                @endif
-                </a>
-        </div>
+            @if ($totalAmount > 0)
+                <div class="card-header">
+                    <a href="{{ route('store.chekout') }}" class="btn btn-info">
+                    Checkout
+                    @if(config('variable.currency_format') =='suffix')
+                        ( {{ number_format($totalAmount, 2) }} {{config('variable.currency')}} )
+                    @else
+                        ( {{ config('variable.currency')}} {{ number_format($totalAmount, 2) }} )
+                    @endif
+                    </a>
+                </div>
+            @endif
     </div>
 </div>
 

@@ -283,7 +283,13 @@
                     <li><a href="<?php echo e(route('client.estimates.index')); ?>"> <i
                         class="dripicons-meter"></i><span><?php echo e(trans('file.Estimates')); ?></span></a>
                     </li>
-                    
+                    <li><a href="<?php echo e(route('client.store.index')); ?>"> <i
+                        class="dripicons-meter"></i><span><?php echo e(trans('file.Store')); ?></span></a>
+                    </li>
+                    <li><a href="<?php echo e(route('client.clientOrders')); ?>"> <i
+                        class="dripicons-meter"></i><span><?php echo e(trans('file.Orders')); ?></span></a>
+                    </li>
+
                 <?php endif; ?>
 
             </ul>
@@ -303,6 +309,8 @@
         </div>
     </footer>
 </div>
+
+<?php echo $__env->yieldPushContent('scripts'); ?>
 
 
 <script type="text/javascript">

@@ -5,6 +5,7 @@ namespace Modules\CRM\App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Modules\CRM\App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -77,5 +78,70 @@ class OrderController extends Controller
         Order::where('id',$order_id)->update(['status'=> $status]);
 
         return redirect()->back();
+    }
+
+
+    public function clientOrders()
+    {
+        $orders = DB::table('order_details')
+            ->select('order_details.order_id as orderId',
+                DB::raw('GROUP_CONCAT(items.title) as itemsTitle'),
+                DB::raw('DATE(orders.created_at) as order_date'),
+                DB::raw('SUM(order_details.quantity) as totalQuantity'),
+                'orders.total as total',
+                'orders.status as status')
+            ->join('items', 'items.id', '=', 'order_details.item_id')
+            ->join('orders', 'orders.id', '=', 'order_details.order_id')
+            ->where('orders.client_id', auth()->user()->id)
+            ->groupBy('orderId')
+            ->get();
+
+
+        if (request()->ajax())
+		{
+			return datatables()->of($orders)
+				->setRowId(function ($row)
+				{
+					return $row->orderId;
+				})
+                ->addColumn('orderId',function ($row)
+                {
+                    return '#'.$row->orderId;
+                })
+                ->addColumn('items',function ($row)
+                {
+                    return $row->itemsTitle;
+                })
+                ->addColumn('quantity',function ($row)
+                {
+                    return $row->totalQuantity;
+                })
+                ->addColumn('total',function ($row)
+                {
+                    return $row->total ?? 0.00 ;
+                })
+                ->addColumn('status', function ($row)
+                {
+                    $btnColor = '';
+                    if($row->status=='pending'){
+                        $btnColor = 'danger';
+                    }else if($row->status=='canceled'){
+                        $btnColor = 'warning';
+                    }else if($row->status=='completed'){
+                        $btnColor = 'success';
+                    }
+                    return '<div class="btn-group dropright">
+                                <button type="button" class="btn btn-sm btn-'.$btnColor.'">'.ucwords(str_replace('_', ' ',$row->status)).'</button>
+                            </div>';
+                })
+                ->addColumn('order_date',function ($row)
+                {
+                    return $row->order_date;
+                })
+                ->rawColumns(['action','status'])
+                ->make(true);
+		}
+
+        return view('crm::client.order.index');
     }
 }

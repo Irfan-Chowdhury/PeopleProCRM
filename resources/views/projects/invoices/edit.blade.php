@@ -62,7 +62,7 @@
                                         <div class="form-group mb-1 col-sm-12 col-md-3">
                                             <label for="item_name">{{trans('file.Item')}}</label>
                                             <br>
-                                            <select name="item_id[]" id="item_id" class="itemId form-control selectpicker "
+                                            <select name="item_id[]" id="item_id" class="invoiceItemId  form-control selectpicker "
                                                     data-live-search="true" data-live-search-style="contains"
                                                     title='{{__('Selecting',['key'=>trans('file.Item')])}}...'>
                                                 @foreach($items as $item)
@@ -70,13 +70,6 @@
                                                 @endforeach
                                             </select>
                                         </div>
-                                        {{-- <div class="form-group mb-1 col-sm-12 col-md-3">
-                                            <label for="item_name">{{trans('file.Item')}}</label>
-                                            <br>
-                                            <input type="text" required class="form-control item_name"
-                                                   name="item_name[]" placeholder="{{trans('file.Item')}}"
-                                                   value="{{$invoice_item->item_name}}">
-                                        </div> --}}
                                         <div class="form-group mb-1 col-sm-12 col-md-1">
                                             <label for="qty_hrs" class="cursor-pointer">{{trans('file.Qty')}}</label>
                                             <br>
@@ -343,6 +336,16 @@
                     $('#item-list #' + item_id + ' .tax-types').append("<option value='" + v.rate + "'>" + v.name + " (" + v.rate + "%)</option>");
                 }
             });
+        });
+
+        $('.invoiceItemId').change(function () {
+            let itemId = parseInt($(this).val());
+            let rowId = parseInt($(this).closest('.item').attr('id'));
+            let item = items.find(function(item) {
+                return parseInt(item.id) === itemId;
+            });
+            let itemRate = item ? item.rate : 0;
+            $('#'+rowId+' .unit_price').val(itemRate);
         });
 
         $(document).on('change', '.itemId', function() {

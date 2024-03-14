@@ -9,7 +9,7 @@
                 <thead>
                 <tr>
                     <th class="not-exported"></th>
-                    <th>{{trans('file.Invoice')}}#</th>
+                    <th>{{trans('file.Invoice')}}</th>
                     <th>{{trans('file.Project')}}</th>
                     <th>{{trans('file.Total')}}</th>
                     <th>{{__('Invoice Date')}}</th>
@@ -24,8 +24,8 @@
     </section>
 
     <script type="text/javascript">
-        (function($) {  
-         
+        (function($) {
+
             "use strict";
 
             $(document).ready(function () {
@@ -94,17 +94,21 @@
                             name: 'invoice_due_date',
                         },
                         {
-                            data: 'status',
-                            name: 'status',
-                            render: function (data, type, row) {
-                                if (data == 1) {
-                                    return "<td><div class = 'badge badge-success'>{{trans('file.Paid')}}</div></td>";
-                                }
-                                else {
-                                    return "<td><div class = 'badge badge-info'>{{trans('file.Unpaid')}}</div></td>";
-                                }
-                            }
+                            data: 'payment_status',
+                            name: 'payment_status',
                         },
+                        // {
+                        //     data: 'status',
+                        //     name: 'status',
+                        //     render: function (data, type, row) {
+                        //         if (data == 1) {
+                        //             return "<td><div class = 'badge badge-success'>{{trans('file.Paid')}}</div></td>";
+                        //         }
+                        //         else {
+                        //             return "<td><div class = 'badge badge-info'>{{trans('file.Unpaid')}}</div></td>";
+                        //         }
+                        //     }
+                        // },
                         {
                             data: 'action',
                             name: 'action',

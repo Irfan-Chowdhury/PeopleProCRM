@@ -60,6 +60,7 @@ class StoreController extends Controller
             'tax_type_id' => $request->tax_type_id,
             'tax' => $request->tax,
             'total' => $request->total,
+            'status' => 'pending',
         ]);
 
         for ($i=0; $i < count($getAllRequest['item_id']); $i++) {
@@ -72,6 +73,7 @@ class StoreController extends Controller
             ];
         }
         OrderDetail::insert($orderDetails);
+        Session::forget('items');
 
         return redirect()->route('order.index'); //$request->all();
 

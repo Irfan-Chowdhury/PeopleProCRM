@@ -5,53 +5,47 @@
         <div class="main-menu">
             <ul id="side-main-menu" class="side-menu list-unstyled">
 
-                {{-- Leads --}}
-                <li class="{{ (request()->is('lead*')) ? 'active' : '' }}">
-                    <a href="{{route('lead.index')}}"> <i class="dripicons-ticket"></i><span>{{__('Leads')}}</span>
-                    </a>
-                </li>
-
-                {{-- Subscription --}}
-                <li class="{{ (request()->is('subscription*')) ? 'active' : '' }}">
-                    <a href="{{route('subscription.index')}}"> <i class="dripicons-ticket"></i><span>{{__('Subscription')}}</span>
-                    </a>
-                </li>
+                @if ($isCrmModuleExist)
+                    <li class="{{ (request()->is('lead*')) ? 'active' : '' }}">
+                        <a href="{{route('lead.index')}}"> <i class="dripicons-ticket"></i><span>{{__('Leads')}}</span>
+                        </a>
+                    </li>
 
 
-                <li class="has-dropdown @if(request()->is('user*')){{ (request()->is('user*')) ? 'active' : '' }}@elseif(request()->is('add-user*')){{ (request()->is('add-user*')) ? 'active' : '' }}@endif">
-                    <a href="#users" aria-expanded="false" data-toggle="collapse">
-                        <i class="dripicons-user"></i>
-                        <span>{{trans('file.Sales')}}</span>
-                    </a>
-                    <ul id="users" class="collapse list-unstyled ">
-                        <li id="users-menu"><a href="{{route('itemCategory.index')}}">{{__('file.Item Category')}}</a></li>
-                        <li id="users-menu"><a href="{{route('items.index')}}">{{__('file.Items')}}</a></li>
-                        <li id="users-menu"><a href="{{route('invoices.index')}}">{{__('file.Invoices')}}</a></li>
-                        <li id="users-menu"><a href="{{ route('order.index') }}">{{__('file.Order List')}}</a></li>
-                        <li id="users-menu"><a href="{{ route('store.index') }}">{{__('file.Store')}}</a></li>
-                        <li id="users-menu"><a href="#">{{__('file.Payments')}}</a></li>
-                        <li id="users-menu"><a href="{{ route('contracts.index') }}">{{__('file.Contracts')}}</a></li>
-                    </ul>
-                </li>
+                    <li class="{{ (request()->is('subscription*')) ? 'active' : '' }}">
+                        <a href="{{route('subscription.index')}}"> <i class="dripicons-ticket"></i><span>{{__('Subscription')}}</span>
+                        </a>
+                    </li>
 
-                {{-- Prospects --}}
-                <li class="has-dropdown @if(request()->is('prospects*')){{ (request()->is('prospects*')) ? 'active' : '' }}@elseif(request()->is('add-user*')){{ (request()->is('add-user*')) ? 'active' : '' }}@endif">
-                    <a href="#prospect" aria-expanded="false" data-toggle="collapse">
-                        <i class="dripicons-user"></i>
-                        <span>{{trans('file.Prospects')}}</span>
-                    </a>
-                    <ul id="prospect" class="collapse list-unstyled ">
-                        <li id="prospect-menu"><a href="{{route('prospects.proposals.index')}}">{{__('file.Proposals')}}</a></li>
-                        <li id="prospect-menu"><a href="{{route('prospects.estimates.index')}}">{{__('file.Estimates')}}</a></li>
-                        <li id="prospect-menu"><a href="{{route('prospects.estimate-forms.index')}}">{{__('file.Estimate Forms')}}</a></li>
-                        {{-- <li id="users-menu"><a href="{{route('items.index')}}">{{__('file.Items')}}</a></li>
-                        <li id="users-menu"><a href="{{route('invoices.index')}}">{{__('file.Invoices')}}</a></li>
-                        <li id="users-menu"><a href="{{ route('order.index') }}">{{__('file.Order List')}}</a></li>
-                        <li id="users-menu"><a href="{{ route('store.index') }}">{{__('file.Store')}}</a></li>
-                        <li id="users-menu"><a href="#">{{__('file.Payments')}}</a></li>
-                        <li id="users-menu"><a href="#">{{__('file.Contracts')}}</a></li> --}}
-                    </ul>
-                </li>
+                    <li class="has-dropdown @if(request()->is('user*')){{ (request()->is('sales.*')) ? 'active' : '' }}@elseif(request()->is('add-user*')){{ (request()->is('add-user*')) ? 'active' : '' }}@endif">
+                        <a href="#users" aria-expanded="false" data-toggle="collapse">
+                            <i class="dripicons-user"></i>
+                            <span>{{trans('file.Sales')}}</span>
+                        </a>
+                        <ul id="users" class="collapse list-unstyled ">
+                            <li id="users-menu"><a href="{{route('itemCategory.index')}}">{{__('file.Item Category')}}</a></li>
+                            <li id="users-menu"><a href="{{route('items.index')}}">{{__('file.Items')}}</a></li>
+                            <li id="users-menu"><a href="{{route('invoices.index')}}">{{__('file.Invoices')}}</a></li>
+                            <li id="users-menu"><a href="{{ route('order.index') }}">{{__('file.Order List')}}</a></li>
+                            <li id="users-menu"><a href="{{ route('store.index') }}">{{__('file.Store')}}</a></li>
+                            <li id="users-menu"><a href="{{ route('invoice-payments.index') }}">{{__('file.Payments')}}</a></li>
+                            <li id="users-menu"><a href="{{ route('contracts.index') }}">{{__('file.Contracts')}}</a></li>
+                        </ul>
+                    </li>
+
+
+                    <li class="has-dropdown @if(request()->is('prospects*')){{ (request()->is('prospects*')) ? 'active' : '' }}@elseif(request()->is('add-user*')){{ (request()->is('add-user*')) ? 'active' : '' }}@endif">
+                        <a href="#prospect" aria-expanded="false" data-toggle="collapse">
+                            <i class="dripicons-user"></i>
+                            <span>{{trans('file.Prospects')}}</span>
+                        </a>
+                        <ul id="prospect" class="collapse list-unstyled ">
+                            <li id="prospect-menu"><a href="{{route('prospects.proposals.index')}}">{{__('file.Proposals')}}</a></li>
+                            <li id="prospect-menu"><a href="{{route('prospects.estimates.index')}}">{{__('file.Estimates')}}</a></li>
+                            <li id="prospect-menu"><a href="{{route('prospects.estimate-forms.index')}}">{{__('file.Estimate Forms')}}</a></li>
+                        </ul>
+                    </li>
+                @endif
 
                 {{-- Addons --}}
                 <li class="{{ (request()->is('addons*')) ? 'active' : '' }}">

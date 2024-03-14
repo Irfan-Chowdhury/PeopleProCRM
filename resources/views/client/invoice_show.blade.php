@@ -37,15 +37,19 @@
                     <div class="col-sm-4 invoice-col"><b>{{trans('file.Invoice')}}
                             # {{$invoice->invoice_number}}</b><br>
                         <br>
-                        <b>{{trans('file.Date')}}: </b>{{$invoice->invoice_date}} <br>
-                        <b>{{__('Payment Due')}}: </b> {{$invoice->invoice_due_date}}<br/>
+                        <b>{{__('Payment Date')}}: </b> {{isset($invoice->invoicePayment->date) ? $invoice->invoicePayment->date : 'NONE'}}<br/>
                         <span class="label label-danger">
-                        @if($invoice->status == 1)
-                                {{trans('file.Paid')}}
-
+                            
+                        <b>{{__('Payment Status')}}: </b>
+                        @isset($invoice->invoicePayment)
+                            @if($invoice->invoicePayment->payment_status == 'pending')
+                                <span class="p-1 badge badge-pill badge-warning">{{ ucwords(str_replace('_', ' ',$invoice->invoicePayment->payment_status)) }}</span>
+                            @elseif($invoice->invoicePayment->payment_status == 'completed')
+                                <span class="p-1 badge badge-pill badge-success">{{ ucwords(str_replace('_', ' ',$invoice->invoicePayment->payment_status)) }}</span>
                             @else
-                                {{trans('file.UnPaid')}}
+                                <span class="p-1 badge badge-pill badge-danger">{{ ucwords(str_replace('_', ' ',$invoice->invoicePayment->payment_status)) }}</span>
                             @endif
+                        @endisset
                     </span>
                     </div>
                     <!-- /.col -->
