@@ -30,6 +30,7 @@ use Modules\CRM\App\Http\Controllers\PaymentController;
 use Modules\CRM\App\Http\Controllers\ProposalController;
 use Modules\CRM\App\Http\Controllers\ProposalItemController;
 use Modules\CRM\App\Http\Controllers\ProspectsController;
+use Modules\CRM\App\Http\Controllers\ReportController;
 use Modules\CRM\App\Http\Controllers\StoreController;
 use Modules\CRM\App\Http\Controllers\SubscriptionController;
 
@@ -296,6 +297,14 @@ Route::prefix('prospects')->group(function() {
 
 Route::get('/client-overview', [ClientController::class, 'overview'])->name('client.overview');
 
+Route::prefix('report')->group(function () {
+    Route::get('invoice', [ReportController::class, 'invoice'])->name('report.invoice');
+});
+
+
+
+
+
 
 Route::prefix('client')->group(function() {
 
@@ -336,5 +345,7 @@ Route::prefix('client')->group(function() {
         });
     });
 });
+
+
 
 

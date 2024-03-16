@@ -45,7 +45,6 @@
                             <li id="prospect-menu"><a href="<?php echo e(route('prospects.estimate-forms.index')); ?>"><?php echo e(__('file.Estimate Forms')); ?></a></li>
                         </ul>
                     </li>
-
                 <?php endif; ?>
 
                 
@@ -390,9 +389,12 @@
                                 </li>
                             <?php endif; ?>
 
-                            
                             <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('report-pension')): ?>
                                 <li id="pension_report"><a href="<?php echo e(route('report.pension')); ?>"><?php echo e(__('Pension Report')); ?></a></li>
+                            <?php endif; ?>
+
+                            <?php if($isCrmModuleExist): ?>
+                                <li id="pension_report"><a href="<?php echo e(route('report.invoice')); ?>"><?php echo e(__('Invoice Report')); ?></a></li>
                             <?php endif; ?>
                         </ul>
                     </li>

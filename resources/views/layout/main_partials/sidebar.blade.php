@@ -412,10 +412,13 @@
                                 </li>
                             @endcan
 
-                            {{-- New --}}
                             @can('report-pension')
                                 <li id="pension_report"><a href="{{route('report.pension')}}">{{__('Pension Report')}}</a></li>
                             @endcan
+
+                            @if ($isCrmModuleExist)
+                                <li id="pension_report"><a href="{{route('report.invoice')}}">{{__('Invoice Report')}}</a></li>
+                            @endif
                         </ul>
                     </li>
                 {{-- @endcan --}}
