@@ -394,7 +394,8 @@
                             <?php endif; ?>
 
                             <?php if($isCrmModuleExist): ?>
-                                <li id="pension_report"><a href="<?php echo e(route('report.invoice')); ?>"><?php echo e(__('Invoice Report')); ?></a></li>
+                                <li id="invoice_report"><a href="<?php echo e(route('report.invoice')); ?>"><?php echo e(__('Invoice Report')); ?></a></li>
+                                <li id="invoice_payment_report"><a href="<?php echo e(route('report.invoice-payment')); ?>"><?php echo e(__('Invoice Payment Report')); ?></a></li>
                             <?php endif; ?>
                         </ul>
                     </li>

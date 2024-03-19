@@ -37,7 +37,7 @@ class ContractController extends Controller
     public function datatable()
     {
         if (request()->ajax()) {
-			return datatables()->of(Contract::with('project','tax')->orderBy('id','DESC')->get())
+			return datatables()->of(Contract::with('project','tax','contractItems')->orderBy('id','DESC')->get())
 				->setRowId(function ($row)
 				{
 					return $row->id;
@@ -65,6 +65,17 @@ class ContractController extends Controller
                 ->addColumn('tax',function ($row)
                 {
                     return $row->tax->rate.'%' ?? null ;
+                })
+                ->addColumn('amount',function ($row)
+                {
+                    if($row->contractItems) {
+                        $total = 0;
+                        foreach($row->contractItems as $item) {
+                            $total += $item->rate * $item->quantity;
+                        }
+                        return $total + ($total * ($row->tax->rate/100));
+                    }else
+                        return 0;
                 })
 				->addColumn('action', function ($data)
                 {

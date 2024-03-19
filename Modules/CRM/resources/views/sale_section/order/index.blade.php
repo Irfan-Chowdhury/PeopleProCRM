@@ -31,6 +31,7 @@
 @push('scripts')
 <script type="text/javascript">
     let dataTableURL = "{{ route('order.datatable') }}";
+    let destroyURL = "{{ url('sales/orders')}}/";
 </script>
 
 <script type="text/javascript">
@@ -177,5 +178,7 @@
 
     })(jQuery);
 </script>
+<script type="text/javascript" src="{{ asset('js/common-js/delete.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/common-js/alertMessages.js') }}"></script>
 
 @endpush

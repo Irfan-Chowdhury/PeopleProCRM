@@ -24,6 +24,7 @@
                     <th>{{trans('file.Contract Date')}}</th>
                     <th>{{trans('file.Valid Until')}}</th>
                     <th>{{trans('file.Tax')}}</th>
+                    <th>{{trans('file.Total')}}</th>
                     <th class="not-exported">{{trans('file.Action')}}</th>
                 </tr>
             </thead>
@@ -153,6 +154,10 @@
                     {
                         data: 'tax',
                         name: 'tax',
+                    },
+                    {
+                        data: 'amount',
+                        name: 'amount',
                     },
                     {
                         data: 'action',

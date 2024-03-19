@@ -15,6 +15,7 @@ class Order extends Model
         'tax_type_id',
         'tax',
         'total',
+        'status'
     ];
 
     public function client()

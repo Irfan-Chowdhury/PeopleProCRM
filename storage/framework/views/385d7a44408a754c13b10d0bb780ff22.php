@@ -4,16 +4,18 @@
     <div class="card">
         <div class="d-flex justify-content-between">
             <div class="card-header"><h3><?php echo e(__('file.Store')); ?></h3></div>
-            <div class="card-header">
-                <a href="<?php echo e(route('store.chekout')); ?>" class="btn btn-info">
-                Checkout
-                <?php if(config('variable.currency_format') =='suffix'): ?>
-                    ( <?php echo e(number_format($totalAmount, 2)); ?> <?php echo e(config('variable.currency')); ?> )
-                <?php else: ?>
-                    ( <?php echo e(config('variable.currency')); ?> <?php echo e(number_format($totalAmount, 2)); ?> )
-                <?php endif; ?>
-                </a>
-        </div>
+            <?php if($totalAmount > 0): ?>
+                <div class="card-header">
+                    <a href="<?php echo e(route('store.chekout')); ?>" class="btn btn-info">
+                    Checkout
+                    <?php if(config('variable.currency_format') =='suffix'): ?>
+                        ( <?php echo e(number_format($totalAmount, 2)); ?> <?php echo e(config('variable.currency')); ?> )
+                    <?php else: ?>
+                        ( <?php echo e(config('variable.currency')); ?> <?php echo e(number_format($totalAmount, 2)); ?> )
+                    <?php endif; ?>
+                    </a>
+                </div>
+            <?php endif; ?>
     </div>
 </div>
 

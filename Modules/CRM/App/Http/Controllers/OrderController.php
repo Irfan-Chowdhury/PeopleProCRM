@@ -35,10 +35,6 @@ class OrderController extends Controller
                 {
                     return $row->total ?? 0.00 ;
                 })
-                // ->addColumn('status',function ($row)
-                // {
-                //     return $row->status ?? "" ;
-                // })
                 ->addColumn('status', function ($row)
                 {
                     $btnColor = '';
@@ -72,14 +68,12 @@ class OrderController extends Controller
 		}
     }
 
-
     public function orderStatusChange($order_id, $status)
     {
         Order::where('id',$order_id)->update(['status'=> $status]);
 
         return redirect()->back();
     }
-
 
     public function clientOrders()
     {
@@ -143,5 +137,11 @@ class OrderController extends Controller
 		}
 
         return view('crm::client.order.index');
+    }
+
+    public function destroy(Order $order)
+    {
+        $order->delete();
+        return response()->json(['success' =>'Data Deleted Successfully'], 200);
     }
 }

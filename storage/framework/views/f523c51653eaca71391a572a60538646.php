@@ -39,16 +39,18 @@
 
                             # <?php echo e($invoice->invoice_number); ?></b><br>
                         <br>
-                        <b><?php echo e(__('Payment Date')); ?>: </b> <?php echo e($invoice->invoicePayment->date); ?><br/>
+                        <b><?php echo e(__('Payment Date')); ?>: </b> <?php echo e(isset($invoice->invoicePayment->date) ? $invoice->invoicePayment->date : 'NONE'); ?><br/>
                         <span class="label label-danger">
-                        
-
-                        <?php if($invoice->invoicePayment->payment_status == 'pending'): ?>
-                            <span class="p-1 badge badge-pill badge-warning"><?php echo e(ucwords(str_replace('_', ' ',$invoice->invoicePayment->payment_status))); ?></span>
-                        <?php elseif($invoice->invoicePayment->payment_status == 'completed'): ?>
-                            <span class="p-1 badge badge-pill badge-success"><?php echo e(ucwords(str_replace('_', ' ',$invoice->invoicePayment->payment_status))); ?></span>
-                        <?php else: ?>
-                            <span class="p-1 badge badge-pill badge-danger"><?php echo e(ucwords(str_replace('_', ' ',$invoice->invoicePayment->payment_status))); ?></span>
+                            
+                        <b><?php echo e(__('Payment Status')); ?>: </b>
+                        <?php if(isset($invoice->invoicePayment)): ?>
+                            <?php if($invoice->invoicePayment->payment_status == 'pending'): ?>
+                                <span class="p-1 badge badge-pill badge-warning"><?php echo e(ucwords(str_replace('_', ' ',$invoice->invoicePayment->payment_status))); ?></span>
+                            <?php elseif($invoice->invoicePayment->payment_status == 'completed'): ?>
+                                <span class="p-1 badge badge-pill badge-success"><?php echo e(ucwords(str_replace('_', ' ',$invoice->invoicePayment->payment_status))); ?></span>
+                            <?php else: ?>
+                                <span class="p-1 badge badge-pill badge-danger"><?php echo e(ucwords(str_replace('_', ' ',$invoice->invoicePayment->payment_status))); ?></span>
+                            <?php endif; ?>
                         <?php endif; ?>
                     </span>
                     </div>

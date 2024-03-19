@@ -417,7 +417,8 @@
                             @endcan
 
                             @if ($isCrmModuleExist)
-                                <li id="pension_report"><a href="{{route('report.invoice')}}">{{__('Invoice Report')}}</a></li>
+                                <li id="invoice_report"><a href="{{route('report.invoice')}}">{{__('Invoice Report')}}</a></li>
+                                <li id="invoice_payment_report"><a href="{{route('report.invoice-payment')}}">{{__('Invoice Payment Report')}}</a></li>
                             @endif
                         </ul>
                     </li>

@@ -9,7 +9,7 @@
                     <div class="wrapper count-title text-center mb-30px ">
                         <div class="box mb-4">
                             <div class="box-header with-border">
-                                <h3 class="box-title"> <?php echo e(__('Invoice Info')); ?> <span id="details_month_year"></span> </h3>
+                                <h3 class="box-title"> <?php echo e(__('Invoice Report')); ?> <span id="details_month_year"></span> </h3>
                             </div>
                         </div>
                     </div>

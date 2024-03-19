@@ -23,7 +23,7 @@ return new class extends Migration
             $table->softDeletes();
 
             $table->foreign('client_id', 'subscriptions_client_id_foreign')->references('id')->on('clients')->onDelete('cascade');
-            $table->foreign('tax_type_id', 'subscriptions_tax_type_id_foreign')->references('id')->on('taxes')->onDelete('set NULL');
+            $table->foreign('tax_type_id', 'subscriptions_tax_type_id_foreign')->references('id')->on('tax_types')->onDelete('set NULL');
         });
     }
 

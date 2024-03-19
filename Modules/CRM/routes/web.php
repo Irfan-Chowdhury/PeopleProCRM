@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\ClientController;
 use Illuminate\Support\Facades\Route;
 use Modules\CRM\App\Http\Controllers\ClientContractController;
+use Modules\CRM\App\Http\Controllers\ClientController;
 use Modules\CRM\App\Http\Controllers\ClientEstimateController;
 use Modules\CRM\App\Http\Controllers\ClientInvoiceController;
 use Modules\CRM\App\Http\Controllers\ClientProposalController;
@@ -196,6 +196,7 @@ Route::prefix('sales')->group(function() {
             Route::get('/', 'index')->name('order.index');
             Route::get('/datatable', 'datatable')->name('order.datatable');
             Route::get('/{order_id}/{status}','orderStatusChange')->name('order.status_change');
+            Route::get('{order}','destroy');
         });
     });
 
@@ -299,6 +300,7 @@ Route::get('/client-overview', [ClientController::class, 'overview'])->name('cli
 
 Route::prefix('report')->group(function () {
     Route::get('invoice', [ReportController::class, 'invoice'])->name('report.invoice');
+    Route::get('invoice-payment', [ReportController::class, 'invoicePayment'])->name('report.invoice-payment');
 });
 
 

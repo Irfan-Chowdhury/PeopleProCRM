@@ -1,4 +1,4 @@
-@extends('crm.lead_section.layout')
+@extends('crm::lead_section.layout')
 @section('lead_details')
 
 <div class="container-fluid">

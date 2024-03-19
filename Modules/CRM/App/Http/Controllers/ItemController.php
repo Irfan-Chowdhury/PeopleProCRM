@@ -18,11 +18,6 @@ class ItemController extends Controller
     public function index()
     {
         $itemCategogries = ItemCategory::all();
-        // return  module_path('CRM').'/assets/images/';
-        // return url('uploads/crm/items/item_1702440585.png');
-        // return url(module_path('CRM').'/assets/images/items/item_1702440585.png');
-        // return file_get_contents(Module::find('CRM')->getPath(). "/assets/images/items/item_1702440585.png");
-
 
         return view('crm::sale_section.items.index', compact('itemCategogries'));
     }
@@ -155,3 +150,8 @@ class ItemController extends Controller
         }
     }
 }
+        // return  module_path('CRM').'/assets/images/';
+        // return url('uploads/crm/items/item_1702440585.png');
+        // return url(module_path('CRM').'/assets/images/items/item_1702440585.png');
+        // return file_get_contents(Module::find('CRM')->getPath(). "/assets/images/items/item_1702440585.png");
+
