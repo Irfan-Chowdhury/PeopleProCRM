@@ -206,7 +206,7 @@
                     $("#modelId").val(response.leadEstimate.id);
                     $("#editModal input[name='start_date']").val(response.leadEstimate.start_date);
                     $("#editModal input[name='end_date']").val(response.leadEstimate.end_date);
-                    $("#taxIdEdit").selectpicker('val', response.leadEstimate.tax_id);
+                    $("#taxIdEdit").selectpicker('val', response.leadEstimate.tax_type_id);
                     $("#noteEdit").val(response.leadEstimate.note);
                     $('.selectpicker').selectpicker('refresh');
                     currentModal = '';

@@ -287,7 +287,6 @@
                     <li><a href="{{route('client.clientOrders')}}"> <i
                         class="dripicons-meter"></i><span>{{trans('file.Orders')}}</span></a>
                     </li>
-
                 @endif
 
             </ul>
@@ -308,7 +307,6 @@
 </div>
 
 @stack('scripts')
-
 
 <script type="text/javascript">
     (function($) {

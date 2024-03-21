@@ -50,9 +50,15 @@
                                 <td class="subtotal">{{ number_format($item->rate * 1, 2) }}</td>
                             </tr>
                         @endforeach
+                        <tr></tr>
                         <tr>
                             <th colspan="2"></th>
-                            <th> Total : </th>
+                            <th> Sub Total : </th>
+                            <th id="subTotalAmount"> {{ number_format($totalAmount, 2) }}</th>
+                        </tr>
+                        <tr>
+                            <th colspan="2"></th>
+                            <th> Total Amount: </th>
                             <th id="totalAmount"> {{ number_format($totalAmount, 2) }}</th>
                         </tr>
                     </tbody>
@@ -105,15 +111,13 @@
 
     $(document).on('click', '.quantityIncrement', function(e) {
         e.preventDefault();
-        $('#taxType').reset();
-        
         calculateAndDisplay('increment', this);
     });
 
 
     $('#taxType').change(function () {
         let taxRate = parseInt($(this).val());
-        let totalAmount = parseFloat($('#totalInput').val());
+        let totalAmount = parseFloat($('#subTotalAmount').text());
         let TaxOnAmount = (taxRate / 100 ) * totalAmount;
         let totalAmountIncludingTax = totalAmount + TaxOnAmount;
 
@@ -149,14 +153,24 @@
 
         let subtotal = totalQuantity * rateValue;
 
-        let prevTotalAmount = parseFloat($('#totalAmount').text());
-        let newTotalAmount;
+        let prevSubTotalAmount = parseFloat($('#subTotalAmount').text());
 
-        if (type =='increment') {
-            newTotalAmount = prevTotalAmount + rateValue;
-        } else {
-            newTotalAmount = prevTotalAmount - rateValue;
+        let taxAmount = 0;
+        if ($("select[name='tax_type_id'] option:selected").length > 0) {
+            let selectedValue = $("select[name='tax_type_id']").val();
+            if (!isNaN(parseInt(selectedValue))) {
+                taxAmount = parseInt(selectedValue);
+            }
         }
+
+        let newTotalAmount;
+        if (type =='increment') {
+            newSubTotalAmount = prevSubTotalAmount + rateValue;
+        } else {
+            newSubTotalAmount = prevSubTotalAmount - rateValue;
+        }
+
+        TotalAmountWithTax = newSubTotalAmount + (newSubTotalAmount * taxAmount) / 100;
 
         $(clickedElement).siblings('span').text(totalQuantity);
         $(clickedElement).closest('tbody').find('.finalQuantity_'+rowId).val(totalQuantity);
@@ -164,12 +178,9 @@
         $(clickedElement).closest('tr').find('.subtotal').text(subtotal.toFixed(2));
         $(clickedElement).closest('tbody').find('.subtotal_'+rowId).val(subtotal.toFixed(2));
 
-        $('#totalAmount').text(newTotalAmount.toFixed(2));
-        $('#totalInput').val(newTotalAmount.toFixed(2));
-
-        // console.log('subtotal', subtotal);
-        // console.log('prevTotalAmount :',prevTotalAmount);
-        // console.log('newTotalAmount :',newTotalAmount);
+        $('#subTotalAmount').text(newSubTotalAmount.toFixed(2));
+        $('#totalAmount').text(TotalAmountWithTax.toFixed(2));
+        $('#totalInput').val(TotalAmountWithTax.toFixed(2));
     }
 
 

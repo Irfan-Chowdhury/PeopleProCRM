@@ -59,7 +59,8 @@ class StoreController extends Controller
             'client_id' => $request->client_id,
             'tax_type_id' => $request->tax_type_id,
             'tax' => $request->tax,
-            'total' => $request->total + $request->tax,
+            // 'total' => $request->total + $request->tax,
+            'total' => $request->total,
             'status' => 'pending',
         ]);
 

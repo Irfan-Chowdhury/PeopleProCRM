@@ -67,10 +67,13 @@ class ProposalController extends Controller
                 })
                 ->addColumn('amount',function ($row)
                 {
-                    //Wrong
-                    if($row->proposalItems)
-                        return $row->proposalItems->sum('rate') + ($row->proposalItems->sum('rate') * ($row->tax->rate/100));
-                    else
+                    if($row->proposalItems) {
+                        $total = 0;
+                        foreach($row->proposalItems as $item) {
+                            $total += $item->rate * $item->quantity;
+                        }
+                        return $total + ($total * ($row->tax->rate/100));
+                    }else
                         return 0;
                 })
 				->addColumn('action', function ($data)

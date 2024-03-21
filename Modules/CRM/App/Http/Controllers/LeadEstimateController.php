@@ -3,6 +3,7 @@
 namespace Modules\CRM\App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\TaxType;
 use Modules\CRM\App\Http\Requests\LeadEstimate\StoreRequest;
 use Modules\CRM\App\Http\Requests\LeadEstimate\UpdateRequest;
 use Modules\CRM\App\Models\Lead;
@@ -15,7 +16,8 @@ class LeadEstimateController extends Controller
 {
     public function index(Lead $lead)
     {
-        $taxes = Tax::all();
+        $taxes = TaxType::select('id', 'name', 'rate', 'type')->get();
+
         return view('crm::lead_section.estimate.index', compact('lead','taxes'));
     }
 
@@ -41,7 +43,7 @@ class LeadEstimateController extends Controller
                 })
                 ->addColumn('tax',function ($row)
                 {
-                    return $row->tax->name ?? null;
+                    return $row->tax->rate.' %';
                 })
 				->addColumn('action', function ($data)
                 {
@@ -63,7 +65,7 @@ class LeadEstimateController extends Controller
 
         LeadEstimate::create([
             'lead_id' => $lead->id,
-            'tax_id' => isset($request->tax_id) ? $request->tax_id : null,
+            'tax_type_id' => isset($request->tax_type_id) ? $request->tax_type_id : null,
             'start_date' => date('Y-m-d',strtotime($request->start_date)),
             'end_date' => date('Y-m-d',strtotime($request->end_date)),
             'note' => $request->note,
@@ -84,7 +86,7 @@ class LeadEstimateController extends Controller
 
         $leadEstimate->update([
             'lead_id' => $lead->id,
-            'tax_id' => $request->tax_id ?? null,
+            'tax_type_id' => $request->tax_type_id ?? null,
             'start_date' => date('Y-m-d',strtotime($request->start_date)),
             'end_date' => date('Y-m-d',strtotime($request->end_date)),
             'note' => $request->note,

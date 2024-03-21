@@ -206,7 +206,7 @@
                     $("#modelId").val(response.leadProposal.id);
                     $("#editModal input[name='start_date']").val(response.leadProposal.start_date);
                     $("#editModal input[name='end_date']").val(response.leadProposal.end_date);
-                    $("#taxIdEdit").selectpicker('val', response.leadProposal.tax_id);
+                    $("#taxIdEdit").selectpicker('val', response.leadProposal.tax_type_id);
                     $("#noteEdit").val(response.leadProposal.note);
                     $('.selectpicker').selectpicker('refresh');
                     currentModal = '';

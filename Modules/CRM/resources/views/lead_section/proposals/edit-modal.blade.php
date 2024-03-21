@@ -32,13 +32,13 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="text-bold"><strong>{{trans('file.Tax')}}</strong></label>
-                                <select name="tax_id"
+                                <select name="tax_type_id"
                                         id="taxIdEdit"
                                         class="form-control selectpicker"
                                         data-live-search="true" data-live-search-style="contains"
                                         title="{{__('Selecting',['key'=>trans('file.Tax')])}}...">
                                     @foreach($taxes as $tax)
-                                        <option value="{{$tax->id}}">{{$tax->name}}</option>
+                                        <option value="{{$tax->id}}">{{$tax->name}} ({{$tax->rate}}%)</option>
                                     @endforeach
                                 </select>
                             </div>

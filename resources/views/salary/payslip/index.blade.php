@@ -7,11 +7,11 @@
         <div class="container-fluid"><span id="general_result"></span></div>
 
         <div class="row">
-            <div class="col-md-12 ">
+            <div class="col-md-12">
                 <div class="wrapper count-title text-center mb-30px ">
                     <div class="box mb-4">
                         <div class="box-header with-border">
-                            <h3 class="box-title"> {{__('Payment History')}} <span id="details_month_year"></span></h3>
+                            <h3 class="box-title"> @lang('file.Payment History') <span id="details_month_year"></span></h3>
                         </div>
                         <div class="box-body">
                             <div class="row">

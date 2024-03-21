@@ -629,7 +629,7 @@
                 },
                 success: function (data) {
                     console.log(data);
-
+                    
                     let html = '';
                     if (data.success) {
                         html = '<div class="alert alert-success">' + data.success + '</div>';

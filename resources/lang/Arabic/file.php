@@ -1,6 +1,7 @@
 <?php
 
 return array (
+  'Payment History' => 'تاريخ الدفع',
   'About' => 'حول',
   'Absent' => 'Absent',
   'Account' => 'Account',
@@ -58,11 +59,11 @@ return array (
   'Debit' => 'مدين',
   'Deductions' => 'الخصومات',
   'Deferred' => 'مؤجل',
-  'Deleting' => 
+  'Deleting' =>
   array (
-    '' => 
+    '' =>
     array (
-      '' => 
+      '' =>
       array (
         '' => 'حذف ...',
       ),

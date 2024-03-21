@@ -218,7 +218,7 @@
                     $("#editModal input[name='start_date']").val(response.leadContract.start_date);
                     $("#editModal input[name='end_date']").val(response.leadContract.end_date);
                     $("#projectIdEdit").selectpicker('val', response.leadContract.project_id);
-                    $("#taxIdEdit").selectpicker('val', response.leadContract.tax_id);
+                    $("#taxIdEdit").selectpicker('val', response.leadContract.tax_type_id);
                     $("#noteEdit").val(response.leadContract.note);
                     $('.selectpicker').selectpicker('refresh');
                     currentModal = '';

@@ -26,7 +26,7 @@ class UpdateRequest extends FormRequest
             'start_date' => 'required|date',
             'end_date' => 'required|date',
             'project_id' => 'required',
-            'tax_id' => 'required',
+            'tax_type_id' => 'required',
         ];
     }
 }

@@ -49,7 +49,7 @@ class JobInterviewNotification extends Notification implements ShouldQueue
 			->line('You have been shortlisted for the position of '.$this->interview->InterviewJob->job_title. ' hence,you are requested to attend our interview session in the following schedule and place. ')
 			->line('Date and Time : '. $this->interview->interview_date. '|'.$this->interview->interview_time)
 			->line('Venue : '. $this->interview->interview_place)
-			->line(strip_tags(html_entity_decode($this->interview->description)))
+			->line($this->interview->description)
 			->line('Thank you');
     }
 

@@ -9,6 +9,7 @@ use Modules\CRM\App\Models\Lead;
 use Modules\CRM\App\Models\LeadContract;
 use Modules\CRM\App\Models\Tax;
 use App\Models\Project;
+use App\Models\TaxType;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -17,7 +18,7 @@ class LeadContractController extends Controller
     public function index(Lead $lead)
     {
         $projects = Project::all();
-        $taxes = Tax::all();
+        $taxes = TaxType::select('id', 'name', 'rate', 'type')->get();
 
         return view('crm::lead_section.contracts.index', compact('lead','taxes','projects'));
     }
@@ -52,7 +53,7 @@ class LeadContractController extends Controller
                 })
                 ->addColumn('tax',function ($row)
                 {
-                    return $row->tax->name ?? null;
+                    return $row->tax->rate.' %';
                 })
 				->addColumn('action', function ($data)
                 {
@@ -75,7 +76,7 @@ class LeadContractController extends Controller
         LeadContract::create([
             'lead_id' => $lead->id,
             'project_id' => $request->project_id,
-            'tax_id' => $request->tax_id,
+            'tax_type_id' => $request->tax_type_id,
             'title' => $request->title,
             'start_date' => date('Y-m-d',strtotime($request->start_date)),
             'end_date' => date('Y-m-d',strtotime($request->end_date)),
@@ -98,7 +99,7 @@ class LeadContractController extends Controller
         $leadContract->update([
             'lead_id' => $lead->id,
             'project_id' => $request->project_id,
-            'tax_id' => $request->tax_id,
+            'tax_type_id' => $request->tax_type_id,
             'title' => $request->title,
             'start_date' => date('Y-m-d',strtotime($request->start_date)),
             'end_date' => date('Y-m-d',strtotime($request->end_date)),

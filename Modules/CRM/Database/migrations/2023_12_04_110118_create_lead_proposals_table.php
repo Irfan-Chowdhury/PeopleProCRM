@@ -14,14 +14,14 @@ return new class extends Migration
         Schema::create('lead_proposals', function (Blueprint $table) {
             $table->id();
             $table->foreignId('lead_id');
-            $table->unsignedBigInteger('tax_id')->nullable();
+            $table->unsignedBigInteger('tax_type_id')->nullable();
             $table->date('start_date');
             $table->date('end_date');
             $table->text('note')->nullable();
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('lead_id', 'lead_proposals_lead_id_foreign')->references('id')->on('leads')->onDelete('cascade');
-            $table->foreign('tax_id', 'lead_proposals_tax_id_foreign')->references('id')->on('taxes')->onDelete('set NULL');
+            $table->foreign('tax_type_id', 'lead_proposals_tax_type_id_foreign')->references('id')->on('tax_types')->onDelete('set NULL');
         });
     }
 
@@ -29,7 +29,7 @@ return new class extends Migration
     {
         Schema::table('lead_proposals', function (Blueprint $table) {
             $table->dropForeign('lead_proposals_lead_id_foreign');
-            $table->dropForeign('lead_proposals_tax_id_foreign');
+            $table->dropForeign('lead_proposals_tax_type_id_foreign');
             $table->dropIfExists();
         });
     }

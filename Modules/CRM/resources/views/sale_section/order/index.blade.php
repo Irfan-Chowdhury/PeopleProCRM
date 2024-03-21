@@ -15,10 +15,11 @@
                         <th class="not-exported"></th>
                         <th>{{trans('file.OrderId')}}</th>
                         <th>{{trans('file.Client')}}</th>
+                        <th>{{trans('file.Quantity')}}</th>
                         <th>{{trans('file.Total')}}</th>
                         <th>{{trans('file.Status')}}</th>
                         <th>{{trans('file.Order Date')}}</th>
-                        <th class="not-exported">{{trans('file.action')}}</th>
+                        <th class="not-exported">{{trans('file.Action')}}</th>
                     </tr>
                 </thead>
                 <tbody id="tablecontents"></tbody>
@@ -86,6 +87,10 @@
                     {
                         data: 'client',
                         name: 'client',
+                    },
+                    {
+                        data: 'quantity',
+                        name: 'quantity',
                     },
                     {
                         data: 'total',

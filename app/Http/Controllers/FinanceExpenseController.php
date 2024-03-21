@@ -8,7 +8,6 @@ use App\Models\FinanceExpense;
 use App\Models\FinancePayees;
 use App\Models\FinanceTransaction;
 use App\Models\PaymentMethod;
-use DateTime;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -18,21 +17,7 @@ use Throwable;
 
 class FinanceExpenseController extends Controller {
 
-    protected function filterDataByMonthYear($filter_month_year)
-    {
-        $selectedMonthYear = empty($filter_month_year) ? now()->format('F-Y') : $filter_month_year;
-        $date = DateTime::createFromFormat('F-Y', $selectedMonthYear);
-        $desiredMonth = $date->format('n');
-        $desiredYear = $date->format('Y');
-
-        return FinanceExpense::with('Account', 'PaymentMethod', 'Payee', 'Category')
-                            ->whereMonth('expense_date', $desiredMonth)
-                            ->whereYear('expense_date', $desiredYear)
-                            ->get();
-
-    }
-
-	public function index(Request $request)
+	public function index()
 	{
 		$logged_user = auth()->user();
 		$accounts = FinanceBankCash::select('id', 'account_name')->get();
@@ -40,21 +25,12 @@ class FinanceExpenseController extends Controller {
 		$payees = FinancePayees::select('id', 'payee_name')->get();
 		$categories = ExpenseType::select('id', 'type')->get();
 
-        // $selectedMonthYear = empty($filter_month_year) ? now()->format('F-Y') : $filter_month_year;
-        // $financeExpense = self::filterDataByMonthYear($selectedMonthYear);
-
-        if($request->filter_month_year) {
-            $financeExpense = self::filterDataByMonthYear($request->filter_month_year);
-        } else {
-            $financeExpense = FinanceExpense::with('Account', 'PaymentMethod', 'Payee', 'Category')->get();
-        }
-
 
 		if ($logged_user->can('view-expense'))
 		{
 			if (request()->ajax())
 			{
-				return datatables()->of($financeExpense)
+				return datatables()->of(FinanceExpense::with('Account', 'PaymentMethod', 'Payee', 'Category')->latest('expense_date'))
 					->setRowId(function ($expense)
 					{
 						return $expense->id;
@@ -105,16 +81,14 @@ class FinanceExpenseController extends Controller {
 		return abort('403', __('You are not authorized'));
 	}
 
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @param Request $request
+	 * @return Response
+	 */
 	public function store(Request $request)
 	{
-        // return $request->all();
-        // return self::filterDataByMonthYear($request->month_year);
-
-
-
-
-
-
 		$logged_user = auth()->user();
 
 

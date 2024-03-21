@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('lead_id');
             $table->foreignId('project_id');
-            $table->foreignId('tax_id');
+            $table->foreignId('tax_type_id');
             $table->string('title');
             $table->date('start_date');
             $table->date('end_date');
@@ -25,7 +25,7 @@ return new class extends Migration
 
             $table->foreign('lead_id', 'lead_contracts_lead_id_foreign')->references('id')->on('leads')->onDelete('cascade');
             $table->foreign('project_id', 'lead_contracts_project_id_foreign')->references('id')->on('projects')->onDelete('cascade');
-            $table->foreign('tax_id', 'lead_contracts_tax_id_foreign')->references('id')->on('taxes')->onDelete('cascade');
+            $table->foreign('tax_type_id', 'lead_contracts_tax_type_id_foreign')->references('id')->on('tax_types')->onDelete('cascade');
         });
     }
 
@@ -35,7 +35,7 @@ return new class extends Migration
         Schema::table('lead_contracts', function (Blueprint $table) {
             $table->dropForeign('lead_contracts_lead_id_foreign');
             $table->dropForeign('lead_contracts_project_id_foreign');
-            $table->dropForeign('lead_contracts_tax_id_foreign');
+            $table->dropForeign('lead_contracts_tax_type_id_foreign');
             $table->dropIfExists();
         });
     }

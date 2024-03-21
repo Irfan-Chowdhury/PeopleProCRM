@@ -9,6 +9,7 @@ use App\Models\Payslip;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use App\Http\traits\MonthlyWorkedHours;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 
 class PayslipController extends Controller {
@@ -247,7 +248,6 @@ class PayslipController extends Controller {
         }
 
 		$total_minutes = 0;
-		// $total_hours = $this->totalWorkedHours($employee);
 		$total_hours = $payslip->hours_worked; //correction
 		sscanf($total_hours, '%d:%d', $hour, $min);
 		//converting in minute
@@ -293,8 +293,6 @@ class PayslipController extends Controller {
 		$amount_hours = ($payslip->basic_salary / 60 ) * $total_minutes;
 		$employee['hours_amount'] = $amount_hours;
         $employee['pension_amount'] = $payslip->pension_amount;
-
-		//return view('salary.payslip.pdf',compact('payslip','employee'));
 
 		PDF::setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif','tempDir'=>storage_path('temp')]);
         $pdf = PDF::loadView('salary.payslip.pdf', $payslip->toArray(), $employee);

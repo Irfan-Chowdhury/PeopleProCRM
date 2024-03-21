@@ -67,7 +67,6 @@ use App\Http\Controllers\LanguageSettingController;
 use App\Http\Controllers\LeaveController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\MeetingController;
-use App\Http\Controllers\AddonController;
 use App\Http\Controllers\OfficeShiftController;
 use App\Http\Controllers\OfficialDocumentController;
 use App\Http\Controllers\PayrollController;
@@ -125,16 +124,31 @@ use App\Http\Controllers\Variables\VariableController;
 use App\Http\Controllers\Variables\VariableMethodController;
 use App\Http\Controllers\Variables\WarningTypeController;
 use App\Http\Controllers\WarningController;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Addon\BiometricAddonController;
+use App\Http\Controllers\Addon\CRMController;
+use App\Http\Controllers\Addon\SaasController;
 
 Auth::routes(['register' => false]);
 
 Route::prefix('addons')->group(function () {
-    Route::controller(AddonController::class)->group(function () {
-        Route::get('/', 'index')->name('addons');
 
+    Route::get('/', function () {
+        return view('addons.index');
+    })->name('addons');
+
+    Route::controller(BiometricAddonController::class)->group(function () {
+        Route::prefix('biometric')->group(function () {
+            Route::get('install/step-1', 'biometricInstallStep1')->name('biometric-install-step-1');
+            Route::get('install/step-2', 'biometricInstallStep2')->name('biometric-install-step-2');
+            Route::get('install/step-3', 'biometricInstallStep3')->name('biometric-install-step-3');
+            Route::post('install/process', 'biometricInstallProcess')->name('biometric-install-process');
+            Route::get('install/step-4', 'biometricInstallStep4')->name('biometric-install-step-4');
+        });
+    });
+
+    Route::controller(SaasController::class)->group(function () {
         Route::prefix('saas')->group(function () {
             Route::get('install/step-1', 'saasInstallStep1')->name('saas-install-step-1');
             Route::get('install/step-2', 'saasInstallStep2')->name('saas-install-step-2');
@@ -143,14 +157,17 @@ Route::prefix('addons')->group(function () {
             Route::get('install/step-4', 'saasInstallStep4')->name('saas-install-step-4');
         });
     });
-});
 
-// Route::get('/addons', [AddonController::class, 'index']);
-// Route::get('/saas-install/step-1', [AddonController::class, 'saasInstallStep1']);
-// Route::get('/saas-install/step-2', [AddonController::class, 'saasInstallStep2']);
-// Route::get('/saas-install/step-3', [AddonController::class, 'saasInstallStep3']);
-// Route::post('/saas-install/process', [AddonController::class, 'saasInstallProcess'])->name('saas-install-process');
-// Route::get('/saas-install/step-4', [AddonController::class, 'saasInstallStep4']);
+    Route::controller(CRMController::class)->group(function () {
+        Route::prefix('crm')->group(function () {
+            Route::get('install/step-1', 'crmInstallStep1')->name('crm-install-step-1');
+            Route::get('install/step-2', 'crmInstallStep2')->name('crm-install-step-2');
+            Route::get('install/step-3', 'crmInstallStep3')->name('crm-install-step-3');
+            Route::post('install/process', 'crmInstallProcess')->name('crm-install-process');
+            Route::get('install/step-4', 'crmInstallStep4')->name('crm-install-step-4');
+        });
+    });
+});
 
 
 Route::group(['middleware' => ['XSS']], function () {
@@ -252,8 +269,8 @@ Route::group(['middleware' => ['XSS']], function () {
         Route::get('contacts/{id}/delete', [EmployeeContactController::class, 'destroy'])->name('contacts.destroy');
 
         // check - EmployeeSocialProfileController
-        // Route::get('social_profile/{employee}', [EmployeeSocialProfileController::class, 'show'])->name('social_profile.show');
-        // Route::post('social_profile/{employee}/store', [EmployeeController::class, 'storeSocialInfo'])->name('social_profile.store');
+        Route::get('social_profile/{employee}', [EmployeeSocialProfileController::class, 'show'])->name('social_profile.show');
+        Route::post('social_profile/{employee}/store', [EmployeeController::class, 'storeSocialInfo'])->name('social_profile.store');
 
         Route::post('profile_picture/{employee}/store', [EmployeeController::class, 'storeProfilePicture'])->name('profile_picture.store');
 
@@ -393,6 +410,7 @@ Route::group(['middleware' => ['XSS']], function () {
     Route::get('calendar/hr/load', [CalendarableController::class, 'load'])->name('calendar.load');
 
     Route::prefix('core_hr')->group(function () {
+
         Route::post('awards/update', [AwardController::class, 'update'])->name('awards.update');
         Route::resource('awards', AwardController::class)->except([
             'destroy', 'create', 'update',
@@ -639,7 +657,6 @@ Route::group(['middleware' => ['XSS']], function () {
         Route::get('expense/{id}/delete', [FinanceExpenseController::class, 'destroy'])->name('expense.destroy');
         Route::get('expense/download', [FinanceExpenseController::class, 'download'])->name('expense.download');
         Route::get('expense/download/{id}', [FinanceExpenseController::class, 'download'])->name('expense.downloadFile');
-        Route::get('expense/datatable', [FinanceExpenseController::class, 'datatable'])->name('expense.datatable');
 
         Route::resource('finance_transfer', FinanceTransferController::class)->except(['destroy', 'create', 'update', 'show', 'edit']);
 
@@ -935,7 +952,6 @@ Route::group(['middleware' => ['XSS']], function () {
     // Action on Client server
     Route::post('version-upgrade', [ClientAutoUpdateController::class, 'versionUpgrade'])->name('version-upgrade');
     Route::post('bug-update', [ClientAutoUpdateController::class, 'bugUpdate'])->name('bug-update');
-
 
 });
 //

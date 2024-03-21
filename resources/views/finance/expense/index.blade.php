@@ -8,40 +8,10 @@
 
 
         <div class="container-fluid">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-3">
-                            @can('store-expense')
-                                <button type="button" class="mt-4 btn btn-info" name="create_record" id="create_record"><i class="fa fa-plus"></i> {{__('Add Expense')}}</button>
-                            @endcan
-                        </div>
-                    </div>
-
-                        <form id="filterForm" method="POST">
-                            @csrf
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="month_year">{{__('Select Month')}}</label>
-                                        <input class="form-control month_year"
-                                            placeholder="{{__('Select Month')}}" readonly=""
-                                            id="filterMonthYear" name="month_year" type="text" value="">
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <div class="form-actions">
-                                            <button id="filterbutton" type="button" class="mt-4 filtering btn btn-primary"><i class="fa fa-check-square-o"></i> {{trans('file.Search')}}</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-
-                </div>
-            </div>
-
+            @can('store-expense')
+                <button type="button" class="btn btn-info" name="create_record" id="create_record"><i
+                            class="fa fa-plus"></i> {{__('Add Expense')}}</button>
+            @endcan
         </div>
 
 
@@ -319,205 +289,160 @@
                 todayHighlight: true
             });
 
-            let monthYear = $('.month_year');
-            monthYear.datepicker({
-                format: "MM-yyyy",
-                startView: "months",
-                minViewMode: 1,
-                autoclose: true,
-            }).datepicker("setDate", new Date());
 
-            // monthYear.on('changeDate', function(e){
-            //     console.log("Selected date: ", e.format());
-            // });
+            var table_table = $('#expense-table').DataTable({
+                initComplete: function () {
+                    this.api().columns([1]).every(function () {
+                        var column = this;
+                        var select = $('<select><option value=""></option></select>')
+                            .appendTo($(column.footer()).empty())
+                            .on('change', function () {
+                                var val = $.fn.dataTable.util.escapeRegex(
+                                    $(this).val()
+                                );
 
-            fill_datatable();
-
-            function fill_datatable(filter_month_year) {
-                // console.log(filter_month_year);
-                var table_table = $('#expense-table').DataTable({
-                    initComplete: function () {
-                        this.api().columns([1]).every(function () {
-                            var column = this;
-                            var select = $('<select><option value=""></option></select>')
-                                .appendTo($(column.footer()).empty())
-                                .on('change', function () {
-                                    var val = $.fn.dataTable.util.escapeRegex(
-                                        $(this).val()
-                                    );
-
-                                    column
-                                        .search(val ? '^' + val + '$' : '', true, false)
-                                        .draw();
-                                });
-
-                            column.data().unique().sort().each(function (d, j) {
-                                select.append('<option value="' + d + '">' + d + '</option>');
-                                $('select').selectpicker('refresh');
+                                column
+                                    .search(val ? '^' + val + '$' : '', true, false)
+                                    .draw();
                             });
+
+                        column.data().unique().sort().each(function (d, j) {
+                            select.append('<option value="' + d + '">' + d + '</option>');
+                            $('select').selectpicker('refresh');
                         });
-                    },
-                    responsive: true,
-                    fixedHeader: {
-                        header: true,
-                        footer: true
-                    },
-                    processing: true,
-                    serverSide: true,
-                    ajax: {
-                        url: "{{ route('expense.index') }}",
-                        type: 'GET',
-                        data: {
-                            filter_month_year: filter_month_year,
-                            "_token": "{{ csrf_token()}}"
-                        },
-                    },
+                    });
+                },
+                responsive: true,
+                fixedHeader: {
+                    header: true,
+                    footer: true
+                },
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: "{{ route('expense.index') }}",
+                },
 
-                    columns: [
-                        {
-                            data: 'id',
-                            orderable: false,
-                            searchable: false
-                        },
-                        {
-                            data: 'account',
-                            name: 'account',
-                        },
-                        {
-                            data: 'payee',
-                            name: 'payee',
-                        },
-                        {
-                            data: 'amount',
-                            name: 'amount',
-                            render: function (data) {
-                                if ('{{config('variable.currency_format') =='suffix'}}') {
-                                    return data + ' {{config('variable.currency')}}';
-                                } else {
-                                    return '{{config('variable.currency')}} ' + data;
+                columns: [
+                    {
+                        data: 'id',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'account',
+                        name: 'account',
+                    },
+                    {
+                        data: 'payee',
+                        name: 'payee',
+                    },
+                    {
+                        data: 'amount',
+                        name: 'amount',
+                        render: function (data) {
+                            if ('{{config('variable.currency_format') =='suffix'}}') {
+                                return data + ' {{config('variable.currency')}}';
+                            } else {
+                                return '{{config('variable.currency')}} ' + data;
 
-                                }
                             }
-                        },
-                        {
-                            data: 'category',
-                            name: 'category',
-
-                        },
-                        {
-                            data: 'expense_reference',
-                            name: 'expense_reference',
-                        },
-                        {
-                            data: 'payment_method',
-                            name: 'payment_method',
-                        },
-                        {
-                            data: 'expense_date',
-                            name: 'expense_date',
-                        },
-                        {
-                            data: 'action',
-                            name: 'action',
-                            orderable: false
-                        }
-                    ],
-
-
-                    "order": [],
-                    'language': {
-                        'lengthMenu': '_MENU_ {{__("records per page")}}',
-                        "info": '{{trans("file.Showing")}} _START_ - _END_ (_TOTAL_)',
-                        "search": '{{trans("file.Search")}}',
-                        'paginate': {
-                            'previous': '{{trans("file.Previous")}}',
-                            'next': '{{trans("file.Next")}}'
                         }
                     },
-                    'columnDefs': [
-                        {
-                            "orderable": false,
-                            'targets': [0, 8],
-                        },
-                        {
-                            'render': function (data, type, row, meta) {
-                                if (type == 'display') {
-                                    data = '<div class="checkbox"><input type="checkbox" class="dt-checkboxes"><label></label></div>';
-                                }
+                    {
+                        data: 'category',
+                        name: 'category',
 
-                                return data;
-                            },
-                            'checkboxes': {
-                                'selectRow': true,
-                                'selectAllRender': '<div class="checkbox"><input type="checkbox" class="dt-checkboxes"><label></label></div>'
-                            },
-                            'targets': [0]
-                        }
-                    ],
+                    },
+                    {
+                        data: 'expense_reference',
+                        name: 'expense_reference',
+                    },
+                    {
+                        data: 'payment_method',
+                        name: 'payment_method',
+                    },
+                    {
+                        data: 'expense_date',
+                        name: 'expense_date',
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false
+                    }
+                ],
 
 
-                    'select': {style: 'multi', selector: 'td:first-child'},
-                    'lengthMenu': [[10, 25, 50, -1], [10, 25, 50, "All"]],
-                    dom: '<"row"lfB>rtip',
-                    buttons: [
-                        {
-                            extend: 'pdf',
-                            text: '<i title="export to pdf" class="fa fa-file-pdf-o"></i>',
-                            exportOptions: {
-                                columns: ':visible:Not(.not-exported)',
-                                rows: ':visible'
-                            },
+                "order": [],
+                'language': {
+                    'lengthMenu': '_MENU_ {{__("records per page")}}',
+                    "info": '{{trans("file.Showing")}} _START_ - _END_ (_TOTAL_)',
+                    "search": '{{trans("file.Search")}}',
+                    'paginate': {
+                        'previous': '{{trans("file.Previous")}}',
+                        'next': '{{trans("file.Next")}}'
+                    }
+                },
+                'columnDefs': [
+                    {
+                        "orderable": false,
+                        'targets': [0, 8],
+                    },
+                    {
+                        'render': function (data, type, row, meta) {
+                            if (type == 'display') {
+                                data = '<div class="checkbox"><input type="checkbox" class="dt-checkboxes"><label></label></div>';
+                            }
+
+                            return data;
                         },
-                        {
-                            extend: 'csv',
-                            text: '<i title="export to csv" class="fa fa-file-text-o"></i>',
-                            exportOptions: {
-                                columns: ':visible:Not(.not-exported)',
-                                rows: ':visible'
-                            },
+                        'checkboxes': {
+                            'selectRow': true,
+                            'selectAllRender': '<div class="checkbox"><input type="checkbox" class="dt-checkboxes"><label></label></div>'
                         },
-                        {
-                            extend: 'print',
-                            text: '<i title="print" class="fa fa-print"></i>',
-                            exportOptions: {
-                                columns: ':visible:Not(.not-exported)',
-                                rows: ':visible'
-                            },
+                        'targets': [0]
+                    }
+                ],
+
+
+                'select': {style: 'multi', selector: 'td:first-child'},
+                'lengthMenu': [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                dom: '<"row"lfB>rtip',
+                buttons: [
+                    {
+                        extend: 'pdf',
+                        text: '<i title="export to pdf" class="fa fa-file-pdf-o"></i>',
+                        exportOptions: {
+                            columns: ':visible:Not(.not-exported)',
+                            rows: ':visible'
                         },
-                        {
-                            extend: 'colvis',
-                            text: '<i title="column visibility" class="fa fa-eye"></i>',
-                            columns: ':gt(0)'
+                    },
+                    {
+                        extend: 'csv',
+                        text: '<i title="export to csv" class="fa fa-file-text-o"></i>',
+                        exportOptions: {
+                            columns: ':visible:Not(.not-exported)',
+                            rows: ':visible'
                         },
-                    ],
-                });
-            }
+                    },
+                    {
+                        extend: 'print',
+                        text: '<i title="print" class="fa fa-print"></i>',
+                        exportOptions: {
+                            columns: ':visible:Not(.not-exported)',
+                            rows: ':visible'
+                        },
+                    },
+                    {
+                        extend: 'colvis',
+                        text: '<i title="column visibility" class="fa fa-eye"></i>',
+                        columns: ':gt(0)'
+                    },
+                ],
+            });
             new $.fn.dataTable.FixedHeader(table_table);
-
         });
-
-        // $('#filterForm').on('submit',function (e) {
-        //     e.preventDefault();
-        //     var filter_month_year = $('#month_year').val();
-        //     // console.log(filter_month_year);
-
-        //     if (filter_month_year !== '') {
-        //         $('#expense-table').DataTable().destroy();
-        //         fill_datatable(filter_month_year);
-        //     }
-        // });
-
-        //-------------- Filter -----------------------
-
-        $('#filterbutton').on("click",function(e){
-            let filterMonthYear = $('#filterMonthYear').val();
-            console.log(filterMonthYear);
-            $('#expense-table').DataTable().draw(true);
-            //$('#filter_form')[0].reset();
-            //$('select').selectpicker('refresh');
-        });
-        //--------------/ Filter ----------------------
-
 
 
         $('#create_record').on('click', function () {

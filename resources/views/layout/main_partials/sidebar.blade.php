@@ -3,56 +3,7 @@
         <!-- Sidebar Header    -->
         <!-- Sidebar Navigation Menus-->
         <div class="main-menu">
-            <ul id="side-main-menu" class="side-menu list-unstyled">
-
-                @if ($isCrmModuleExist)
-                    <li class="{{ (request()->is('lead*')) ? 'active' : '' }}">
-                        <a href="{{route('lead.index')}}"> <i class="dripicons-ticket"></i><span>{{__('Leads')}}</span>
-                        </a>
-                    </li>
-
-
-                    <li class="{{ (request()->is('subscription*')) ? 'active' : '' }}">
-                        <a href="{{route('subscription.index')}}"> <i class="dripicons-ticket"></i><span>{{__('Subscription')}}</span>
-                        </a>
-                    </li>
-
-                    <li class="has-dropdown @if(request()->is('user*')){{ (request()->is('sales.*')) ? 'active' : '' }}@elseif(request()->is('add-user*')){{ (request()->is('add-user*')) ? 'active' : '' }}@endif">
-                        <a href="#users" aria-expanded="false" data-toggle="collapse">
-                            <i class="dripicons-user"></i>
-                            <span>{{trans('file.Sales')}}</span>
-                        </a>
-                        <ul id="users" class="collapse list-unstyled ">
-                            <li id="users-menu"><a href="{{route('itemCategory.index')}}">{{__('file.Item Category')}}</a></li>
-                            <li id="users-menu"><a href="{{route('items.index')}}">{{__('file.Items')}}</a></li>
-                            <li id="users-menu"><a href="{{route('invoices.index')}}">{{__('file.Invoices')}}</a></li>
-                            <li id="users-menu"><a href="{{ route('order.index') }}">{{__('file.Order List')}}</a></li>
-                            <li id="users-menu"><a href="{{ route('store.index') }}">{{__('file.Store')}}</a></li>
-                            <li id="users-menu"><a href="{{ route('invoice-payments.index') }}">{{__('file.Payments')}}</a></li>
-                            <li id="users-menu"><a href="{{ route('contracts.index') }}">{{__('file.Contracts')}}</a></li>
-                        </ul>
-                    </li>
-
-
-                    <li class="has-dropdown @if(request()->is('prospects*')){{ (request()->is('prospects*')) ? 'active' : '' }}@elseif(request()->is('add-user*')){{ (request()->is('add-user*')) ? 'active' : '' }}@endif">
-                        <a href="#prospect" aria-expanded="false" data-toggle="collapse">
-                            <i class="dripicons-user"></i>
-                            <span>{{trans('file.Prospects')}}</span>
-                        </a>
-                        <ul id="prospect" class="collapse list-unstyled ">
-                            <li id="prospect-menu"><a href="{{route('prospects.proposals.index')}}">{{__('file.Proposals')}}</a></li>
-                            <li id="prospect-menu"><a href="{{route('prospects.estimates.index')}}">{{__('file.Estimates')}}</a></li>
-                            <li id="prospect-menu"><a href="{{route('prospects.estimate-forms.index')}}">{{__('file.Estimate Forms')}}</a></li>
-                        </ul>
-                    </li>
-                @endif
-
-                {{-- Addons --}}
-                <li class="{{ (request()->is('addons*')) ? 'active' : '' }}">
-                    <a href="{{route('addons')}}"> <i class="dripicons-ticket"></i><span>{{__('Addons')}}</span>
-                    </a>
-                </li>
-
+            <ul id="side-main-menu" class="side-menu list-unstyled mb-5">
 
                 @if(auth()->user()->role_users_id ==1)
                     <li class="{{ (request()->is('admin/dashboard*')) ? 'active' : '' }}"><a
@@ -65,6 +16,13 @@
                                     class="dripicons-meter"></i><span>{{trans('file.Dashboard')}}</span></a>
                     </li>
                 @endif
+
+                <!-- Addons -->
+                <li class="{{ (request()->is('addons*')) ? 'active' : '' }}">
+                    <a href="{{route('addons')}}"> <i class="dripicons-ticket"></i><span>{{__('Addons')}}</span>
+                    </a>
+                </li>
+
 
                 @can('user')
                     <li class="has-dropdown @if(request()->is('user*')){{ (request()->is('user*')) ? 'active' : '' }}@elseif(request()->is('add-user*')){{ (request()->is('add-user*')) ? 'active' : '' }}@endif">
@@ -412,14 +370,10 @@
                                 </li>
                             @endcan
 
+                            {{-- New --}}
                             @can('report-pension')
                                 <li id="pension_report"><a href="{{route('report.pension')}}">{{__('Pension Report')}}</a></li>
                             @endcan
-
-                            @if ($isCrmModuleExist)
-                                <li id="invoice_report"><a href="{{route('report.invoice')}}">{{__('Invoice Report')}}</a></li>
-                                <li id="invoice_payment_report"><a href="{{route('report.invoice-payment')}}">{{__('Invoice Payment Report')}}</a></li>
-                            @endif
                         </ul>
                     </li>
                 {{-- @endcan --}}
@@ -532,7 +486,9 @@
                                     </li>
                                 @endcan
 
-                                <li id="clients"><a href="{{route('client.overview')}}">{{trans(('file.Client Overview'))}}</a></li>
+                                @if ($isCrmModuleExist)
+                                    <li id="clients"><a href="{{route('client.overview')}}">{{trans(('file.Client Overview'))}}</a></li>
+                                @endif
 
                                 @can('view-invoice')
                                     <li id="invoices"><a
@@ -638,6 +594,47 @@
                         </li>
                     @endif
 
+
+                    @if ($isCrmModuleExist)
+                        <li class="{{ (request()->is('lead*')) ? 'active' : '' }}">
+                            <a href="{{route('lead.index')}}"> <i class="dripicons-ticket"></i><span>{{__('Leads')}}</span>
+                            </a>
+                        </li>
+                        <li class="{{ (request()->is('subscriptions*')) ? 'active' : '' }}">
+                            <a href="{{route('subscription.index')}}"> <i class="dripicons-ticket"></i><span>{{__('Subscription')}}</span>
+                            </a>
+                        </li>
+                        <li class="has-dropdown @if(request()->is('sales*')){{ (request()->is('sales.*')) ? 'active' : '' }} @elseif(request()->is('sales*')){{ (request()->is('sales*')) ? 'active' : '' }}@endif">
+                            <a href="#sales" aria-expanded="false" data-toggle="collapse">
+                                <i class="dripicons-user"></i>
+                                <span>{{trans('file.Sales')}}</span>
+                            </a>
+                            <ul id="sales" class="collapse list-unstyled ">
+                                <li id="sales-menu"><a href="{{route('itemCategory.index')}}">{{__('file.Item Category')}}</a></li>
+                                <li id="sales-menu"><a href="{{route('items.index')}}">{{__('file.Items')}}</a></li>
+                                <li id="sales-menu"><a href="{{route('invoices.index')}}">{{__('file.Invoices')}}</a></li>
+                                <li id="sales-menu"><a href="{{ route('store.index') }}">{{__('file.Store')}}</a></li>
+                                <li id="sales-menu"><a href="{{ route('order.index') }}">{{__('file.Order List')}}</a></li>
+                                <li id="sales-menu"><a href="{{ route('invoice-payments.index') }}">{{__('file.Payments')}}</a></li>
+                            </ul>
+                        </li>
+                        <li class="{{ (request()->is('contracts*')) ? 'active' : '' }}">
+                            <a href="{{route('contracts.index')}}"> <i class="dripicons-ticket"></i><span>{{__('Contracts')}}</span>
+                            </a>
+                        </li>
+                        <li class="has-dropdown @if(request()->is('prospects*')){{ (request()->is('prospects*')) ? 'active' : '' }}@elseif(request()->is('add-user*')){{ (request()->is('add-user*')) ? 'active' : '' }}@endif">
+                            <a href="#prospect" aria-expanded="false" data-toggle="collapse">
+                                <i class="dripicons-user"></i>
+                                <span>{{trans('file.Prospects')}}</span>
+                            </a>
+                            <ul id="prospect" class="collapse list-unstyled ">
+                                <li id="prospect-menu"><a href="{{route('prospects.proposals.index')}}">{{__('file.Proposals')}}</a></li>
+                                <li id="prospect-menu"><a href="{{route('prospects.estimates.index')}}">{{__('file.Estimates')}}</a></li>
+                                <li id="prospect-menu"><a href="{{route('prospects.estimate-forms.index')}}">{{__('file.Estimate Forms')}}</a></li>
+                            </ul>
+                        </li>
+                    @endif
+
                     @can('file_module')
                         <li class="has-dropdown {{ (request()->is('file_manager*')) ? 'active' : '' }}">
 
@@ -669,6 +666,7 @@
                             </ul>
                         </li>
                     @endcan
+
             </ul>
         </div>
     </div>

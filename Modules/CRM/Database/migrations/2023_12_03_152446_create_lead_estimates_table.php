@@ -14,14 +14,14 @@ return new class extends Migration
         Schema::create('lead_estimates', function (Blueprint $table) {
             $table->id();
             $table->foreignId('lead_id');
-            $table->foreignId('tax_id')->nullable();
+            $table->foreignId('tax_type_id')->nullable();
             $table->date('start_date');
             $table->date('end_date');
             $table->text('note')->nullable();
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('lead_id', 'lead_estimates_lead_id_foreign')->references('id')->on('leads')->onDelete('cascade');
-            $table->foreign('tax_id', 'lead_estimates_tax_id_foreign')->references('id')->on('taxes')->onDelete('set NULL');
+            $table->foreign('tax_type_id', 'lead_estimates_tax_type_id_foreign')->references('id')->on('tax_types')->onDelete('set NULL');
         });
     }
 
@@ -32,7 +32,7 @@ return new class extends Migration
     {
         Schema::table('lead_estimates', function (Blueprint $table) {
             $table->dropForeign('lead_estimates_lead_id_foreign');
-            $table->dropForeign('lead_estimates_tax_id_foreign');
+            $table->dropForeign('lead_estimates_tax_type_id_foreign');
             $table->dropIfExists('lead_estimates');
         });
     }

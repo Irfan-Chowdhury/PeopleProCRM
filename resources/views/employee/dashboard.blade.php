@@ -251,7 +251,7 @@
                                                     </div>
 
                                                     <div class="col-md-4 form-group">
-                                                        <label>{{__('Marital Status')}}</label>
+                                                        <label>{{__('Marital Status')}} </label>
                                                         <input type="hidden" name="marital_status_hidden"
                                                                value="{{ $employee->marital_status }}"/>
                                                         <select name="marital_status" id="marital_status"
@@ -338,10 +338,10 @@
 
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label>{{trans('file.Status')}}</label>
+                                                            <label>{{trans('file.Status')}} <span class="text-danger">*</span></label>
                                                             <input type="hidden" name="status_id_hidden"
                                                                value="{{ $employee->status_id }}"/>
-                                                            <select name="status_id" id="status_id"
+                                                            <select name="status_id" id="status_id" required
                                                                     class="form-control selectpicker"
                                                                     data-live-search="true"
                                                                     data-live-search-style="contains"

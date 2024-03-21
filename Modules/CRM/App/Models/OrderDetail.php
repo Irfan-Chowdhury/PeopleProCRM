@@ -17,4 +17,7 @@ class OrderDetail extends Model
         'rate',
         'subtotal',
     ];
+
+    public function item(){
+		return $this->belongsTo(Item::class);	}
 }

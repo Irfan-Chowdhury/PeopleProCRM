@@ -30,7 +30,7 @@
                     @csrf
 		            <fieldset>
 						<label>Envato Purchase Code <a href="#purchasecodeModal" role="button" data-toggle="modal">?</a></label>
-		                <input type='number' placeholder="Ex: 123456789XXXXXXXX" required class="form-control" name="purchasecode">
+		                <input type='text' placeholder="Ex: 123456789XXXXXXXX" required class="form-control" name="purchasecode">
 
                         <label>cPanel API Key</label>
 		                <input type='text' required placeholder="Ex: 5F5S5OF81XXXXXXXXXX" class="form-control" name="cpanel_api_key">

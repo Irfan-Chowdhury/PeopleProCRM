@@ -488,11 +488,11 @@
                                                 <tr>
                                                     @if(config('variable.currency_format') =='suffix')
                                                         <th class="text-dark"><strong>Paid Amount:</strong> <span
-                                                                    class="pull-right">{{$payslip->net_salary}} {{config('variable.currency')}}</span>
+                                                                    class="pull-right">{{number_format($payslip->net_salary, 2, '.', '')}} {{config('variable.currency')}}</span>
                                                         </th>
                                                     @else
                                                         <th class="text-dark"><strong>Paid Amount:</strong> <span
-                                                                    class="pull-right">{{config('variable.currency')}} {{$payslip->net_salary}}</span>
+                                                                    class="pull-right">{{config('variable.currency')}} {{number_format($payslip->net_salary, 2, '.', '')}}</span>
                                                         </th>
                                                     @endif
 

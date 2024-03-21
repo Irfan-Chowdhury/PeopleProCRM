@@ -21,8 +21,11 @@ Route::get('/documentation', function() {
 });
 
 Route::get('/documentation-attendance-device-addon', function() {
-    // return view('documentation/attendance_device_addon/index');
     return view('documentation.attendance_device_addon.index');
+});
+
+Route::get('/documentation-crm', function() {
+    return view('documentation.crm.index');
 });
 
 Route::get('/optimize', function() {
@@ -38,6 +41,16 @@ Route::get('/db-seed', function() {
 Route::get('/migrate', function() {
     Artisan::call('migrate');
     return 'Successfully Migrated';
+});
+
+// Route::get('/migrate-module', function() {
+//     Artisan::call('module:migrate CRM');
+//     return 'Successfully Migrated';
+// });
+
+Route::get('/migrate-rollback-module', function() {
+    Artisan::call('module:migrate-rollback CRM');
+    return 'Successfully Rollback';
 });
 
 Route::get('/maintainance-down', function() {

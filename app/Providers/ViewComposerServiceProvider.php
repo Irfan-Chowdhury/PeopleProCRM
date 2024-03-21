@@ -3,9 +3,9 @@
 namespace App\Providers;
 
 use App\Models\GeneralSetting;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\File;
 
 class ViewComposerServiceProvider extends ServiceProvider
 {
@@ -43,6 +43,7 @@ class ViewComposerServiceProvider extends ServiceProvider
                 'frontend.Layout.navigation',
                 'documentation.index',
                 'vendor.translation.layout',
+
                 'vendor.translation.languages.create'
             ], function ($view) use ($general_settings, $isCrmModuleExist) {
                 // $view->with('general_settings', $general_settings);

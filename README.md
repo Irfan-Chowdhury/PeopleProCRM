@@ -73,4 +73,3 @@ CodeCanyon : https://codecanyon.net/item/peoplepro-hrm-payroll-project-managemen
 -  #### Original Developer :  [Ashraf Shahadat](https://github.com/Ash-raf10) <small><i>[Till 2020]</i></small>
 
 - #### Contributors : [Irfan Chowdhury](https://github.com/Irfan-Chowdhury) <small><i>[January, 2021 - Present]</i></small>
-# PeopleProCRM

@@ -6,7 +6,7 @@ create migration files -
 php artisan make:migration update_foreign_key_to_employees_table --path=database/migrations/modify
 
 run migrate -
-php artisan migrate --path=database/migrations/primary
+php artisan migrate --path=database/migrations/modify
 
 php artisan migrate:rollback -
 php artisan migrate:rollback --step=1 --path=database/migrations/primary

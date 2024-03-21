@@ -1,4 +1,5 @@
 {
+    "Payment History": "تاريخ الدفع",
     "You are not authorized": "أنك غير مخول",
     "Data Added successfully.": "تمت إضافة البيانات بنجاح.",
     "Data is successfully updated": "تم تحديث البيانات بنجاح",
@@ -483,7 +484,6 @@
     "All Departments": "جميع الإدارات",
     "Select Month": "اختر الشهر",
     "BULK PAYMENT": "دفعة ضخمة",
-    "Payment History": "تاريخ الدفع",
     "Payment Info": "معلومات الدفع",
     "Net Salary": "صافي الراتب",
     "Joining Date": "تاريخ الانضمام",

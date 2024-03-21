@@ -95,13 +95,13 @@
         <div class="table-responsive">
             <table id="employee-table" class="table ">
                 <thead>
-                    <tr>
-                        <th class="not-exported"></th>
-                        <th>{{trans('file.Employee')}}</th>
-                        <th>{{trans('file.Company')}}</th>
-                        <th>{{trans('file.Contact')}}</th>
-                        <th class="not-exported">{{trans('file.action')}}</th>
-                    </tr>
+                <tr>
+                    <th class="not-exported"></th>
+                    <th>{{trans('file.Employee')}}</th>
+                    <th>{{trans('file.Company')}}</th>
+                    <th>{{trans('file.Contact')}}</th>
+                    <th class="not-exported">{{trans('file.action')}}</th>
+                </tr>
                 </thead>
 
             </table>
@@ -451,40 +451,40 @@
                         rows: ':visible'
                     },
                 },
-                // {
-                //     extend: 'csv',
-                //     text: '<i title="export to csv" class="fa fa-file-text-o"></i>',
-                //     exportOptions: {
-                //         columns: ':visible:Not(.not-exported)',
-                //         rows: ':visible'
-                //     },
-                // },
                 {
                     extend: 'csv',
-                    text: '<i title="export for device" class="fa fa-tablet"></i>',
-                    className: 'export-for-device',
+                    text: '<i title="export to csv" class="fa fa-file-text-o"></i>',
                     exportOptions: {
-                        columns: [1,2],
-                        rows: ':visible',
-                        format: {
-                            body: function ( data, row, column, node ) {
-                                if (column === 0) {
-                                    var id = data.match(/<span>Staff Id: (.*?)<\/span>/)[1];
-                                    name = data.match(/<[a][^>]*>(.+?)<\/[a]>/)[1];
-                                    return id;
-                                }
-                                else {
-                                    return name;
-                                }
-                            }
-                        }
+                        columns: ':visible:Not(.not-exported)',
+                        rows: ':visible'
                     },
-                    customize: function (csv) {
-                        var csvRows = csv.split('\n');
-                        csvRows[0] = csvRows[0].replace(['"Employee"', '"Company"'], ['"Staff Id"','"Name"']);
-                        return csvRows.join('\n');
-                    }
                 },
+                // {
+                //     extend: 'csv',
+                //     text: '<i title="export for device" class="fa fa-tablet"></i>',
+                //     className: 'export-for-device',
+                //     exportOptions: {
+                //         columns: [1,2],
+                //         rows: ':visible',
+                //         format: {
+                //             body: function ( data, row, column, node ) {
+                //                 if (column === 0) {
+                //                     var id = data.match(/<span>Staff Id: (.*?)<\/span>/)[1];
+                //                     name = data.match(/<[a][^>]*>(.+?)<\/[a]>/)[1];
+                //                     return id;
+                //                 }
+                //                 else {
+                //                     return name;
+                //                 }
+                //             }
+                //         }
+                //     },
+                //     customize: function (csv) {
+                //         var csvRows = csv.split('\n');
+                //         csvRows[0] = csvRows[0].replace(['"Employee"', '"Company"'], ['"Staff Id"','"Name"']);
+                //         return csvRows.join('\n');
+                //     }
+                // },
                 {
                     extend: 'print',
                     text: '<i title="print" class="fa fa-print"></i>',

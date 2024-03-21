@@ -3,11 +3,11 @@
 namespace Modules\CRM\App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\TaxType;
 use Modules\CRM\App\Http\Requests\LeadProposal\StoreRequest;
 use Modules\CRM\App\Http\Requests\LeadProposal\UpdateRequest;
 use Modules\CRM\App\Models\Lead;
 use Modules\CRM\App\Models\LeadProposal;
-use Modules\CRM\App\Models\Tax;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -15,7 +15,8 @@ class LeadProposalController extends Controller
 {
     public function index(Lead $lead)
     {
-        $taxes = Tax::all();
+        $taxes = TaxType::select('id', 'name', 'rate', 'type')->get();
+
         return view('crm::lead_section.proposals.index', compact('lead','taxes'));
     }
 
@@ -42,7 +43,7 @@ class LeadProposalController extends Controller
                 })
                 ->addColumn('tax',function ($row)
                 {
-                    return $row->tax->name ?? null;
+                    return $row->tax->rate.' %';
                 })
 				->addColumn('action', function ($data)
                 {
@@ -64,7 +65,7 @@ class LeadProposalController extends Controller
 
         LeadProposal::create([
             'lead_id' => $lead->id,
-            'tax_id' => isset($request->tax_id) ? $request->tax_id : null,
+            'tax_type_id' => isset($request->tax_type_id) ? $request->tax_type_id : null,
             'start_date' => date('Y-m-d',strtotime($request->start_date)),
             'end_date' => date('Y-m-d',strtotime($request->end_date)),
             'note' => $request->note,
@@ -85,7 +86,7 @@ class LeadProposalController extends Controller
 
         $leadProposal->update([
             'lead_id' => $lead->id,
-            'tax_id' => $request->tax_id ?? null,
+            'tax_type_id' => $request->tax_type_id ?? null,
             'start_date' => date('Y-m-d',strtotime($request->start_date)),
             'end_date' => date('Y-m-d',strtotime($request->end_date)),
             'note' => $request->note,

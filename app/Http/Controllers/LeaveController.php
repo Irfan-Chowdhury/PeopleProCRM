@@ -111,59 +111,66 @@ class LeaveController extends Controller
             }
 
 
+            try {
 
-            $leave = LeaveType::findOrFail($request->leave_type);
+                $leave = LeaveType::findOrFail($request->leave_type);
+                $data = [];
+                $data['employee_id'] = $request->employee_id;
+                $data['company_id'] = $request->company_id;
+                $data['department_id'] = $request->department_id;
+                $data['leave_type_id'] = $request->leave_type;
+                $data['leave_reason'] = $request->leave_reason;
+                $data['remarks'] = $request->remarks;
+                $data['status'] = $request->status;
+                $data['is_notify'] = $request->is_notify;
+                $data['start_date'] = $request->start_date;
+                $data['end_date'] = $request->end_date;
+                $data['total_days'] = $request->diff_date_hidden;
 
-            $data = [];
-            $data['employee_id'] = $request->employee_id;
-            $data['company_id'] = $request->company_id;
-            $data['department_id'] = $request->department_id;
-            $data['leave_type_id'] = $request->leave_type;
-            $data['leave_reason'] = $request->leave_reason;
-            $data['remarks'] = $request->remarks;
-            $data['status'] = $request->status;
-            $data['is_notify'] = $request->is_notify;
-            $data['start_date'] = $request->start_date;
-            $data['end_date'] = $request->end_date;
-            $data['total_days'] = $request->diff_date_hidden;
-
-
-            if ($request->status == 'approved') {
-                try {
-                    $this->employeeLeaveTypeDataManage(null, $request, $request->employee_id, false);
-                } catch (Exception $e) {
-                    return response()->json(['error' => $e->getMessage()]);
-                }
-            }
-
-
-            $leave = leave::create($data);
-
-            if ($leave->is_notify == 1) {
-                $text = "A new leave-notification has been published";
-                $notifiable = User::findOrFail($data['employee_id']);
-                $notifiable->notify(new LeaveNotification($text)); //To Employee
-            } elseif ((Auth::user()->role_users_id != 1) && ($leave->is_notify == NULL)) {
-                //get-leave-notification - 294
-                $role_ids = DB::table('role_has_permissions')->where('permission_id', 294)->get()->pluck('role_id');
-                $role_ids[] = 1;
-
-                $notifiable = User::whereIn('role_users_id', $role_ids)->get();
-                foreach ($notifiable as $item) {
-                    $item->notify(new LeaveNotificationToAdmin());
+                if ($request->status == 'approved') {
+                    try {
+                        $this->employeeLeaveTypeDataManage(null, $request, $request->employee_id, false);
+                    } catch (Exception $e) {
+                        return response()->json(['error' => $e->getMessage()]);
+                    }
                 }
 
-                //Mail
-                $department = department::with('DepartmentHead:id,email')->where('id', $request->department_id)->first();
-                Notification::route('mail', $department->DepartmentHead->email)
-                    ->notify(new EmployeeLeaveNotification(
-                        $leave->employee->full_name,
-                        $leave->total_days,
-                        $leave->start_date,
-                        $leave->end_date,
-                        $leave->leave_reason,
-                    ));
+                $leave = leave::create($data);
+
+                if ($leave->is_notify == 1) {
+                    $text = "A new leave-notification has been published";
+                    $notifiable = User::findOrFail($data['employee_id']);
+                    $notifiable->notify(new LeaveNotification($text)); //To Employee
+                } elseif ((Auth::user()->role_users_id != 1) && ($leave->is_notify == NULL)) {
+                    //get-leave-notification - 294
+                    $role_ids = DB::table('role_has_permissions')->where('permission_id', 294)->get()->pluck('role_id');
+                    $role_ids[] = 1;
+
+                    $notifiable = User::whereIn('role_users_id', $role_ids)->get();
+                    foreach ($notifiable as $item) {
+                        $item->notify(new LeaveNotificationToAdmin());
+                    }
+
+                    //Mail
+                    $department = department::with('DepartmentHead:id,email')->where('id', $request->department_id)->first();
+                    if(isset($department->DepartmentHead->email)) {
+                        Notification::route('mail', $department->DepartmentHead->email)
+                        ->notify(new EmployeeLeaveNotification(
+                            $leave->employee->full_name,
+                            $leave->total_days,
+                            $leave->start_date,
+                            $leave->end_date,
+                            $leave->leave_reason,
+                        ));
+                    }
+
+                }
+
             }
+            catch (Exception $e) {
+                return response()->json(['error' => $e->getMessage()]);
+            }
+
             return response()->json(['success' => __('Data Added successfully.')]);
         }
         return response()->json(['success' => __('You are not authorized')]);
@@ -278,8 +285,6 @@ class LeaveController extends Controller
 
             $leave = leave::find($id);
 
-
-
             //Employee Remaining Leave Manage
             $isEmplyoeeRemaingLeaveRestore = null;
             if ($leave->status == 'approved' && ($request->status == 'pending' || $request->status == 'rejected')) {
@@ -290,15 +295,16 @@ class LeaveController extends Controller
 
             try {
                 $this->employeeLeaveTypeDataManage($leave, $request, $employee_id, $isEmplyoeeRemaingLeaveRestore);
-            } catch (Exception $e) {
-                return response()->json(['error' => $e->getMessage()]);
-            }
-            $leave->update($data);
 
-            if ($data['is_notify'] != NULL) {
-                $text = "A leave-notification has been updated";
-                $notifiable = User::findOrFail($data['employee_id']);
-                $notifiable->notify(new LeaveNotification($text)); //To Employee
+                $leave->update($data);
+                if ($data['is_notify'] != NULL) {
+                    $text = "A leave-notification has been updated";
+                    $notifiable = User::findOrFail($data['employee_id']);
+                    $notifiable->notify(new LeaveNotification($text)); //To Employee
+                }
+            }
+            catch (Exception $e) {
+                return response()->json(['error' => $e->getMessage()]);
             }
             return response()->json(['success' => __('Data is successfully updated')]);
         }

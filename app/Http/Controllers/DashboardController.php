@@ -42,9 +42,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
-use Nwidart\Modules\Facades\Module;
 use Throwable;
 
 class DashboardController extends Controller {
@@ -574,12 +572,6 @@ class DashboardController extends Controller {
 			$invoice_paid_amount = config('variable.currency') . $invoice_paid_amount_raw;
 			$invoice_unpaid_amount = config('variable.currency') . $invoice_unpaid_amount_raw;
 		}
-
-
-        // $isCrmModuleExist = File::exists(base_path('Modules/CRM'));
-        // if ($isCrmModuleExist)
-        //     return 1;
-        // return 2;
 
 
 		return view('dashboard.client_dashboard', compact('user', 'client',

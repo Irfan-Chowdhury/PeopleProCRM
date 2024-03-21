@@ -31,6 +31,10 @@ class OrderController extends Controller
                 {
                     return $row->client->first_name.' '.$row->client->last_name ?? "" ;
                 })
+                ->addColumn('quantity',function ($row)
+                {
+                    return $row->orderDetails->sum('quantity');
+                })
                 ->addColumn('total',function ($row)
                 {
                     return $row->total ?? 0.00 ;
@@ -61,11 +65,22 @@ class OrderController extends Controller
                 })
 				->addColumn('action', function ($data)
                 {
-                    return '<button type="button" data-id="'.$data->id.'" class="delete btn btn-danger btn-sm"><i class="dripicons-trash"></i></button>';
+                    $button  = '<a href="orders/details/'.$data->id.'" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="View Details"><i class="dripicons-preview"></i></a>';
+                    $button .= '&nbsp;&nbsp;';
+                    $button .= '<button type="button" data-id="'.$data->id.'" class="delete btn btn-danger btn-sm"><i class="dripicons-trash"></i></button>';
+
+                    return $button;
                 })
                 ->rawColumns(['action','status'])
                 ->make(true);
 		}
+    }
+
+    public function orderDetails(Order $order)
+    {
+        $order =  $order->load('taxData', 'orderDetails');
+
+        return view('crm::sale_section.order.order_details', compact('order'));
     }
 
     public function orderStatusChange($order_id, $status)
@@ -86,7 +101,10 @@ class OrderController extends Controller
                 'orders.status as status')
             ->join('items', 'items.id', '=', 'order_details.item_id')
             ->join('orders', 'orders.id', '=', 'order_details.order_id')
-            ->where('orders.client_id', auth()->user()->id)
+            ->where([
+                    'orders.client_id' => auth()->user()->id,
+                    'orders.deleted_at' => null
+                ])
             ->groupBy('orderId')
             ->get();
 

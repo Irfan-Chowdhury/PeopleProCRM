@@ -30,11 +30,6 @@ class Subscription extends Model
 		return $this->hasOne('App\Models\Client','id','client_id');
 	}
 
-    // public function tax()
-    // {
-	// 	return $this->hasOne(Tax::class,'id','tax_id');
-	// }
-
     public function tax()
     {
 		return $this->belongsTo(TaxType::class,'tax_type_id')

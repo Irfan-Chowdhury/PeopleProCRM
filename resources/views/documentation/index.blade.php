@@ -141,6 +141,10 @@
         <li><a href="#video_tutorial" title="Video Tutorial">Video Tutorial</a></li>
         <li><a id="attendanceDeviceAddon" title="Attendance Device Addon">Attendance Device Addon</a></li>
         <li><a href="#autoUpdateFeature" title="Auto Update Feature">Auto Update Feature</a></li>
+        {{-- @if ($isCrmModuleExist) --}}
+            <li><a id="CRM" title="CRM">CRM</a></li>
+        {{-- @endif --}}
+
         <li><a href="#support" title="SUPPORT">Support</a></li>
     </ul>
 </div>
@@ -2850,10 +2854,17 @@
     $(document).ready(function() {
         const currentUrl = window.location.href;
         const baseUrl = currentUrl.split("/").slice(0, -1).join("/");
+
         const attendanceDeviceURL = baseUrl + '/documentation-attendance-device-addon'
         console.log('attendanceDeviceURL -',attendanceDeviceURL);
         $("#attendanceDeviceAddon").attr({
             href: attendanceDeviceURL,
+            target: "_blank"
+        });
+
+        const crmURL = baseUrl + '/documentation-crm'
+        $("#CRM").attr({
+            href: crmURL,
             target: "_blank"
         });
     });

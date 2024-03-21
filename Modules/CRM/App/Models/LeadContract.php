@@ -2,6 +2,7 @@
 
 namespace Modules\CRM\App\Models;
 
+use App\Models\TaxType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -13,7 +14,7 @@ class LeadContract extends Model
     protected $fillable = [
         'lead_id',
         'project_id',
-        'tax_id',
+        'tax_type_id',
         'title',
         'start_date',
         'end_date',
@@ -22,7 +23,8 @@ class LeadContract extends Model
 
     public function tax()
     {
-        return $this->hasOne(Tax::class,'id','tax_id');
+		return $this->belongsTo(TaxType::class,'tax_type_id')
+                ->select('id','name', 'rate', 'type');
 	}
 
     public function project()

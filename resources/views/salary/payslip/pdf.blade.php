@@ -52,10 +52,12 @@
             font-size: 70%;
             color: #000
         }
-        /* * { font-family: DejaVu Sans, sans-serif; } */
     </style>
 </head>
-<body onload="window.print()">
+<body onload="window.print()" style="font-family: DejaVu Sans;">
+
+    <h3 class="text-center">@lang('file.Payment History')</h3>
+
 
     <h5>{{$company['company_name']}}</h5>
     <h6>{{$company['location']['address1']}}</h6>

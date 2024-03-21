@@ -113,6 +113,8 @@ class EmployeeController extends Controller
             $currentDate = date('Y-m-d');
 
             if (request()->ajax()) {
+
+
                 $employees = $this->getEmployees($request, $currentDate);
 
                 return datatables()->of($employees)
