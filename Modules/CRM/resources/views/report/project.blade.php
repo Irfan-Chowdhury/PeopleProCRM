@@ -1,55 +1,75 @@
-<?php $__env->startSection('content'); ?>
-
-<div class="container-fluid">
-    <div class="card">
-        <div class="card-header"><h3><?php echo e(__('file.Payments')); ?></h3></div>
-            <div class="card-header">
-                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#createModal"><i class="fa fa-plus"></i> <?php echo e(__('file.Add New')); ?></button>
-                <button type="button" class="btn btn-danger" name="bulk_delete" id="bulk_delete"><i class="fa fa-minus-circle"></i> <?php echo e(__('Bulk delete')); ?></button>
-            </div>
-        </div>
-    </div>
-</div>
+@extends('layout.main')
+@section('content')
 
 
 <div class="container">
+    <div class="row">
+        <div class="col-md-12 ">
+            <div class="wrapper count-title text-center mb-30px ">
+                <div class="box mb-4">
+                    <div class="box-header with-border">
+                        <h3 class="box-title"> {{__('Team Member Project Report')}} <span id="details_month_year"></span> </h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header py-3">
+            <div class="row">
+                <div class="col-md-6>
+                    <label for=""><b>Team Member</b></label>
+                    <select name="employee_id" id="employee_id" class="form-control selectpicker"
+                    data-live-search="true" data-live-search-style="contains" title="{{__('Select Team Member')}}...">
+                        @foreach ($employees as $item)
+                            <option value="{{ $item->id }}"> {{ $item->first_name.' '.$item->last_name }} </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="ml-2 col-md-6>
+                    <label for=""><b>Project</b></label>
+                    <select name="project_id" id="project_id" class="form-control selectpicker"
+                    data-live-search="true" data-live-search-style="contains" title="Select Project">
+                        @foreach ($projects as $item)
+                            <option value="{{ $item->id }}"> {{ $item->title }} </option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <div class="table-responsive">
         <table id="dataListTable" class="table ">
             <thead>
-                <tr>
-                    <th class="not-exported"></th>
-                    <th><?php echo e(trans('file.Invoice Id')); ?></th>
-                    <th><?php echo e(trans('file.Payment Date')); ?></th>
-                    <th><?php echo e(trans('file.Payment Method')); ?></th>
-                    <th><?php echo e(trans('file.Amount')); ?></th>
-                    <th><?php echo e(trans('file.Payment Status')); ?></th>
-                    <th class="not-exported"><?php echo e(trans('file.Action')); ?></th>
-                </tr>
+            <tr>
+                <th class="not-exported"></th>
+                <th>{{__('Team Memeber')}}</th>
+                <th>{{__('Project Name')}}</th>
+                <th>{{trans('file.Priority')}}</th>
+                <th>{{trans('file.Client')}}</th>
+                <th>{{__('Start Date')}}</th>
+                <th>{{__('End Date')}}</th>
+            </tr>
             </thead>
-            <tbody id="tablecontents"></tbody>
         </table>
     </div>
 </div>
 
-<?php echo $__env->make('crm::sale_section.invoice_payments.create-modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+@endsection
 
 
-<?php $__env->stopSection(); ?>
-
-
-<?php $__env->startPush('scripts'); ?>
+@push('scripts')
 <script type="text/javascript">
-    let dataTableURL = "<?php echo e(route('invoice-payments.datatable')); ?>";
-    let storeURL = "<?php echo e(route('invoice-payments.store')); ?>";
-    let destroyURL = "<?php echo e(url('sales/invoice-payments/destroy')); ?>/";
-    let bulkDeleteURL = "<?php echo e(route('invoice-payments.bulk_delete')); ?>";
+    let dataTableURL = "{{ route('report.project') }}";
 </script>
 
 <script type="text/javascript">
     (function($) {
         "use strict";
 
-        var invoices = <?php echo $invoices; ?>;
 
 
         $(document).ready(function () {
@@ -61,13 +81,13 @@
 
             var date = $('.date');
             date.datepicker({
-                format: '<?php echo e(env('Date_Format_JS')); ?>',
+                format: '{{ env('Date_Format_JS')}}',
                 autoclose: true,
                 todayHighlight: true
             });
 
 
-            let table = $('#dataListTable').DataTable({
+            var table = $('#dataListTable').DataTable({
                 initComplete: function () {
                     this.api().columns([1]).every(function () {
                         var column = this;
@@ -77,8 +97,12 @@
                                 var val = $.fn.dataTable.util.escapeRegex(
                                     $(this).val()
                                 );
-                                column.search(val ? '^' + val + '$' : '', true, false).draw();
+
+                                column
+                                    .search(val ? '^' + val + '$' : '', true, false)
+                                    .draw();
                             });
+
                         column.data().unique().sort().each(function (d, j) {
                             select.append('<option value="' + d + '">' + d + '</option>');
                             $('select').selectpicker('refresh');
@@ -94,55 +118,61 @@
                 serverSide: true,
                 ajax: {
                     url: dataTableURL,
+                    data: function (d) {
+                        d.employee_id = $('#employee_id').val()
+                        d.project_id = $('#project_id').val()
+                    }
                 },
+
                 columns: [
                     {
-                        data: 'id',
+                        data: 'project_id',
                         orderable: false,
                         searchable: false
                     },
                     {
-                        data: 'invoiceId',
-                        name: 'invoiceId',
+                        data: 'assigned_employee',
+                        name: 'assigned_employee',
                     },
                     {
-                        data: 'payment_date',
-                        name: 'payment_date',
+                        data: 'project_title',
+                        name: 'project_title'
+
                     },
                     {
-                        data: 'payment_method',
-                        name: 'payment_method',
+                        data: 'project_priority',
+                        name: 'project_priority',
+                    },
+
+                    {
+                        data: 'client',
+                        name: 'client',
                     },
                     {
-                        data: 'amount',
-                        name: 'amount',
+                        data: 'start_date',
+                        name: 'start_date',
                     },
                     {
-                        data: 'payment_status',
-                        name: 'payment_status',
+                        data: 'end_date',
+                        name: 'end_date',
                     },
-                    {
-                        data: 'action',
-                        name: 'action',
-                        orderable: false
-                    }
                 ],
 
 
                 "order": [],
                 'language': {
-                    'lengthMenu': '_MENU_ <?php echo e(__("records per page")); ?>',
-                    "info": '<?php echo e(trans("file.Showing")); ?> _START_ - _END_ (_TOTAL_)',
-                    "search": '<?php echo e(trans("file.Search")); ?>',
+                    'lengthMenu': '_MENU_ {{__("records per page")}}',
+                    "info": '{{trans("file.Showing")}} _START_ - _END_ (_TOTAL_)',
+                    "search": '{{trans("file.Search")}}',
                     'paginate': {
-                        'previous': '<?php echo e(trans("file.Previous")); ?>',
-                        'next': '<?php echo e(trans("file.Next")); ?>'
+                        'previous': '{{trans("file.Previous")}}',
+                        'next': '{{trans("file.Next")}}'
                     }
                 },
                 'columnDefs': [
                     {
                         "orderable": false,
-                        'targets': [0,6]
+                        'targets': [0, 5],
                     },
                     {
                         'render': function (data, type, row, meta) {
@@ -159,6 +189,8 @@
                         'targets': [0]
                     }
                 ],
+
+
                 'select': {style: 'multi', selector: 'td:first-child'},
                 'lengthMenu': [[10, 25, 50, -1], [10, 25, 50, "All"]],
                 dom: '<"row"lfB>rtip',
@@ -195,28 +227,19 @@
                 ],
             });
             new $.fn.dataTable.FixedHeader(table);
-        });
 
-        $('#submitForm select[name="invoice_id"]').change(function () {
-            let invoiceId = parseInt($(this).val());
-            let invoice = invoices.find(function(item) {
-                return parseInt(item.id) === invoiceId;
+            $('#employee_id').change(function(){
+                table.draw();
             });
-            let amount = invoice ? invoice.sub_total : 0;
-
-            $('#submitForm input[name="amount"]').val(amount);
+            $('#project_id').change(function(){
+                table.draw();
+            });
         });
+
 
 
 
     })(jQuery);
 </script>
 
-
-<script type="text/javascript" src="<?php echo e(asset('js/common-js/store.js')); ?>"></script>
-<script type="text/javascript" src="<?php echo e(asset('js/common-js/delete.js')); ?>"></script>
-<script type="text/javascript" src="<?php echo e(asset('js/common-js/bulkDelete.js')); ?>"></script>
-<script type="text/javascript" src="<?php echo e(asset('js/common-js/alertMessages.js')); ?>"></script>
-<?php $__env->stopPush(); ?>
-
-<?php echo $__env->make('layout.main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/html/peoplepro/peoplepro-hrm-crm/Modules/CRM/resources/views/sale_section/invoice_payments/index.blade.php ENDPATH**/ ?>
+@endpush

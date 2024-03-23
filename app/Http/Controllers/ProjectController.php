@@ -27,11 +27,12 @@ class ProjectController extends Controller {
 		$logged_user = auth()->user();
 		$companies = company::select('id', 'company_name')->get();
 		$clients = Client::select('id', 'first_name', 'last_name')->get(); //Correction
-		if ($logged_user->can('view-project'))
-		{
-			if (request()->ajax())
-			{
-				return datatables()->of(Project::with('client:id,first_name,last_name', 'assignedEmployees')->get())
+        $projects = Project::with('client:id,first_name,last_name', 'assignedEmployees')->get();
+
+		if ($logged_user->can('view-project')){
+			if (request()->ajax()){
+
+                return datatables()->of($projects)
 					->setRowId(function ($project)
 					{
 						return $project->id;

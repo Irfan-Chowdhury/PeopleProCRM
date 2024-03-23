@@ -347,9 +347,14 @@
                                 </li>
                             <?php endif; ?>
 
-                            
                             <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('report-pension')): ?>
                                 <li id="pension_report"><a href="<?php echo e(route('report.pension')); ?>"><?php echo e(__('Pension Report')); ?></a></li>
+                            <?php endif; ?>
+                            <?php if($isCrmModuleExist): ?>
+                                <li id="invoice_report"><a href="<?php echo e(route('report.invoice')); ?>"><?php echo e(__('Invoice Report')); ?></a></li>
+                                <li id="invoice_payment_report"><a href="<?php echo e(route('report.invoice-payment')); ?>"><?php echo e(__('Invoice Payment Report')); ?></a></li>
+                                <li id="team_report"><a href="<?php echo e(route('report.project')); ?>"><?php echo e(__('Team Project Report')); ?></a></li>
+                                <li id="client_report"><a href="<?php echo e(route('report.client-project')); ?>"><?php echo e(__('Client Project Report')); ?></a></li>
                             <?php endif; ?>
                         </ul>
                     </li>

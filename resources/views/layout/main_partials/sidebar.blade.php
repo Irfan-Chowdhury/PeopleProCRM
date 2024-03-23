@@ -370,10 +370,15 @@
                                 </li>
                             @endcan
 
-                            {{-- New --}}
                             @can('report-pension')
                                 <li id="pension_report"><a href="{{route('report.pension')}}">{{__('Pension Report')}}</a></li>
                             @endcan
+                            @if ($isCrmModuleExist)
+                                <li id="invoice_report"><a href="{{route('report.invoice')}}">{{__('Invoice Report')}}</a></li>
+                                <li id="invoice_payment_report"><a href="{{route('report.invoice-payment')}}">{{__('Invoice Payment Report')}}</a></li>
+                                <li id="team_report"><a href="{{route('report.project')}}">{{__('Team Project Report')}}</a></li>
+                                <li id="client_report"><a href="{{route('report.client-project')}}">{{__('Client Project Report')}}</a></li>
+                            @endif
                         </ul>
                     </li>
                 {{-- @endcan --}}

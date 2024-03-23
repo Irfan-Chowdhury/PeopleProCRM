@@ -298,6 +298,8 @@ Route::group(['middleware' => ['XSS']], function () {
     Route::prefix('report')->group(function () {
         Route::get('invoice', [ReportController::class, 'invoice'])->name('report.invoice');
         Route::get('invoice-payment', [ReportController::class, 'invoicePayment'])->name('report.invoice-payment');
+        Route::get('project', [ReportController::class, 'teamProjectReport'])->name('report.project');
+        Route::get('client-project', [ReportController::class, 'clientProjectReport'])->name('report.client-project');
     });
 
 

@@ -3,11 +3,14 @@
 namespace Modules\CRM\App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Client;
+use App\Models\Employee;
 use App\Models\Invoice;
 use App\Models\Project;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use Modules\CRM\App\Models\InvoicePayment;
 
 class ReportController extends Controller
@@ -135,6 +138,178 @@ class ReportController extends Controller
 
         return view('crm::report.invoice-payment');
     }
+    public function teamProjectReport(Request $request)
+    {
+        $employees = Employee::select('id', 'first_name', 'last_name')->get();
+        $projects = Project::select('id', 'title')->get();
+
+        $data = DB::table('employee_project')
+                ->select(
+                    'employees.id AS employee_id',
+                    DB::raw('CONCAT(employees.first_name," ",employees.last_name) AS employee_name'),
+
+                    'clients.id AS client_id',
+                    DB::raw('CONCAT(clients.first_name," ",clients.last_name) AS client_name'),
+
+                    'projects.id AS project_id',
+                    'projects.title AS project_title',
+                    'projects.project_priority',
+                    'projects.start_date',
+                    'projects.end_date'
+                )
+                ->join('employees','employees.id','employee_project.employee_id')
+                ->join('projects','projects.id','employee_project.project_id')
+                ->join('clients','clients.id','projects.client_id')
+                ->get();
+
+        if($request->employee_id) {
+            $data = DB::table('employee_project')
+            ->select(
+                'employees.id AS employee_id',
+                DB::raw('CONCAT(employees.first_name," ",employees.last_name) AS employee_name'),
+
+                'clients.id AS client_id',
+                DB::raw('CONCAT(clients.first_name," ",clients.last_name) AS client_name'),
+
+                'projects.id AS project_id',
+                'projects.title AS project_title',
+                'projects.project_priority',
+                'projects.start_date',
+                'projects.end_date'
+            )
+            ->join('employees','employees.id','employee_project.employee_id')
+            ->join('projects','projects.id','employee_project.project_id')
+            ->join('clients','clients.id','projects.client_id')
+            ->where('employee_project.employee_id', $request->employee_id)
+            ->get();
+        }
+        else if($request->project_id) {
+            $data = DB::table('employee_project')
+            ->select(
+                'employees.id AS employee_id',
+                DB::raw('CONCAT(employees.first_name," ",employees.last_name) AS employee_name'),
+
+                'clients.id AS client_id',
+                DB::raw('CONCAT(clients.first_name," ",clients.last_name) AS client_name'),
+
+                'projects.id AS project_id',
+                'projects.title AS project_title',
+                'projects.project_priority',
+                'projects.start_date',
+                'projects.end_date'
+            )
+            ->join('employees','employees.id','employee_project.employee_id')
+            ->join('projects','projects.id','employee_project.project_id')
+            ->join('clients','clients.id','projects.client_id')
+            ->where('employee_project.project_id', $request->project_id)
+            ->get();
+        }
+        else {
+            $data = DB::table('employee_project')
+            ->select(
+                'employees.id AS employee_id',
+                DB::raw('CONCAT(employees.first_name," ",employees.last_name) AS employee_name'),
+
+                'clients.id AS client_id',
+                DB::raw('CONCAT(clients.first_name," ",clients.last_name) AS client_name'),
+
+                'projects.id AS project_id',
+                'projects.title AS project_title',
+                'projects.project_priority',
+                'projects.start_date',
+                'projects.end_date'
+            )
+            ->join('employees','employees.id','employee_project.employee_id')
+            ->join('projects','projects.id','employee_project.project_id')
+            ->join('clients','clients.id','projects.client_id')
+            ->get();
+        }
+
+        if (request()->ajax()){
+
+            return datatables()->of($data)
+                ->setRowId(function ($project)
+                {
+                    return $project->project_id;
+                })
+                ->addColumn('project_title', function ($row)
+                {
+                    return $row->project_title;
+                })
+                ->addColumn('client', function ($row)
+                {
+                    return $row->client_name;
+                })
+                ->addColumn('assigned_employee', function ($row)
+                {
+                    return $row->employee_name;
+                })
+                ->make(true);
+        }
+
+        return view('crm::report.project', compact('employees','projects'));
+    }
+
+    public function clientProjectReport(Request $request)
+	{
+		$logged_user = auth()->user();
+		$clients = Client::select('id', 'first_name', 'last_name')->get();
+        $projects = Project::with('client:id,first_name,last_name', 'assignedEmployees')->get();
+
+        if($request->client_id) {
+            $projects = Project::with('client:id,first_name,last_name', 'assignedEmployees')
+                        ->whereHas('client', function ($query) use ($request) {
+                            $query->where('id', $request->client_id);
+                        })
+                        ->get();
+        }
+        else if($request->project_id) {
+            $projects = Project::with('client:id,first_name,last_name', 'assignedEmployees')
+                        ->where('id', $request->project_id)
+                        ->get();
+        }else {
+            $projects = Project::with('client:id,first_name,last_name', 'assignedEmployees')->get();
+        }
+
+        if (request()->ajax()){
+
+            return datatables()->of($projects)
+                ->setRowId(function ($project)
+                {
+                    return $project->id;
+                })
+                ->addColumn('summary', function ($row)
+                {
+                    return '<br><h6><a href="' . route('projects.show', $row->id) . '">' . $row->title . '</a></h6>';
+                })
+                ->addColumn('client', function ($row)
+                {
+                    if ($row->client_id!=NULL) {
+                        return $row->client->first_name.' '.$row->client->last_name;
+                    }else{
+                        return " ";
+                    }
+
+                })
+                ->addColumn('assigned_employee', function ($row)
+                {
+                    $assigned_name = $row->assignedEmployees()->pluck('last_name', 'first_name');
+                    $collection = [];
+                    foreach ($assigned_name as $first => $last)
+                    {
+                        $full_name = $first . ' ' . $last;
+                        array_push($collection, $full_name);
+                    }
+
+                    return $collection;
+                })
+                ->rawColumns(['action', 'summary'])
+                ->make(true);
+        }
+
+        return view('crm::report.client-project', compact('clients','projects'));
 
 
+
+	}
 }
