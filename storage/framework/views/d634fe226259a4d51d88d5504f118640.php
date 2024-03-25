@@ -1,5 +1,5 @@
-@extends('layout.client')
-@section('content')
+
+<?php $__env->startSection('content'); ?>
 
 
     <section>
@@ -9,13 +9,13 @@
                 <thead>
                 <tr>
                     <th class="not-exported"></th>
-                    <th>{{trans('file.Invoice')}}#</th>
-                    <th>{{trans('file.Project')}}</th>
-                    <th>{{trans('file.Total')}}</th>
-                    <th>{{__('Invoice Date')}}</th>
-                    <th>{{__('Due Date')}}</th>
-                    <th>{{trans('file.Status')}}</th>
-                    <th class="not-exported">{{trans('file.action')}}</th>
+                    <th><?php echo e(trans('file.Invoice')); ?>#</th>
+                    <th><?php echo e(trans('file.Project')); ?></th>
+                    <th><?php echo e(trans('file.Total')); ?></th>
+                    <th><?php echo e(__('Invoice Date')); ?></th>
+                    <th><?php echo e(__('Due Date')); ?></th>
+                    <th><?php echo e(trans('file.Status')); ?></th>
+                    <th class="not-exported"><?php echo e(trans('file.action')); ?></th>
                 </tr>
                 </thead>
 
@@ -59,7 +59,7 @@
                     processing: true,
                     serverSide: true,
                     ajax: {
-                        url: "{{ route('clientInvoicePaid') }}",
+                        url: "<?php echo e(route('clientInvoicePaid')); ?>",
                     },
 
                     columns: [
@@ -97,10 +97,10 @@
                             name: 'status',
                             render: function (data, type, row) {
                                 if (data == 1) {
-                                    return "<td><div class = 'badge badge-success'>{{trans('file.Paid')}}</div></td>";
+                                    return "<td><div class = 'badge badge-success'><?php echo e(trans('file.Paid')); ?></div></td>";
                                 }
                                 else {
-                                    return "<td><div class = 'badge badge-info'>{{trans('file.Unpaid')}}</div></td>";
+                                    return "<td><div class = 'badge badge-info'><?php echo e(trans('file.Unpaid')); ?></div></td>";
                                 }
                             }
                         },
@@ -115,12 +115,12 @@
 
                     "order": [],
                     'language': {
-                        'lengthMenu': '_MENU_ {{__("records per page")}}',
-                        "info": '{{trans("file.Showing")}} _START_ - _END_ (_TOTAL_)',
-                        "search": '{{trans("file.Search")}}',
+                        'lengthMenu': '_MENU_ <?php echo e(__("records per page")); ?>',
+                        "info": '<?php echo e(trans("file.Showing")); ?> _START_ - _END_ (_TOTAL_)',
+                        "search": '<?php echo e(trans("file.Search")); ?>',
                         'paginate': {
-                            'previous': '{{trans("file.Previous")}}',
-                            'next': '{{trans("file.Next")}}'
+                            'previous': '<?php echo e(trans("file.Previous")); ?>',
+                            'next': '<?php echo e(trans("file.Next")); ?>'
                         }
                     },
                     'columnDefs': [
@@ -186,4 +186,5 @@
         })(jQuery); 
     </script>
 
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout.client', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/html/peoplepro/peoplepro-hrm-crm/resources/views/client/paid_invoice.blade.php ENDPATH**/ ?>

@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace Modules\CRM\App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Modules\CRM\App\Models\InvoicePayment;
 
 class Invoice extends Model
 {
@@ -15,8 +17,18 @@ class Invoice extends Model
 	public function project(){
 		return $this->hasOne('App\Models\Project','id','project_id');
 	}
+
+	public function invoicePayment(){
+		return $this->hasOne(InvoicePayment::class,'invoice_id');
+	}
+
 	public function client(){
 		return $this->hasOne('App\Models\Client','id','client_id');
+	}
+	public function invoiceItems(): HasMany
+    {
+		return $this->hasMany(InvoiceItem::class)
+                    ->with('item');
 	}
 
 

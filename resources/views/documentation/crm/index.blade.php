@@ -46,16 +46,27 @@
         <li><a href="#prospectsProposals" title="Prospects | Proposals">Proposals </a></li>
         <li><a href="#prospectsEstimate" title="Prospects | Estimate">Estimate </a></li>
         <li><a href="#prospectsEstimateRequest" title="Prospects | Estimate Request Form">Estimate Request Form</a></li>
+        <li><a href="#clientOverview" title="Client Overview">Client Overview</a></li>
+        <li><a href="#invoiceReport" title="Invoice Report">Report | Invoice</a></li>
+        <li><a href="#invoicePaymentReport" title="Invoice Payment Report">Report | Invoice Payment Report</a></li>
+        <li><a href="#teamProjectReport" title="Team Project Report">Report | Team Project Report</a></li>
+        <li><a href="#clientProjectReport" title="Client Project Report">Report | Client Project Report</a></li>
+        <li><a href="#clientInvoice" title="Client | Invoice">Client | Invoice</a></li>
+        <li><a href="#clientInvoicePayment" title="Client | Invoice Payment">Client | Invoice Payment</a></li>
+        <li><a href="#clientContract" title="Client | Contracts">Client | Contracts</a></li>
+        <li><a href="#clientProposal" title="Client | Proposal">Client | Proposal</a></li>
+        <li><a href="#clientSubscription" title="Client | Subscription">Client | Subscription</a></li>
+        <li><a href="#clientEstimate" title="Client | Estimate">Client | Estimate</a></li>
+        <li><a href="#clientStore" title="Client | Store">Client | Store</a></li>
+        <li><a href="#clientOrderList" title="Client | OrderList">Client | OrderList</a></li>
         <li><a href="#support" title="SUPPORT">Support</a></li>
     </ul>
 </div>
+
 <div id="documenter_content">
-
-
     <div id="the-basics">
         <input class="typeahead form-control" type="text" placeholder="Search">
     </div>
-
 
     <section id="documenter_cover">
         <h1>PeoplePro - CRM Addon
@@ -433,6 +444,169 @@
             There is a Estimate Request Form part in Prospects Section.You can add/edit/delete the Estimate Request Form records.
         </p>
         <img alt="" src="{{ asset('docs/crm/assets/images/pic-29.png')}}">
+    </section>
+
+    <section id="clientOverview">
+        <div class="page-header">
+            <h3>Client Overview</h3>
+            <hr class="notop">
+        </div>
+        <p>
+            <strong>Project Management</strong> --> <strong>Client Overview</strong><br>
+            There is a Client Overview part .You can overview the client releated all info.
+        </p>
+        <img alt="" src="{{ asset('docs/crm/assets/images/pic-30.png')}}">
+    </section>
+
+    <section id="invoiceReport">
+        <div class="page-header">
+            <h3>Invoice Report</h3>
+            <hr class="notop">
+        </div>
+        <p>
+            <strong>HR Report</strong> --> <strong>Invoice Report</strong><br>
+            There is a Invoice Report part.You can filter by Project and Status.
+        </p>
+        <img alt="" src="{{ asset('docs/crm/assets/images/pic-31.png')}}">
+    </section>
+
+    <section id="invoicePaymentReport">
+        <div class="page-header">
+            <h3>Invoice Payment Report</h3>
+            <hr class="notop">
+        </div>
+        <p>
+            <strong>HR Report</strong> --> <strong>Invoice Payment Report</strong><br>
+            There is a Invoice Payment Report part.You can filter by Status and Date.
+        </p>
+        <img alt="" src="{{ asset('docs/crm/assets/images/pic-32.png')}}">
+    </section>
+
+    <section id="teamProjectReport">
+        <div class="page-header">
+            <h3>Team Project Report</h3>
+            <hr class="notop">
+        </div>
+        <p>
+            <strong>HR Report</strong> --> <strong>Team Project Report</strong><br>
+            There is a Team Project Report part.You can filter by Team Memeber and Project.
+        </p>
+        <img alt="" src="{{ asset('docs/crm/assets/images/pic-33.png')}}">
+    </section>
+
+    <section id="clientProjectReport">
+        <div class="page-header">
+            <h3>Client Project Report</h3>
+            <hr class="notop">
+        </div>
+        <p>
+            <strong>HR Report</strong> --> <strong>Client Project Report</strong><br>
+            There is a Client Project Report part.You can filter by Client and Project.
+        </p>
+        <img alt="" src="{{ asset('docs/crm/assets/images/pic-34.png')}}">
+    </section>
+
+    <section id="clientInvoice">
+        <div class="page-header">
+            <h3>Client Invoice</h3>
+            <hr class="notop">
+        </div>
+        <p>
+            <strong>Client Dashboard</strong> --> <strong>Invoice</strong><br>
+            There is a Invoice part in client dashboard.
+        </p>
+        <img alt="" src="{{ asset('docs/crm/assets/images/pic-35.png')}}">
+
+        <p>Every Invoice, you will see all data in a table. </p>
+        <img alt="" src="{{ asset('docs/crm/assets/images/pic-36.png')}}">
+    </section>
+
+    <section id="clientInvoicePayment">
+        <div class="page-header">
+            <h3>Client Invoice Payment</h3>
+            <hr class="notop">
+        </div>
+        <p>
+            <strong>Client Dashboard</strong> --> <strong>Invoice Payment</strong><br>
+            There is a Invoice Payment part in client dashboard.
+        </p>
+        <img alt="" src="{{ asset('docs/crm/assets/images/pic-37.png')}}">
+    </section>
+
+    <section id="clientContract">
+        <div class="page-header">
+            <h3>Client Contract</h3>
+            <hr class="notop">
+        </div>
+        <p>
+            <strong>Client Dashboard</strong> --> <strong>Contract</strong><br>
+            There is a Contract part in client dashboard.
+        </p>
+        <img alt="" src="{{ asset('docs/crm/assets/images/pic-38.png')}}">
+        <p>Every Item Details</p>
+        <img alt="" src="{{ asset('docs/crm/assets/images/pic-39.png')}}">
+    </section>
+    <section id="clientProposal">
+        <div class="page-header">
+            <h3>Client Proposal</h3>
+            <hr class="notop">
+        </div>
+        <p>
+            <strong>Client Dashboard</strong> --> <strong>Proposal</strong><br>
+            There is a Proposal part in client dashboard.
+        </p>
+        <img alt="" src="{{ asset('docs/crm/assets/images/pic-40.png')}}">
+        <p>Every Item Details</p>
+        <img alt="" src="{{ asset('docs/crm/assets/images/pic-41.png')}}">
+    </section>
+
+    <section id="clientSubscription">
+        <div class="page-header">
+            <h3>Client Subscription</h3>
+            <hr class="notop">
+        </div>
+        <p>
+            <strong>Client Dashboard</strong> --> <strong>Subscription</strong><br>
+            There is a Subscription part in client dashboard.
+        </p>
+        <img alt="" src="{{ asset('docs/crm/assets/images/pic-42.png')}}">
+    </section>
+    <section id="clientEstimate">
+        <div class="page-header">
+            <h3>Client Estimate</h3>
+            <hr class="notop">
+        </div>
+        <p>
+            <strong>Client Dashboard</strong> --> <strong>Estimate</strong><br>
+            There is a Estimate part in client dashboard.
+        </p>
+        <img alt="" src="{{ asset('docs/crm/assets/images/pic-43.png')}}">
+        <p>Every Item Details</p>
+        <img alt="" src="{{ asset('docs/crm/assets/images/pic-44.png')}}">
+    </section>
+    <section id="clientStore">
+        <div class="page-header">
+            <h3>Client Store</h3>
+            <hr class="notop">
+        </div>
+        <p>
+            <strong>Client Dashboard</strong> --> <strong>Store</strong><br>
+            There is a Store part in client dashboard.
+        </p>
+        <img alt="" src="{{ asset('docs/crm/assets/images/pic-45.png')}}">
+
+    </section>
+    <section id="clientOrderList">
+        <div class="page-header">
+            <h3>Client Order List</h3>
+            <hr class="notop">
+        </div>
+        <p>
+            <strong>Client Dashboard</strong> --> <strong>Order List</strong><br>
+            There is a Order List part in client dashboard.
+        </p>
+        <img alt="" src="{{ asset('docs/crm/assets/images/pic-46.png')}}">
+
     </section>
 
 

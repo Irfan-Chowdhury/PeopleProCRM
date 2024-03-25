@@ -9,8 +9,9 @@
                     <h3 class="card-title">{{__('Edit Invoice')}}</h3>
                 </div>
                 <div class="card-body">
-                    <form name="edit_invoice" id="edit_invoice" autocomplete="off" method="post" class="form"
+                    <form action="{{ route('invoices.update', $invoice->id ) }}" name="edit_invoice" id="edit_invoice" autocomplete="off" method="post" class="form"
                           accept-charset="utf-8">
+                          @csrf
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="form-group">
@@ -49,8 +50,11 @@
                         <hr>
 
                         <div id="item-list">
-                            @foreach($invoice_items as $invoice_item)
+                            {{-- @foreach($invoice_items as $invoice_item) --}}
+
+                            @foreach($invoice->invoiceItems as $invoice_item)
                                 <div id="{{$invoice_item->id}}" class="item">
+
                                     <input type="hidden" class="invoice_item_id" name="invoice_item_id[]"
                                            value="{{$invoice_item->id}}"/>
 
@@ -58,9 +62,13 @@
                                         <div class="form-group mb-1 col-sm-12 col-md-3">
                                             <label for="item_name">{{trans('file.Item')}}</label>
                                             <br>
-                                            <input type="text" required class="form-control item_name"
-                                                   name="item_name[]" placeholder="{{trans('file.Item')}}"
-                                                   value="{{$invoice_item->item_name}}">
+                                            <select name="item_id[]" id="item_id" class="invoiceItemId  form-control selectpicker "
+                                                    data-live-search="true" data-live-search-style="contains"
+                                                    title='{{__('Selecting',['key'=>trans('file.Item')])}}...'>
+                                                @foreach($items as $item)
+                                                    <option value="{{$item->id}}" {{ isset($invoice_item->item_id) && ($invoice_item->item_id) === $item->id ? 'selected' : '' }}>{{$item->title}}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
                                         <div class="form-group mb-1 col-sm-12 col-md-1">
                                             <label for="qty_hrs" class="cursor-pointer">{{trans('file.Qty')}}</label>
@@ -72,7 +80,7 @@
                                         <div class="form-group mb-1 col-sm-12 col-md-2">
                                             <label for="unit_price">{{__('Unit Price')}}</label>
                                             <br>
-                                            <input required class="form-control unit_price calc"
+                                            <input readonly class="form-control unit_price calc"
                                                    name="unit_price[]" value="{{$invoice_item->item_unit_price}}"/>
                                         </div>
 
@@ -86,8 +94,8 @@
                                                 <option value="">{{__('Tax Type')}}</option>
                                                 @foreach($tax_types as $tax_type)
                                                     @if($tax_type->type == 'fixed')
-                                                        <option value="${{$tax_type->rate}}" {{ ($invoice_item->item_tax_type == '$'.$tax_type->rate) ? "selected" : '' }}>{{$tax_type->name}}
-                                                            (${{$tax_type->rate}})
+                                                        <option value="{{$tax_type->rate}}" {{ ($invoice_item->item_tax_type == $tax_type->rate) ? "selected" : '' }}>{{$tax_type->name}}
+                                                            ({{$tax_type->rate}}%)
                                                         </option>
                                                     @else
                                                         <option value="{{$tax_type->rate}}" {{ ($invoice_item->item_tax_type == $tax_type->rate) ? "selected" : '' }}>{{$tax_type->name}}
@@ -247,6 +255,8 @@
             todayHighlight: true
         });
 
+        var items = {!! $items !!};
+
         $('select[name="discount_type"]').val($('input[name="discount_type_hidden"]').val());
 
 
@@ -254,11 +264,70 @@
 
             var item_id = parseInt($('#item-list .item:last').attr('id')) + 99999;
 
-            $('#item-list').append('<div id="' + item_id + '" class="item"> <input type="hidden" class="invoice_item_id" name="invoice_item_id[]" value="' + item_id + '"><div class="row"><div class="form-group mb-1 col-sm-12 col-md-3"><label for="item_name">{{trans('file.Item')}}</label><br><input type="text" required class="form-control item_name" name="item_name[]" id="item_name" placeholder="{{trans('Item')}}"></div><div class="form-group mb-1 col-sm-12 col-md-1"><label for="qty_hrs" required class="cursor-pointer">{{trans('file.Qty')}}</label><br><input type="number" required class="form-control qty_hrs calc" name="qty_hrs[]" value="1"></div><div class="skin skin-flat form-group mb-1 col-sm-12 col-md-2"><label for="unit_price">{{__('Unit Price')}}</label><br><input required class="form-control unit_price calc" type="number" name="unit_price[]" value="0" /></div><div  class="form-group mb-1 col-sm-12 col-md-2"><label for="tax_type">{{__('Tax Type')}}</label><br><select name="tax_type_id[]" required class="tax-types form-control tax_type" data-live-search="true" data-live-search-style="contains" title="{{__('Tax Type')}}"><option value="">{{__('Tax Type')}}</option> </select></div><div class="form-group mb-1 col-sm-12 col-md-1"><label for="tax_type">{{trans('file.Tax')}}</label><br><input type="text" class="form-control tax_amount" name="tax_amount[]" value="0"  readonly="readonly" /></div><div class="form-group mb-1 col-sm-12 col-md-2"><label for="profession">{{__('Sub Total')}}</label><input type="text" class="form-control sub-total-item" readonly="readonly" name="sub_total_item[]" value="0" /><p class="form-control-static d-none"><span class="amount-html">0</span></p></div><div class="form-group col-sm-12 col-md-1 text-xs-center mt-2"><label for="profession">&nbsp;</label><br><button type="button" class="btn icon-btn btn-xs btn-danger waves-effect waves-light remove-invoice-item" data-repeater-delete=""> <span class="fa fa-trash"></span></button></div></div></div>');
+            // $('#item-list').append('<div id="' + item_id + '" class="item"> <input type="hidden" class="invoice_item_id" name="invoice_item_id[]" value="' + item_id + '"><div class="row"><div class="form-group mb-1 col-sm-12 col-md-3"><label for="item_name">{{trans('file.Item')}}</label><br><input type="text" required class="form-control item_name" name="item_name[]" id="item_name" placeholder="{{trans('Item')}}"></div><div class="form-group mb-1 col-sm-12 col-md-1"><label for="qty_hrs" required class="cursor-pointer">{{trans('file.Qty')}}</label><br><input type="number" required class="form-control qty_hrs calc" name="qty_hrs[]" value="1"></div><div class="skin skin-flat form-group mb-1 col-sm-12 col-md-2"><label for="unit_price">{{__('Unit Price')}}</label><br><input required class="form-control unit_price calc" type="number" name="unit_price[]" value="0" /></div><div  class="form-group mb-1 col-sm-12 col-md-2"><label for="tax_type">{{__('Tax Type')}}</label><br><select name="tax_type_id[]" required class="tax-types form-control tax_type" data-live-search="true" data-live-search-style="contains" title="{{__('Tax Type')}}"><option value="">{{__('Tax Type')}}</option> </select></div><div class="form-group mb-1 col-sm-12 col-md-1"><label for="tax_type">{{trans('file.Tax')}}</label><br><input type="text" class="form-control tax_amount" name="tax_amount[]" value="0"  readonly="readonly" /></div><div class="form-group mb-1 col-sm-12 col-md-2"><label for="profession">{{__('Sub Total')}}</label><input type="text" class="form-control sub-total-item" readonly="readonly" name="sub_total_item[]" value="0" /><p class="form-control-static d-none"><span class="amount-html">0</span></p></div><div class="form-group col-sm-12 col-md-1 text-xs-center mt-2"><label for="profession">&nbsp;</label><br><button type="button" class="btn icon-btn btn-xs btn-danger waves-effect waves-light remove-invoice-item" data-repeater-delete=""> <span class="fa fa-trash"></span></button></div></div></div>');
 
-            var tax_type = <?php echo json_encode($tax_types) ?>;
+            let html =
+            `<div id="item-list">
+                <div id="${item_id}" class="item">
+                    <div class="row">
+                        <div class="form-group mb-1 col-sm-12 col-md-3">
+                            <label for="item_name">{{trans('file.Item')}}</label>
+                            <br>
+                            <select name="item_id[]" id="item_id" class="itemId form-control item_id">
+                                <option value="">{{__('Select Item')}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group mb-1 col-sm-12 col-md-1">
+                            <label for="qty_hrs" class="cursor-pointer">{{trans('file.Qty')}}</label>
+                            <br>
+                            <input type="number" class="form-control qty_hrs calc" required name="qty_hrs[]" value="1" min="1">
+                        </div>
+                        <div class="form-group mb-1 col-sm-12 col-md-2">
+                            <label for="unit_price">{{__('Unit Price')}}</label>
+                            <br>
+                            <input readonly class="form-control unit_price calc" name="unit_price[]" value="0" />
+                        </div>
+                        <div class="form-group mb-1 col-sm-12 col-md-2">
+                            <label for="tax_type">{{__('Tax Type')}}</label>
+                            <br>
+                            <select name="tax_type_id[]" required class="form-control tax_type" data-live-search="true" data-live-search-style="contains" title='{{__('Tax Type')}}'>
+                                <option value="">{{__('Tax Type')}}</option>
+                            @foreach($tax_types as $tax_type)
+                                    @if($tax_type->type == 'fixed')
+                                        <option value="{{$tax_type->rate}}">{{$tax_type->name}}({{$tax_type->rate}}%)</option>
+                                    @else
+                                        <option value="{{$tax_type->rate}}">{{$tax_type->name}}({{$tax_type->rate}}%)</option>
+                                    @endif
+                            @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group mb-1 col-sm-12 col-md-1">
+                            <label for="tax_type">{{__('Tax Rate')}}</label>
+                            <br>
+                            <input type="text" class="form-control tax_amount" name="tax_amount[]" value="0"  readonly="readonly" />
+                        </div>
+                        <div class="form-group mb-1 col-sm-12 col-md-2">
+                            <label for="profession">{{__('Sub Total')}}</label>
+                            <input type="text" class="form-control sub-total-item" readonly="readonly" name="sub_total_item[]" value="0" />
+                            <p class="form-control-static d-none"><span class="amount-html">0</span></p>
+                        </div>
+                        <div class="form-group col-sm-12 col-md-1 text-xs-center mt-2">
+
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+            $('#item-list').append(html);
+
+            items.forEach(function(item) {
+                $('#item-list #'+item_id+' .item_id').append(
+                    `<option value="${item.id}">${item.title}</option>`
+                );
+            });
 
 
+            // var tax_type = <?php echo json_encode($tax_types) ?>;
+            var tax_type = {!! json_encode($tax_types) !!};
             tax_type.forEach(function (v) {
                 if (v.type == 'fixed') {
                     $('#item-list #' + item_id + ' .tax-types').append("<option value='$" + v.rate + "'>" + v.name + " ($" + v.rate + ")</option>");
@@ -267,6 +336,26 @@
                     $('#item-list #' + item_id + ' .tax-types').append("<option value='" + v.rate + "'>" + v.name + " (" + v.rate + "%)</option>");
                 }
             });
+        });
+
+        $('.invoiceItemId').change(function () {
+            let itemId = parseInt($(this).val());
+            let rowId = parseInt($(this).closest('.item').attr('id'));
+            let item = items.find(function(item) {
+                return parseInt(item.id) === itemId;
+            });
+            let itemRate = item ? item.rate : 0;
+            $('#'+rowId+' .unit_price').val(itemRate);
+        });
+
+        $(document).on('change', '.itemId', function() {
+            let itemId = parseInt($(this).val());
+            let rowId = parseInt($(this).closest('.item').attr('id'));
+            let item = items.find(function(item) {
+                return parseInt(item.id) === itemId;
+            });
+            let itemRate = item ? item.rate : 0;
+            $('#'+rowId+' .unit_price').val(itemRate);
         });
 
 

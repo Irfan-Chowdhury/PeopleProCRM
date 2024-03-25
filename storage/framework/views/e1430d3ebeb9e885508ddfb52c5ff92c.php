@@ -1,89 +1,97 @@
-@extends('layout.main')
-@section('content')
+<?php $__env->startSection('content'); ?>
 
 <section>
     <div class="col-md-12">
         <div class="card">
             <div class="card-header with-border">
                 <span id="form_result"></span>
-                <h3 class="card-title"> {{__('Create Invoice')}} </h3>
+                <h3 class="card-title"> <?php echo e(__('Create Invoice')); ?> </h3>
             </div>
             <div class="card-body">
-                <form  name="create_invoice" id="create_invoice" autocomplete="off" class="form" method="post" accept-charset="utf-8">
-                    @csrf
+                <form action="<?php echo e(route('invoices.store')); ?>" name="create_invoice" id="create_invoice" autocomplete="off" class="form" method="post" accept-charset="utf-8">
+                    <?php echo csrf_field(); ?>
                     <div class="row">
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label for="invoice_number">{{__('Invoice Number')}}</label>
-                                <input class="form-control" placeholder="{{__('Invoice Number')}}" name="invoice_number" type="text" value="{{$invoice_number}}">
+                                <label for="invoice_number"><?php echo e(__('Invoice Number')); ?></label>
+                                <input class="form-control" placeholder="<?php echo e(__('Invoice Number')); ?>" name="invoice_number" type="text" value="<?php echo e($invoice_number); ?>">
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label for="project">{{trans('file.Project')}}</label>
+                                <label for="project"><?php echo e(trans('file.Project')); ?></label>
                                 <select name="project_id" id="project_id" class="form-control selectpicker "
                                         data-live-search="true" data-live-search-style="contains"
-                                        title='{{__('Selecting',['key'=>trans('file.Project')])}}...'>
-                                    @foreach($projects as $project)
-                                        <option value="{{$project->id}}">{{$project->title}}</option>
-                                    @endforeach
+                                        title='<?php echo e(__('Selecting',['key'=>trans('file.Project')])); ?>...'>
+                                    <?php $__currentLoopData = $projects; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $project): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($project->id); ?>"><?php echo e($project->title); ?></option>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label for="invoice_date">{{__('Invoice Date')}}</label>
+                                <label for="invoice_date"><?php echo e(__('Invoice Date')); ?></label>
                                 <input class="form-control date" required placeholder="Invoice Date"  name="invoice_date" type="text" value="">
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label for="invoice_due_date">{{__('Due Date')}}</label>
+                                <label for="invoice_due_date"><?php echo e(__('Due Date')); ?></label>
                                 <input class="form-control date" required placeholder="Due Date"  name="invoice_due_date" type="text" value="">
                             </div>
                         </div>
                     </div>
                     <hr>
 
+                    
+
+
                     <div id="item-list">
                         <div id="1" class="item">
                             <div class="row">
                                 <div class="form-group mb-1 col-sm-12 col-md-3">
-                                    <label for="item_name">{{trans('file.Item')}}</label>
+                                    <label for="item_name"><?php echo e(trans('file.Item')); ?></label>
                                     <br>
-                                    <input type="text" class="form-control item_name" name="item_name[]" id="item_name" placeholder="{{trans('file.Item')}}">
+                                    <select name="item_id[]" id="item_id" class="invoiceItemId form-control selectpicker "
+                                            data-live-search="true" data-live-search-style="contains"
+                                            title='<?php echo e(__('Selecting',['key'=>trans('file.Item')])); ?>...'>
+                                        <?php $__currentLoopData = $items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($item->id); ?>"><?php echo e($item->title); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    </select>
                                 </div>
                                 <div class="form-group mb-1 col-sm-12 col-md-1">
-                                    <label for="qty_hrs" class="cursor-pointer">{{trans('file.Qty')}}</label>
+                                    <label for="qty_hrs" class="cursor-pointer"><?php echo e(trans('file.Qty')); ?></label>
                                     <br>
                                     <input type="number" class="form-control qty_hrs calc" required name="qty_hrs[]" value="1" min="1">
                                 </div>
                                 <div class="form-group mb-1 col-sm-12 col-md-2">
-                                    <label for="unit_price">{{__('Unit Price')}}</label>
+                                    <label for="unit_price"><?php echo e(__('Unit Price')); ?></label>
                                     <br>
-                                    <input class="form-control unit_price calc" required name="unit_price[]" value="0" />
+                                    <input readonly class="form-control unit_price calc" name="unit_price[]" value="0" />
                                 </div>
                                 <div class="form-group mb-1 col-sm-12 col-md-2">
-                                    <label for="tax_type">{{__('Tax Type')}}</label>
+                                    <label for="tax_type"><?php echo e(__('Tax Type')); ?></label>
                                     <br>
-                                    <select name="tax_type_id[]" required class="form-control tax_type" data-live-search="true" data-live-search-style="contains" title='{{__('Tax Type')}}'>
-                                        <option value="">{{__('Tax Type')}}</option>
-                                    @foreach($tax_types as $tax_type)
-                                            @if($tax_type->type == 'fixed')
-                                                <option value="${{$tax_type->rate}}">{{$tax_type->name}}(${{$tax_type->rate}})</option>
-                                            @else
-                                                <option value="{{$tax_type->rate}}">{{$tax_type->name}}({{$tax_type->rate}}%)</option>
-                                            @endif
-                                    @endforeach
+                                    <select name="tax_type_id[]" required class="form-control tax_type" data-live-search="true" data-live-search-style="contains" title='<?php echo e(__('Tax Type')); ?>'>
+                                        <option value=""><?php echo e(__('Tax Type')); ?></option>
+                                    <?php $__currentLoopData = $tax_types; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tax_type): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <?php if($tax_type->type == 'fixed'): ?>
+                                                <option value="<?php echo e($tax_type->rate); ?>"><?php echo e($tax_type->name); ?>(<?php echo e($tax_type->rate); ?>%)</option>
+                                            <?php else: ?>
+                                                <option value="<?php echo e($tax_type->rate); ?>"><?php echo e($tax_type->name); ?>(<?php echo e($tax_type->rate); ?>%)</option>
+                                            <?php endif; ?>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </select>
                                 </div>
                                 <div class="form-group mb-1 col-sm-12 col-md-1">
-                                    <label for="tax_type">{{__('Tax Rate')}}</label>
+                                    <label for="tax_type"><?php echo e(__('Tax Rate')); ?></label>
                                     <br>
                                     <input type="text" class="form-control tax_amount" name="tax_amount[]" value="0"  readonly="readonly" />
                                 </div>
                                 <div class="form-group mb-1 col-sm-12 col-md-2">
-                                    <label for="profession">{{__('Sub Total')}}</label>
+                                    <label for="profession"><?php echo e(__('Sub Total')); ?></label>
                                     <input type="text" class="form-control sub-total-item" readonly="readonly" name="sub_total_item[]" value="0" />
                                     <!-- <br>-->
                                     <p class="form-control-static d-none"><span class="amount-html">0</span></p>
@@ -94,9 +102,12 @@
                             </div>
                         </div>
                     </div>
+
+
+
                     <div class="form-group overflow-hidden1">
                         <div class="col-xs-12">
-                            <button type="button" data-repeater-create="" class="btn btn-primary" id="add-invoice-item"> <i class="fa fa-plus"></i> {{__('Add Item')}}</button>
+                            <button type="button" data-repeater-create="" class="btn btn-primary" id="add-invoice-item"> <i class="fa fa-plus"></i> <?php echo e(__('Add Item')); ?></button>
                         </div>
                     </div>
                     <input type="hidden" class="items-sub-total" name="items_sub_total" value="0" />
@@ -108,27 +119,27 @@
                                 <table class="table">
                                     <tbody>
                                     <tr>
-                                        <td>{{__('Sub Total')}}</td>
+                                        <td><?php echo e(__('Sub Total')); ?></td>
                                         <td class="text-xs-right"><span id="sub_total" class="sub_total">0</span></td>
                                     </tr>
                                     <tr>
-                                        <td>{{__('Tax Rate')}}</td>
+                                        <td><?php echo e(__('Tax Rate')); ?></td>
                                         <td class="text-xs-right"><span id="total_tax" class="total_tax">0</span></td>
                                     </tr>
                                     <tr>
                                         <td colspan="2"><table class="table table-bordered">
                                                 <tbody>
                                                 <tr>
-                                                    <td><strong>{{__('Discount Type')}}</strong></td>
-                                                    <td><strong>{{trans('file.Discount')}}</strong></td>
-                                                    <td><strong>{{__('Discount Amount')}}</strong></td>
+                                                    <td><strong><?php echo e(__('Discount Type')); ?></strong></td>
+                                                    <td><strong><?php echo e(trans('file.Discount')); ?></strong></td>
+                                                    <td><strong><?php echo e(__('Discount Amount')); ?></strong></td>
                                                 </tr>
                                                 <tr>
                                                     <td>
                                                         <div class="form-group">
                                                             <select name="discount_type" class="form-control discount_type">
-                                                                <option value="0">{{trans('file.Flat')}}</option>
-                                                                <option value="1">{{trans('file.Percent')}}</option>
+                                                                <option value="0"><?php echo e(trans('file.Flat')); ?></option>
+                                                                <option value="1"><?php echo e(trans('file.Percent')); ?></option>
                                                             </select>
                                                         </div>
                                                     </td>
@@ -148,7 +159,7 @@
                                     </tr>
                                     <input type="hidden" class="grand_total" id="grand_total_form" name="grand_total" value="0" />
                                     <tr>
-                                        <td>{{__('Grand Total')}}</td>
+                                        <td><?php echo e(__('Grand Total')); ?></td>
                                         <td class="text-xs-right"><span id="grand_total" class="grand_total">0</span></td>
                                     </tr>
                                     </tbody>
@@ -160,7 +171,7 @@
                     <div class="form-group col-xs-12 mb-2 file-repeaters"> </div>
                     <div class="row">
                         <div class="col-lg-12">
-                            <label for="invoice_note">{{__('Invoice Note')}}</label>
+                            <label for="invoice_note"><?php echo e(__('Invoice Note')); ?></label>
                             <textarea name="invoice_note" class="form-control"></textarea>
                         </div>
                     </div>
@@ -171,7 +182,7 @@
                                 <p>&nbsp;</p>
                             </div>
                             <div class="col-md-5 col-sm-12 text-xs-center">
-                                <button type="submit" name="invoice_submit" class="btn btn-primary pull-right my-1 mr-3"><i class="fa fa fa-check-square-o"></i> {{__('Submit Invoice')}}</button>
+                                <button type="submit" name="invoice_submit" class="btn btn-primary pull-right my-1 mr-3"><i class="fa fa fa-check-square-o"></i> <?php echo e(__('Submit Invoice')); ?></button>
                             </div>
                         </div>
                     </div>
@@ -182,40 +193,130 @@
 </section>
 
 
-@endsection
+<?php $__env->stopSection(); ?>
 
 
-@push('scripts')
+<?php
+$itemOptions = '';
+foreach($items as $item) {
+    $itemOptions .= '<option value="' . $item->id . '">' . $item->title . '</option>';
+}
+?>
+
+<?php $__env->startPush('scripts'); ?>
 <script type="text/javascript">
     (function($) {
         "use strict";
 
         let date = $('.date');
         date.datepicker({
-            format: '{{ env('Date_Format_JS')}}',
+            format: '<?php echo e(env('Date_Format_JS')); ?>',
             autoclose: true,
             todayHighlight: true
         });
 
+        var items = <?php echo $items; ?>;
 
         $(document).on('click', '#add-invoice-item', function(){
-
             var item_id = parseInt($('#item-list .item:last').attr('id'))+1;
 
-            $('#item-list').append('<div id="'+item_id+'" class="item"><div class="row"><div class="form-group mb-1 col-sm-12 col-md-3"><label for="item_name">Item</label><br><input type="text" class="form-control item_name" name="item_name[]" id="item_name" placeholder="{{trans('file.Item')}}"></div><div class="form-group mb-1 col-sm-12 col-md-1"><label for="qty_hrs" class="cursor-pointer">{{trans('file.Qty')}}</label><br><input type="number" class="form-control qty_hrs calc" name="qty_hrs[]" value="1"></div><div class="skin skin-flat form-group mb-1 col-sm-12 col-md-2"><label for="unit_price">{{__('Unit Price')}}</label><br><input class="form-control unit_price calc" type="text" name="unit_price[]" value="0" /></div><div class="form-group mb-1 col-sm-12 col-md-2"><label for="tax_type">{{__('Tax Type')}}</label><br><select name="tax_type_id[]" class="tax-types form-control tax_type" data-live-search="true" data-live-search-style="contains" title="{{__('Tax Type')}}"><option value="">{{__('Tax Type')}}</option> </select></div><div class="form-group mb-1 col-sm-12 col-md-1"><label for="tax_type">{{__('Tax Rate')}}</label><br><input type="text" class="form-control tax_amount" name="tax_amount[]" value="0"  readonly="readonly" /></div><div class="form-group mb-1 col-sm-12 col-md-2"><label for="profession">{{__('Sub Total')}}</label><input type="text" class="form-control sub-total-item" readonly="readonly" name="sub_total_item[]" value="0" /><p class="form-control-static d-none"><span class="amount-html">0</span></p></div><div class="form-group col-sm-12 col-md-1 text-xs-center mt-2"><label for="profession">&nbsp;</label><br><button type="button" class="btn icon-btn btn-xs btn-danger waves-effect waves-light remove-invoice-item" data-repeater-delete=""> <span class="fa fa-trash"></span></button></div></div></div>');
+            let html =
+            `<div id="item-list">
+                <div id="${item_id}" class="item">
+                    <div class="row">
+                        <div class="form-group mb-1 col-sm-12 col-md-3">
+                            <label for="item_name"><?php echo e(trans('file.Item')); ?></label>
+                            <br>
+                            <select name="item_id[]" id="item_id" class="itemId form-control item_id">
+                                <option value=""><?php echo e(__('Select Item')); ?></option>
+                            </select>
+                        </div>
+                        <div class="form-group mb-1 col-sm-12 col-md-1">
+                            <label for="qty_hrs" class="cursor-pointer"><?php echo e(trans('file.Qty')); ?></label>
+                            <br>
+                            <input type="number" class="form-control qty_hrs calc" required name="qty_hrs[]" value="1" min="1">
+                        </div>
+                        <div class="form-group mb-1 col-sm-12 col-md-2">
+                            <label for="unit_price"><?php echo e(__('Unit Price')); ?></label>
+                            <br>
+                            <input readonly class="form-control unit_price calc" required name="unit_price[]" value="0" />
+                        </div>
+                        <div class="form-group mb-1 col-sm-12 col-md-2">
+                            <label for="tax_type"><?php echo e(__('Tax Type')); ?></label>
+                            <br>
+                            <select name="tax_type_id[]" required class="form-control tax_type" data-live-search="true" data-live-search-style="contains" title='<?php echo e(__('Tax Type')); ?>'>
+                                <option value=""><?php echo e(__('Tax Type')); ?></option>
+                            <?php $__currentLoopData = $tax_types; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tax_type): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <?php if($tax_type->type == 'fixed'): ?>
+                                        <option value="<?php echo e($tax_type->rate); ?>"><?php echo e($tax_type->name); ?>(<?php echo e($tax_type->rate); ?>%)</option>
+                                    <?php else: ?>
+                                        <option value="<?php echo e($tax_type->rate); ?>"><?php echo e($tax_type->name); ?>(<?php echo e($tax_type->rate); ?>%)</option>
+                                    <?php endif; ?>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </select>
+                        </div>
+                        <div class="form-group mb-1 col-sm-12 col-md-1">
+                            <label for="tax_type"><?php echo e(__('Tax Rate')); ?></label>
+                            <br>
+                            <input type="text" class="form-control tax_amount" name="tax_amount[]" value="0"  readonly="readonly" />
+                        </div>
+                        <div class="form-group mb-1 col-sm-12 col-md-2">
+                            <label for="profession"><?php echo e(__('Sub Total')); ?></label>
+                            <input type="text" class="form-control sub-total-item" readonly="readonly" name="sub_total_item[]" value="0" />
+                            <p class="form-control-static d-none"><span class="amount-html">0</span></p>
+                        </div>
+                        <div class="form-group col-sm-12 col-md-1 text-xs-center mt-2">
 
-            var tax_type = <?php echo json_encode( $tax_types ) ?>;
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+            $('#item-list').append(html);
 
+            items.forEach(function(item) {
+                $('#item-list #'+item_id+' .item_id').append(
+                    `<option value="${item.id}">${item.title}</option>`
+                );
+            });
 
+            // var tax_type = <?php echo json_encode( $tax_types ) ?>;
+            var tax_type = <?php echo json_encode($tax_types); ?>;
             tax_type.forEach(function(v) {
                 if(v.type == 'fixed') {
                     $('#item-list #'+item_id+' .tax-types').append("<option value='$"+v.rate+"'>"+v.name+" ($"+v.rate+")</option>");
-
                 } else {
                     $('#item-list #'+item_id+' .tax-types').append("<option value='"+v.rate+"'>"+v.name+" ("+v.rate+"%)</option>");
                 }
             });
         });
+
+
+        $('.invoiceItemId').change(function () {
+            let itemId = parseInt($(this).val());
+            let rowId = parseInt($(this).closest('.item').attr('id'));
+            let item = items.find(function(item) {
+                return parseInt(item.id) === itemId;
+            });
+            let itemRate = item ? item.rate : 0;
+            $('#'+rowId+' .unit_price').val(itemRate);
+        });
+
+
+        $(document).on('change', '.itemId', function() {
+            let itemId = parseInt($(this).val());
+            let rowId = parseInt($(this).closest('.item').attr('id'));
+            let item = items.find(function(item) {
+                return parseInt(item.id) === itemId;
+            });
+
+            let itemRate = item ? item.rate : 0;
+            $('#'+rowId+' .unit_price').val(itemRate);
+        });
+
+
+
+
+
 
 
         $(document).on('click', '.remove-invoice-item', function(){
@@ -348,7 +449,7 @@
             $('#grand_total').html(total);
         });
 
-        //Calculate Grand Total
+        // Calculate Grand Total
         $(document).on('change keyup', function(){
             var total = Number($('#sub_total').text());
             var discount_figure =  $('.discount_figure').val();
@@ -376,7 +477,7 @@
             $('#grand_total_form').val(grand_total);
 
             $.ajax({
-                url: "{{ route('invoices.store') }}",
+                url: "<?php echo e(route('invoices.store')); ?>",
                 method: "POST",
                 data: new FormData(this),
                 contentType: false,
@@ -404,7 +505,7 @@
                             $('#grand_total').html('');
                             $('.selectpicker').selectpicker('refresh');
                         }, 2000);
-                        window.location.href="{{route('invoices.create')}}";
+                        window.location.href="<?php echo e(route('invoices.create')); ?>";
                     }
                     $('#form_result').html(html).slideDown(100).delay(3000).slideUp(100);
 
@@ -414,4 +515,6 @@
     })(jQuery);
 
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layout.main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/html/peoplepro/peoplepro-hrm-crm/Modules/CRM/resources/views/projects/invoices/create.blade.php ENDPATH**/ ?>

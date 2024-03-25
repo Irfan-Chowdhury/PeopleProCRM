@@ -14,6 +14,7 @@ use Modules\CRM\App\Http\Controllers\CRMController;
 use Modules\CRM\App\Http\Controllers\EstimateController;
 use Modules\CRM\App\Http\Controllers\EstimateFormController;
 use Modules\CRM\App\Http\Controllers\EstimateItemController;
+use Modules\CRM\App\Http\Controllers\InvoiceController;
 use Modules\CRM\App\Http\Controllers\InvoicePaymentController;
 use Modules\CRM\App\Http\Controllers\ItemCategoryController;
 use Modules\CRM\App\Http\Controllers\ItemController;
@@ -298,8 +299,18 @@ Route::group(['middleware' => ['XSS']], function () {
     Route::prefix('report')->group(function () {
         Route::get('invoice', [ReportController::class, 'invoice'])->name('report.invoice');
         Route::get('invoice-payment', [ReportController::class, 'invoicePayment'])->name('report.invoice-payment');
-        Route::get('project', [ReportController::class, 'teamProjectReport'])->name('report.project');
+        Route::get('team-project', [ReportController::class, 'teamProjectReport'])->name('report.project');
         Route::get('client-project', [ReportController::class, 'clientProjectReport'])->name('report.client-project');
+    });
+
+    Route::prefix('project-management')->group(function () {
+        Route::post('invoices/{id}/update', [InvoiceController::class, 'update'])->name('invoices.update');
+        Route::resource('invoices', InvoiceController::class);
+        Route::get('invoices/status/{status_id}/{invoice_id}', [InvoiceController::class, 'status'])->name('invoices.status');
+        Route::get('invoices/{id}/delete', [InvoiceController::class, 'destroy'])->name('invoices.destroy');
+        Route::get('invoices/download', [InvoiceController::class, 'download'])->name('invoices.download');
+        Route::get('invoices/download/{id}', [InvoiceController::class, 'download'])->name('invoices.downloadFile');
+        Route::post('invoices/delete/selected', [InvoiceController::class, 'delete_by_selection'])->name('mass_delete_invoices');
     });
 
 
@@ -341,6 +352,11 @@ Route::group(['middleware' => ['XSS']], function () {
                 Route::post('/process_order', 'processOrder')->name('client.store.processOrder');
             });
         });
+
+
+        Route::get('/invoices', [ClientInvoiceController::class, 'invoices'])->name('clientInvoice');
+        Route::get('/invoices/payment', [ClientInvoiceController::class, 'paidInvoices'])->name('clientInvoicePaid');
+
     });
 
 });

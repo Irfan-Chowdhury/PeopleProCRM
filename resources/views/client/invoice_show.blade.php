@@ -37,19 +37,15 @@
                     <div class="col-sm-4 invoice-col"><b>{{trans('file.Invoice')}}
                             # {{$invoice->invoice_number}}</b><br>
                         <br>
-                        <b>{{__('Payment Date')}}: </b> {{isset($invoice->invoicePayment->date) ? $invoice->invoicePayment->date : 'NONE'}}<br/>
+                        <b>{{trans('file.Date')}}: </b>{{$invoice->invoice_date}} <br>
+                        <b>{{__('Payment Due')}}: </b> {{$invoice->invoice_due_date}}<br/>
                         <span class="label label-danger">
-                            
-                        <b>{{__('Payment Status')}}: </b>
-                        @isset($invoice->invoicePayment)
-                            @if($invoice->invoicePayment->payment_status == 'pending')
-                                <span class="p-1 badge badge-pill badge-warning">{{ ucwords(str_replace('_', ' ',$invoice->invoicePayment->payment_status)) }}</span>
-                            @elseif($invoice->invoicePayment->payment_status == 'completed')
-                                <span class="p-1 badge badge-pill badge-success">{{ ucwords(str_replace('_', ' ',$invoice->invoicePayment->payment_status)) }}</span>
+                        @if($invoice->status == 1)
+                                {{trans('file.Paid')}}
+
                             @else
-                                <span class="p-1 badge badge-pill badge-danger">{{ ucwords(str_replace('_', ' ',$invoice->invoicePayment->payment_status)) }}</span>
+                                {{trans('file.UnPaid')}}
                             @endif
-                        @endisset
                     </span>
                     </div>
                     <!-- /.col -->
@@ -70,18 +66,20 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($invoice->invoiceItems as $key => $invoiceItem)
+                            @foreach($invoice_items as $key=>$invoice_item)
                                 <tr>
+
                                     <td class="py-3">
                                         <div class="font-weight-semibold">{{$key+1}}</div>
                                     </td>
                                     <td class="py-3">
-                                        <div class="font-weight-semibold">{{isset($invoiceItem->item) ? $invoiceItem->item->title : ''}}</div>
+                                        <div class="font-weight-semibold">{{$invoice_item->item_name}}</div>
                                     </td>
-                                    <td class="py-3"><strong>{{$invoiceItem->item_qty}}</strong></td>
-                                    <td class="py-3"><strong>{{$invoiceItem->item_unit_price}}</strong></td>
-                                    <td class="py-3"><strong>{{$invoiceItem->item_tax_rate}}</strong></td>
-                                    <td class="py-3"><strong>{{$invoiceItem->item_sub_total}}</strong></td>
+                                    <td class="py-3"><strong>{{$invoice_item->item_qty}}</strong></td>
+                                    <td class="py-3"><strong>{{$invoice_item->item_unit_price}}</strong></td>
+                                    <td class="py-3"><strong>{{$invoice_item->item_tax_rate}}</strong></td>
+                                    <td class="py-3"><strong>{{$invoice_item->item_sub_total}}</strong></td>
+
                                 </tr>
                             @endforeach
                             </tbody>
@@ -131,9 +129,9 @@
     </div>
 
     <script>
-        (function($) {
-            "use strict";
-
+        (function($) { 
+            "use strict"; 
+            
             $("#print-btn").on("click", function () {
                 let divToPrint = document.getElementById('invoice_details');
                 let newWin = window.open('', 'Print-Window');
@@ -144,7 +142,7 @@
                     newWin.close();
                 }, 10);
             });
-
+            
         })(jQuery);
     </script>
 

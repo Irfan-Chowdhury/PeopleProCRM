@@ -5,7 +5,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <link rel="icon" type="image/png" href="{{url('logo', $general_settings->site_logo) ?? 'NO Logo'}}">
+    <link rel="icon" type="image/png" href="{{asset('/images/logo/'.$general_settings->site_logo)}}"/>
+
     <title>{{$general_settings->site_title ?? "NO Title"}}</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -270,22 +271,22 @@
 
                 @if ($isCrmModuleExist)
                     <li><a href="{{route('client.contracts.index')}}"> <i
-                        class="dripicons-meter"></i><span>{{trans('file.Contracts')}}</span></a>
+                        class="fa fa-file-text"></i><span>{{trans('file.Contracts')}}</span></a>
                     </li>
                     <li><a href="{{route('client.proposals.index')}}"> <i
-                        class="dripicons-meter"></i><span>{{trans('file.Proposals')}}</span></a>
+                        class="fa fa-slideshare"></i><span>{{trans('file.Proposals')}}</span></a>
                     </li>
                     <li><a href="{{route('client.subscription.index')}}"> <i
-                        class="dripicons-meter"></i><span>{{trans('file.Subscription')}}</span></a>
+                        class="fa fa-sliders"></i><span>{{trans('file.Subscription')}}</span></a>
                     </li>
                     <li><a href="{{route('client.estimates.index')}}"> <i
-                        class="dripicons-meter"></i><span>{{trans('file.Estimates')}}</span></a>
+                        class="fa fa-plane"></i><span>{{trans('file.Estimates')}}</span></a>
                     </li>
                     <li><a href="{{route('client.store.index')}}"> <i
-                        class="dripicons-meter"></i><span>{{trans('file.Store')}}</span></a>
+                        class="fa fa-shopping-bag"></i><span>{{trans('file.Store')}}</span></a>
                     </li>
                     <li><a href="{{route('client.clientOrders')}}"> <i
-                        class="dripicons-meter"></i><span>{{trans('file.Orders')}}</span></a>
+                        class="fa fa-first-order"></i><span>{{trans('file.Orders')}}</span></a>
                     </li>
                 @endif
 

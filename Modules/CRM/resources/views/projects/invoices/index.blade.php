@@ -25,7 +25,7 @@
                     <th>{{__('Due Date')}}</th>
                     <th>{{trans('file.Status')}}</th>
                     <th class="not-exported">{{trans('file.action')}}</th>
-                    <th>{{__('Change Status')}}</th>
+                    {{-- <th>{{__('Change Status')}}</th> --}}
                 </tr>
                 </thead>
 
@@ -138,44 +138,48 @@
                         name: 'invoice_due_date',
                     },
                     {
-                        data: 'status',
-                        name: 'status',
-                        render: function (data, type, row) {
-                            if (data == 0) {
-                                return "<td><div class = 'badge badge-info'>{{trans('file.Unpaid')}}</div></td>";
-                            } if (data == 1) {
-                                return "<td><div class = 'badge badge-success'>{{trans('file.Paid')}}</div></td>";
-                            }
-                            else {
-                                return "<td><div class = 'badge badge-success'>{{trans('file.Sent')}}</div></td>";
-                            }
-                        }
+                        data: 'payment_status',
+                        name: 'payment_status',
                     },
+                    // {
+                    //     data: 'status',
+                    //     name: 'status',
+                    //     render: function (data, type, row) {
+                    //         if (data == 0) {
+                    //             return "<td><div class = 'badge badge-info'>{{trans('file.Unpaid')}}</div></td>";
+                    //         } if (data == 1) {
+                    //             return "<td><div class = 'badge badge-success'>{{trans('file.Paid')}}</div></td>";
+                    //         }
+                    //         else {
+                    //             return "<td><div class = 'badge badge-success'>{{trans('file.Sent')}}</div></td>";
+                    //         }
+                    //     }
+                    // },
                     {
                         data: 'action',
                         name: 'action',
                         orderable: false
                     },
-                    {
-                        data: 'change_status',
-                        name: 'change_status',
-                        render: function (data,type,row) {
-                            if (row.status == 1) {
-                                return '<div class="btn-group"><button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Change Status &nbsp;</button><div class="dropdown-menu">' +
-                                    '<li data-status_id="'+0+'" data-invoice_id="'+row.id+'"  class="invoice_status">{{trans('file.Unpaid')}}</li>'+
-                                    '</div></div>';
-                            }
-                            if (row.status == 2) {
-                                return '<div class="btn-group"><button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Change Status &nbsp;</button><div class="dropdown-menu">' +
-                                    '<li data-status_id="'+1+'" data-invoice_id="'+row.id+'"  class="invoice_status">{{trans('file.Paid')}}</li>'+
-                                    '</div></div>';
-                            }
-                            return '<div class="btn-group"><button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Change Status &nbsp;</button><div class="dropdown-menu">' +
-                                '<li data-status_id="'+1+'" data-invoice_id="'+row.id+'"  class="invoice_status">{{trans('file.Paid')}}</li><hr>'+
-                                '<li data-status_id="'+2+'" data-invoice_id="'+row.id+'" class="invoice_status">{{trans('file.Send')}}</li>'+
-                                '</div></div>';
-                        }
-                    }
+                    // {
+                    //     data: 'change_status',
+                    //     name: 'change_status',
+                    //     render: function (data,type,row) {
+                    //         if (row.status == 1) {
+                    //             return '<div class="btn-group"><button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Change Status &nbsp;</button><div class="dropdown-menu">' +
+                    //                 '<li data-status_id="'+0+'" data-invoice_id="'+row.id+'"  class="invoice_status">{{trans('file.Unpaid')}}</li>'+
+                    //                 '</div></div>';
+                    //         }
+                    //         if (row.status == 2) {
+                    //             return '<div class="btn-group"><button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Change Status &nbsp;</button><div class="dropdown-menu">' +
+                    //                 '<li data-status_id="'+1+'" data-invoice_id="'+row.id+'"  class="invoice_status">{{trans('file.Paid')}}</li>'+
+                    //                 '</div></div>';
+                    //         }
+                    //         return '<div class="btn-group"><button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Change Status &nbsp;</button><div class="dropdown-menu">' +
+                    //             '<li data-status_id="'+1+'" data-invoice_id="'+row.id+'"  class="invoice_status">{{trans('file.Paid')}}</li><hr>'+
+                    //             '<li data-status_id="'+2+'" data-invoice_id="'+row.id+'" class="invoice_status">{{trans('file.Send')}}</li>'+
+                    //             '</div></div>';
+                    //     }
+                    // }
                 ],
 
 

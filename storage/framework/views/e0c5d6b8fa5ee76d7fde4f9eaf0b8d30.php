@@ -1,5 +1,4 @@
-@extends('layout.main')
-@section('content')
+<?php $__env->startSection('content'); ?>
 
 
     <section>
@@ -8,9 +7,9 @@
 
 
         <div class="container-fluid">
-            @can('store-invoice')
-                <a class="btn btn-info" id="create_record" href="{{route('invoices.create')}}"><i class="fa fa-plus"></i> {{__('Add Invoice')}}</a>
-            @endcan
+            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('store-invoice')): ?>
+                <a class="btn btn-info" id="create_record" href="<?php echo e(route('invoices.create')); ?>"><i class="fa fa-plus"></i> <?php echo e(__('Add Invoice')); ?></a>
+            <?php endif; ?>
         </div>
 
         <div class="table-responsive">
@@ -18,14 +17,14 @@
                 <thead>
                 <tr>
                     <th class="not-exported"></th>
-                    <th>{{trans('file.Invoice')}}#</th>
-                    <th>{{trans('file.Project')}}</th>
-                    <th>{{trans('file.Total')}}</th>
-                    <th>{{__('Invoice Date')}}</th>
-                    <th>{{__('Due Date')}}</th>
-                    <th>{{trans('file.Status')}}</th>
-                    <th class="not-exported">{{trans('file.action')}}</th>
-                    <th>{{__('Change Status')}}</th>
+                    <th><?php echo e(trans('file.Invoice')); ?>#</th>
+                    <th><?php echo e(trans('file.Project')); ?></th>
+                    <th><?php echo e(trans('file.Total')); ?></th>
+                    <th><?php echo e(__('Invoice Date')); ?></th>
+                    <th><?php echo e(__('Due Date')); ?></th>
+                    <th><?php echo e(trans('file.Status')); ?></th>
+                    <th class="not-exported"><?php echo e(trans('file.action')); ?></th>
+                    
                 </tr>
                 </thead>
 
@@ -38,17 +37,17 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2 class="modal-title">{{trans('file.Confirmation')}}</h2>
+                    <h2 class="modal-title"><?php echo e(trans('file.Confirmation')); ?></h2>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <h4 align="center">{{__('Are you sure you want to remove this data?')}}</h4>
+                    <h4 align="center"><?php echo e(__('Are you sure you want to remove this data?')); ?></h4>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" name="ok_button" id="ok_button" class="btn btn-danger">{{trans('file.OK')}}'
+                    <button type="button" name="ok_button" id="ok_button" class="btn btn-danger"><?php echo e(trans('file.OK')); ?>'
                     </button>
                     <button type="button" class="close btn-default"
-                            data-dismiss="modal">{{trans('file.Cancel')}}</button>
+                            data-dismiss="modal"><?php echo e(trans('file.Cancel')); ?></button>
                 </div>
             </div>
         </div>
@@ -59,9 +58,9 @@
 
 
 
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script type="text/javascript">
     (function($) {
         "use strict";
@@ -99,7 +98,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: "{{ route('invoices.index') }}",
+                    url: "<?php echo e(route('invoices.index')); ?>",
                 },
 
                 columns: [
@@ -120,11 +119,11 @@
                         data: 'grand_total',
                         name: 'grand_total',
                         render: function (data, type, row) {
-                            if("{{config('variable.currency_format')=='suffix'}}") {
-                                return data + "{{config('variable.currency')}}"
+                            if("<?php echo e(config('variable.currency_format')=='suffix'); ?>") {
+                                return data + "<?php echo e(config('variable.currency')); ?>"
                             }
                             else {
-                                return  "{{config('variable.currency')}}" + data
+                                return  "<?php echo e(config('variable.currency')); ?>" + data
                             }
                         }
 
@@ -138,55 +137,59 @@
                         name: 'invoice_due_date',
                     },
                     {
-                        data: 'status',
-                        name: 'status',
-                        render: function (data, type, row) {
-                            if (data == 0) {
-                                return "<td><div class = 'badge badge-info'>{{trans('file.Unpaid')}}</div></td>";
-                            } if (data == 1) {
-                                return "<td><div class = 'badge badge-success'>{{trans('file.Paid')}}</div></td>";
-                            }
-                            else {
-                                return "<td><div class = 'badge badge-success'>{{trans('file.Sent')}}</div></td>";
-                            }
-                        }
+                        data: 'payment_status',
+                        name: 'payment_status',
                     },
+                    // {
+                    //     data: 'status',
+                    //     name: 'status',
+                    //     render: function (data, type, row) {
+                    //         if (data == 0) {
+                    //             return "<td><div class = 'badge badge-info'><?php echo e(trans('file.Unpaid')); ?></div></td>";
+                    //         } if (data == 1) {
+                    //             return "<td><div class = 'badge badge-success'><?php echo e(trans('file.Paid')); ?></div></td>";
+                    //         }
+                    //         else {
+                    //             return "<td><div class = 'badge badge-success'><?php echo e(trans('file.Sent')); ?></div></td>";
+                    //         }
+                    //     }
+                    // },
                     {
                         data: 'action',
                         name: 'action',
                         orderable: false
                     },
-                    {
-                        data: 'change_status',
-                        name: 'change_status',
-                        render: function (data,type,row) {
-                            if (row.status == 1) {
-                                return '<div class="btn-group"><button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Change Status &nbsp;</button><div class="dropdown-menu">' +
-                                    '<li data-status_id="'+0+'" data-invoice_id="'+row.id+'"  class="invoice_status">{{trans('file.Unpaid')}}</li>'+
-                                    '</div></div>';
-                            }
-                            if (row.status == 2) {
-                                return '<div class="btn-group"><button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Change Status &nbsp;</button><div class="dropdown-menu">' +
-                                    '<li data-status_id="'+1+'" data-invoice_id="'+row.id+'"  class="invoice_status">{{trans('file.Paid')}}</li>'+
-                                    '</div></div>';
-                            }
-                            return '<div class="btn-group"><button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Change Status &nbsp;</button><div class="dropdown-menu">' +
-                                '<li data-status_id="'+1+'" data-invoice_id="'+row.id+'"  class="invoice_status">{{trans('file.Paid')}}</li><hr>'+
-                                '<li data-status_id="'+2+'" data-invoice_id="'+row.id+'" class="invoice_status">{{trans('file.Send')}}</li>'+
-                                '</div></div>';
-                        }
-                    }
+                    // {
+                    //     data: 'change_status',
+                    //     name: 'change_status',
+                    //     render: function (data,type,row) {
+                    //         if (row.status == 1) {
+                    //             return '<div class="btn-group"><button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Change Status &nbsp;</button><div class="dropdown-menu">' +
+                    //                 '<li data-status_id="'+0+'" data-invoice_id="'+row.id+'"  class="invoice_status"><?php echo e(trans('file.Unpaid')); ?></li>'+
+                    //                 '</div></div>';
+                    //         }
+                    //         if (row.status == 2) {
+                    //             return '<div class="btn-group"><button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Change Status &nbsp;</button><div class="dropdown-menu">' +
+                    //                 '<li data-status_id="'+1+'" data-invoice_id="'+row.id+'"  class="invoice_status"><?php echo e(trans('file.Paid')); ?></li>'+
+                    //                 '</div></div>';
+                    //         }
+                    //         return '<div class="btn-group"><button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Change Status &nbsp;</button><div class="dropdown-menu">' +
+                    //             '<li data-status_id="'+1+'" data-invoice_id="'+row.id+'"  class="invoice_status"><?php echo e(trans('file.Paid')); ?></li><hr>'+
+                    //             '<li data-status_id="'+2+'" data-invoice_id="'+row.id+'" class="invoice_status"><?php echo e(trans('file.Send')); ?></li>'+
+                    //             '</div></div>';
+                    //     }
+                    // }
                 ],
 
 
                 "order": [],
                 'language': {
-                    'lengthMenu': '_MENU_ {{__("records per page")}}',
-                    "info": '{{trans("file.Showing")}} _START_ - _END_ (_TOTAL_)',
-                    "search": '{{trans("file.Search")}}',
+                    'lengthMenu': '_MENU_ <?php echo e(__("records per page")); ?>',
+                    "info": '<?php echo e(trans("file.Showing")); ?> _START_ - _END_ (_TOTAL_)',
+                    "search": '<?php echo e(trans("file.Search")); ?>',
                     'paginate': {
-                        'previous': '{{trans("file.Previous")}}',
-                        'next': '{{trans("file.Next")}}'
+                        'previous': '<?php echo e(trans("file.Previous")); ?>',
+                        'next': '<?php echo e(trans("file.Next")); ?>'
                     }
                 },
                 'columnDefs': [
@@ -255,8 +258,8 @@
         $(document).on('click', '.delete', function () {
             delete_id = $(this).attr('id');
             $('#confirmModal').modal('show');
-            $('.modal-title').text('{{__('DELETE Record')}}');
-            $('#ok_button').text('{{trans('file.OK')}}');
+            $('.modal-title').text('<?php echo e(__('DELETE Record')); ?>');
+            $('#ok_button').text('<?php echo e(trans('file.OK')); ?>');
 
         });
 
@@ -268,11 +271,11 @@
         });
 
         $('#ok_button').on('click', function () {
-            let target = "{{ route('invoices.index') }}/" + delete_id + '/delete';
+            let target = "<?php echo e(route('invoices.index')); ?>/" + delete_id + '/delete';
             $.ajax({
                 url: target,
                 beforeSend: function () {
-                    $('#ok_button').text('{{trans('file.Deleting...')}}');
+                    $('#ok_button').text('<?php echo e(trans('file.Deleting...')); ?>');
                 },
                 success: function (data) {
                     let html = '';
@@ -298,7 +301,7 @@
             let invoice_id = $(this).attr('data-invoice_id');
 
 
-            var target = "{{ url('project-management/invoices/status')}}/" + status_id +'/'+invoice_id;
+            var target = "<?php echo e(url('project-management/invoices/status')); ?>/" + status_id +'/'+invoice_id;
 
             $.ajax({
                 url: target,
@@ -323,4 +326,6 @@
         });
     })(jQuery);
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layout.main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/html/peoplepro/peoplepro-hrm-crm/Modules/CRM/resources/views/projects/invoices/index.blade.php ENDPATH**/ ?>

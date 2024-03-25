@@ -2,6 +2,7 @@
 
 return array (
   'a' => 'a',
+  'Contract Item Details' => 'Contract Item Details',
   'Order Details' => 'Order Details',
   'Proposal Item Details' => 'Proposal Item Details',
   'Subscription' => 'Subscription',

@@ -102,10 +102,10 @@ class CRMController extends Controller
     protected static function otherFileDelete(): void
     {
         $baseFiles = [
-            'app/Http/Controllers/InvoiceController.php',
+            // 'app/Http/Controllers/InvoiceController.php',
             'app/Http/Controllers/ClientInvoiceController.php',
-            'app/Models/Invoice.php',
-            'app/Models/InvoiceItem.php',
+            // 'app/Models/Invoice.php',
+            // 'app/Models/InvoiceItem.php',
         ];
 
         foreach ($baseFiles as $file) {

@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Models;
+namespace Modules\CRM\App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Modules\CRM\Database\factories\InvoiceItemFactory;
 
 class InvoiceItem extends Model
 {
@@ -18,5 +20,7 @@ class InvoiceItem extends Model
 		return $this->hasOne('App\Models\Invoice','id','invoice_id');
 	}
 
-
+	public function item(){
+		return $this->hasOne(Item::class,'id','item_id');
+	}
 }

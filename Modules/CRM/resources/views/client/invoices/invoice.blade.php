@@ -5,11 +5,11 @@
     <section>
 
         <div class="table-responsive">
-            <table id="client_paid_invoice-table" class="table ">
+            <table id="client_invoice-table" class="table ">
                 <thead>
                 <tr>
                     <th class="not-exported"></th>
-                    <th>{{trans('file.Invoice')}}#</th>
+                    <th>{{trans('file.Invoice')}}</th>
                     <th>{{trans('file.Project')}}</th>
                     <th>{{trans('file.Total')}}</th>
                     <th>{{__('Invoice Date')}}</th>
@@ -24,19 +24,20 @@
     </section>
 
     <script type="text/javascript">
-        (function($) {  
-         
+        (function($) {
+
             "use strict";
+
             $(document).ready(function () {
 
-                var table_table = $('#client_paid_invoice-table').DataTable({
+                let table_table = $('#client_invoice-table').DataTable({
                     initComplete: function () {
                         this.api().columns([1]).every(function () {
-                            var column = this;
-                            var select = $('<select><option value=""></option></select>')
+                            let column = this;
+                            let select = $('<select><option value=""></option></select>')
                                 .appendTo($(column.footer()).empty())
                                 .on('change', function () {
-                                    var val = $.fn.dataTable.util.escapeRegex(
+                                    let val = $.fn.dataTable.util.escapeRegex(
                                         $(this).val()
                                     );
 
@@ -59,7 +60,7 @@
                     processing: true,
                     serverSide: true,
                     ajax: {
-                        url: "{{ route('clientInvoicePaid') }}",
+                        url: "{{ route('clientInvoice') }}",
                     },
 
                     columns: [
@@ -93,17 +94,21 @@
                             name: 'invoice_due_date',
                         },
                         {
-                            data: 'status',
-                            name: 'status',
-                            render: function (data, type, row) {
-                                if (data == 1) {
-                                    return "<td><div class = 'badge badge-success'>{{trans('file.Paid')}}</div></td>";
-                                }
-                                else {
-                                    return "<td><div class = 'badge badge-info'>{{trans('file.Unpaid')}}</div></td>";
-                                }
-                            }
+                            data: 'payment_status',
+                            name: 'payment_status',
                         },
+                        // {
+                        //     data: 'status',
+                        //     name: 'status',
+                        //     render: function (data, type, row) {
+                        //         if (data == 1) {
+                        //             return "<td><div class = 'badge badge-success'>{{trans('file.Paid')}}</div></td>";
+                        //         }
+                        //         else {
+                        //             return "<td><div class = 'badge badge-info'>{{trans('file.Unpaid')}}</div></td>";
+                        //         }
+                        //     }
+                        // },
                         {
                             data: 'action',
                             name: 'action',
@@ -182,8 +187,8 @@
                 });
                 new $.fn.dataTable.FixedHeader(table_table);
             });
-        
-        })(jQuery); 
+
+        })(jQuery);
     </script>
 
 @endsection

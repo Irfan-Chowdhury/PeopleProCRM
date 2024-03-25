@@ -1,6 +1,5 @@
 <?php
 
-
 use App\Http\Controllers\AccountListController;
 use App\Http\Controllers\AllUserController;
 use App\Http\Controllers\AnnouncementController;
@@ -129,6 +128,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Addon\BiometricAddonController;
 use App\Http\Controllers\Addon\CRMController;
 use App\Http\Controllers\Addon\SaasController;
+use Illuminate\Support\Facades\File;
+
+
+
 
 Auth::routes(['register' => false]);
 
@@ -747,13 +750,33 @@ Route::group(['middleware' => ['XSS']], function () {
 
         Route::post('tasks/{task}/notes', [TaskController::class, 'notesStore'])->name('task_notes.store');
 
-        Route::post('invoices/{id}/update', [InvoiceController::class, 'update'])->name('invoices.update');
-        Route::resource('invoices', InvoiceController::class)->except(['destroy', 'update']);
-        Route::get('invoices/status/{status_id}/{invoice_id}', [InvoiceController::class, 'status'])->name('invoices.status');
-        Route::get('invoices/{id}/delete', [InvoiceController::class, 'destroy'])->name('invoices.destroy');
-        Route::get('invoices/download', [InvoiceController::class, 'download'])->name('invoices.download');
-        Route::get('invoices/download/{id}', [InvoiceController::class, 'download'])->name('invoices.downloadFile');
-        Route::post('invoices/delete/selected', [InvoiceController::class, 'delete_by_selection'])->name('mass_delete_invoices');
+
+
+        // ---------- Test ------------------
+
+        $isCrmModuleExist = File::exists(base_path('Modules/CRM'));
+        if (!$isCrmModuleExist) {
+            Route::post('invoices/{id}/update', [InvoiceController::class, 'update'])->name('invoices.update');
+            Route::resource('invoices', InvoiceController::class);
+            Route::get('invoices/status/{status_id}/{invoice_id}', [InvoiceController::class, 'status'])->name('invoices.status');
+            Route::get('invoices/{id}/delete', [InvoiceController::class, 'destroy'])->name('invoices.destroy');
+            Route::get('invoices/download', [InvoiceController::class, 'download'])->name('invoices.download');
+            Route::get('invoices/download/{id}', [InvoiceController::class, 'download'])->name('invoices.downloadFile');
+            Route::post('invoices/delete/selected', [InvoiceController::class, 'delete_by_selection'])->name('mass_delete_invoices');
+        }
+
+        // ---------- Test End ------------------
+
+
+        // Route::post('invoices/{id}/update', [InvoiceController::class, 'update'])->name('invoices.update');
+        // Route::resource('invoices', InvoiceController::class)->except(['destroy', 'update']);
+        // Route::get('invoices/status/{status_id}/{invoice_id}', [InvoiceController::class, 'status'])->name('invoices.status');
+        // Route::get('invoices/{id}/delete', [InvoiceController::class, 'destroy'])->name('invoices.destroy');
+        // Route::get('invoices/download', [InvoiceController::class, 'download'])->name('invoices.download');
+        // Route::get('invoices/download/{id}', [InvoiceController::class, 'download'])->name('invoices.downloadFile');
+        // Route::post('invoices/delete/selected', [InvoiceController::class, 'delete_by_selection'])->name('mass_delete_invoices');
+
+
 
         Route::post('clients/update', [ClientController::class, 'update'])->name('clients.update');
         Route::resource('clients', ClientController::class)->except(['destroy', 'create', 'update', 'show']);
@@ -886,8 +909,14 @@ Route::group(['middleware' => ['XSS']], function () {
 
     Route::prefix('client')->group(function() {
         Route::get('/profile', [DashboardController::class, 'clientProfile'])->name('clientProfile');
-        Route::get('/invoices', [ClientInvoiceController::class, 'invoices'])->name('clientInvoice');
-        Route::get('/invoices/payment', [ClientInvoiceController::class, 'paidInvoices'])->name('clientInvoicePaid');
+
+        
+        $isCrmModuleExist = File::exists(base_path('Modules/CRM'));
+        if (!$isCrmModuleExist) {
+            Route::get('/invoices', [ClientInvoiceController::class, 'invoices'])->name('clientInvoice');
+            Route::get('/invoices/payment', [ClientInvoiceController::class, 'paidInvoices'])->name('clientInvoicePaid');
+        }
+
         Route::get('/projects', [ClientProjectController::class, 'index'])->name('clientProject');
         Route::post('/projects/store', [ClientProjectController::class, 'store'])->name('clientProject.store');
         Route::get('/projects/status', [ClientProjectController::class, 'status'])->name('clientProjectStatus');
@@ -954,21 +983,4 @@ Route::group(['middleware' => ['XSS']], function () {
     Route::post('bug-update', [ClientAutoUpdateController::class, 'bugUpdate'])->name('bug-update');
 
 });
-//
-//Route::group(['prefix' => 'api', 'middleware' => 'auth'], function ()
-//{
-//	Route::get('find', function (Illuminate\Http\Request $request)
-//	{
-//		$keyword = $request->input('keyword');
-//		Log::info($keyword);
-//		$names = DB::table('employees')->where('first_name', 'like', '%' . $keyword . '%')
-//			->orWhere('last_name', 'like', '%' . $keyword . '%')
-//			->select('employees.id', DB::raw("CONCAT(employees.first_name,' ',employees.last_name) as full_name"))
-//			->get();
-//
-//		return json_encode($names);
-//	})->name('api.names');
-//});
 
-//Employeer
-//Set Null
