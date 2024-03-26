@@ -1,48 +1,45 @@
-@extends('layout.main')
-@section('content')
+@extends('crm::lead_section.layout')
+@section('lead_details')
 
-
-    <section>
-        <div class="container-fluid mb-3">
-            <div class="card">
-                <div class="card-header"><h3 class="testColor">{{__('file.Lead Section')}}</h3></div>
-                <div class="card-body">
-                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#createModal"><i class="fa fa-plus"></i> {{__('file.Add New')}}</button>
-                    <button type="button" class="btn btn-danger" name="bulk_delete" id="bulk_delete"><i class="fa fa-minus-circle"></i> {{__('Bulk delete')}}</button>                </div>
-            </div>
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-header"><h3>{{__('file.Files')}}</h3></div>
+        <div class="card-header">
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#createModal"><i class="fa fa-plus"></i> {{__('file.Add New')}}</button>
+            <button type="button" class="btn btn-danger" name="bulk_delete" id="bulk_delete"><i class="fa fa-minus-circle"></i> {{__('Bulk delete')}}</button>                </div>
         </div>
+    </div>
+</div>
 
-        <div class="container">
-            <div class="table-responsive">
-                <table id="dataListTable" class="table ">
-                    <thead>
-                        <tr>
-                            <th class="not-exported"></th>
-                            <th>{{trans('file.Company')}}</th>
-                            <th>{{trans('file.Owner')}}</th>
-                            <th class="not-exported">{{trans('file.action')}}</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tablecontents"></tbody>
-                </table>
-            </div>
-        </div>
+<div class="container">
+    <div class="table-responsive">
+        <table id="dataListTable" class="table ">
+            <thead>
+                <tr>
+                    <th class="not-exported"></th>
+                    <th>{{trans('file.Title')}}</th>
+                    <th>{{trans('file.Description')}}</th>
+                    <th>{{__('Date and Time')}}</th>
+                    <th class="not-exported">{{trans('file.action')}}</th>
+                </tr>
+            </thead>
+            <tbody id="tablecontents"></tbody>
+        </table>
+    </div>
+</div>
 
-    </section>
+@include('crm::lead_section.files.create-modal')
+{{-- @include('crm::lead_section.files.edit-modal') --}}
 
-    @include('crm::lead_section.lead.create-modal')
-    @include('crm::lead_section.lead.edit-modal')
 
 @endsection
 
 @push('scripts')
 <script type="text/javascript">
-    let dataTableURL = "{{ route('lead.datatable') }}";
-    let storeURL = "{{ route('lead.store') }}";
-    let editURL = "/leads/edit/";
-    let updateURL = '/leads/update/';
-    let destroyURL = '/leads/destroy/';
-    let bulkDeleteURL = '{{route('lead.bulk_delete')}}';
+    let dataTableURL = "{{ route('lead.files.datatable', ['lead' => $lead->id]) }}";
+    let storeURL = "{{ route('lead.files.store', ['lead' => $lead->id]) }}";
+    let destroyURL = "{{ url('/leads/details')}}/" + "{{ $lead->id }}/files/destroy/";
+    let bulkDeleteURL = '{{ route('lead.files.bulk_delete', ['lead' => $lead->id]) }}';
 </script>
 
 <script type="text/javascript">
@@ -55,6 +52,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+
             let table = $('#dataListTable').DataTable({
                 initComplete: function () {
                     this.api().columns([1]).every(function () {
@@ -90,13 +88,17 @@
                         searchable: false
                     },
                     {
-                        data: 'company_name',
-                        name: 'company_name',
+                        data: 'file_title',
+                        name: 'file_title'
+                    },
+                    {
+                        data: 'file_description',
+                        name: 'file_description',
 
                     },
                     {
-                        data: 'owner',
-                        name: 'owner',
+                        data: 'created_at',
+                        name: 'created_at',
 
                     },
                     {
@@ -117,11 +119,10 @@
                         'next': '{{trans("file.Next")}}'
                     }
                 },
-
                 'columnDefs': [
                     {
                         "orderable": false,
-                        'targets': [0,2]
+                        'targets': [0,4]
                     },
                     {
                         'render': function (data, type, row, meta) {
@@ -177,66 +178,33 @@
         });
 
         let currentModal;
-        //--------- Edit -------
+        // //--------- Edit -------
         $(document).on('click', '.edit', function() {
             let id = $(this).data("id");
             currentModal = 'edit';
 
             $.get({
                 url: editURL + id,
-                success: function(response) {
+                dataType: "json",
+                success: function (response) {
                     console.log(response);
-                    $("#modelId").val(response.lead.id);
-                    $('#companyIdEdit').selectpicker('val', response.lead.company_id);
-
-                    let all_employees = '';
-                    $.each(response.employees, function (index, value) {
-                        all_employees += '<option value=' + value['id'] + '>' + value['first_name'] +' '+ value['last_name'] + '</option>';
-                    });
-                    $('#employeeIdEdit').empty().append(all_employees);
-                    $('#employeeIdEdit').selectpicker('refresh');
-                    $('#employeeIdEdit').selectpicker('val', response.lead.employee_id);
-
-                    $('#statusEdit').selectpicker('val', response.lead.status);
-                    $('#countryId').selectpicker('val', response.lead.country_id);
-                    $("#editModal input[name='city']").val(response.lead.city);
-                    $("#editModal input[name='state']").val(response.lead.state);
-                    $("#editModal input[name='zip']").val(response.lead.zip);
-                    $("#addressEdit").val(response.lead.address);
-                    $("#editModal input[name='phone']").val(response.lead.phone);
-                    $("#editModal input[name='website']").val(response.lead.website);
-                    $("#editModal input[name='vat_number']").val(response.lead.vat_number);
-                    $("#editModal input[name='gst_number']").val(response.lead.gst_number);
+                    $("#modelId").val(response.leadContact.id);
+                    $("#editModal input[name='first_name']").val(response.leadContact.first_name);
+                    $("#editModal input[name='last_name']").val(response.leadContact.last_name);
+                    $("#editModal input[name='email']").val(response.leadContact.email);
+                    $("#editModal input[name='phone']").val(response.leadContact.phone);
+                    $("#addressEdit").val(response.leadContact.address);
+                    $("#editModal input[name='job_title']").val(response.leadContact.job_title);
+                    $("#editModal input[name='gender'][value='" + response.leadContact.gender + "']").prop("checked", true);
+                    if (response.leadContact.is_primary_contact) {
+                        $("#editModal input[name='is_primary_contact']").prop('checked', true);
+                    } else {
+                        $("#editModal input[name='is_primary_contact']").prop('checked', false);
+                    }
                     currentModal = '';
                     $('#editModal').modal('show');
                 }
-            })
-        });
-
-        $('.dynamic').change(function() {
-            if ($(this).val() !== '') {
-                let value = $(this).val();
-                let first_name = $(this).data('first_name');
-                let last_name = $(this).data('last_name');
-                let _token = $('input[name="_token"]').val();
-
-                $.ajax({
-                    url:"{{ route('dynamic_employee') }}",
-                    method:"POST",
-                    data:{ value:value, _token:_token, first_name:first_name,last_name:last_name},
-                    success:function(result)
-                    {
-                        $('select').selectpicker("destroy");
-                        if (currentModal==='edit') {
-                            $('#employeeIdEdit').html(result);
-                        }else {
-                            $('#employeeId').html(result);
-                        }
-
-                        $('select').selectpicker();
-                    }
-                });
-            }
+            });
         });
 
         $(document).on('click', '#bulk_delete', function () {
@@ -290,10 +258,6 @@
 <script type="text/javascript" src="{{ asset('js/common-js/store.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/common-js/update.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/common-js/delete.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/common-js/bulkDelete.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/common-js/alertMessages.js') }}"></script>
-
-{{-- <script>
-    {!! file_get_contents(Module::find('CRM')->getPath(). "/assets/js/myscript.js") !!}
-</script> --}}
 @endpush
-

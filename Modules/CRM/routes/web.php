@@ -22,6 +22,7 @@ use Modules\CRM\App\Http\Controllers\LeadContactController;
 use Modules\CRM\App\Http\Controllers\LeadContractController;
 use Modules\CRM\App\Http\Controllers\LeadController;
 use Modules\CRM\App\Http\Controllers\LeadEstimateController;
+use Modules\CRM\App\Http\Controllers\LeadFileController;
 use Modules\CRM\App\Http\Controllers\LeadInfoController;
 use Modules\CRM\App\Http\Controllers\LeadNoteController;
 use Modules\CRM\App\Http\Controllers\LeadProposalController;
@@ -136,6 +137,18 @@ Route::group(['middleware' => ['XSS']], function () {
                     Route::post('/update/{leadNote}', 'update')->name('lead.notes.update');
                     Route::get('/destroy/{leadNote}', 'destroy');
                     Route::post('/bulk_delete', 'bulkDelete')->name('lead.notes.bulk_delete');
+                });
+            });
+
+            Route::controller(LeadFileController::class)->group(function () {
+                Route::prefix('files')->group(function () {
+                    Route::get('/', 'index')->name('lead.files.index');
+                    Route::get('/datatable', 'datatable')->name('lead.files.datatable');
+                    Route::post('/store', 'store')->name('lead.files.store');
+                    Route::get('/destroy/{leadFile}', 'destroy');
+                    Route::post('/bulk_delete', 'bulkDelete')->name('lead.files.bulk_delete');
+                    Route::get('file_download/{leadFile}', 'download')->name('lead.files.downloadFile');
+
                 });
             });
         });

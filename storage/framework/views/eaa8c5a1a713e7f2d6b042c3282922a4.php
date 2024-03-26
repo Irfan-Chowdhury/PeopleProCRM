@@ -206,9 +206,6 @@
                                                                                                     data-toggle="collapse">
                             <i class="dripicons-clock"></i><span><?php echo e(trans('file.Timesheets')); ?></span></a>
                         <ul id="Timesheets" class="collapse list-unstyled ">
-                        
-                                
-                        
 
                             <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('edit-attendance')): ?>
                                 <li id="update_attendance"><a
@@ -296,8 +293,6 @@
                                                                                                  data-toggle="collapse">
                             <i class="dripicons-document"></i><span><?php echo e(__('HR Reports')); ?></span></a>
                         <ul id="HR_Reports" class="collapse list-unstyled ">
-
-                            
 
                             <!--New added-->
                             <li id="attendance"><a href="<?php echo e(route('attendances.index')); ?>"><?php echo e(__('Daily Attendances')); ?></a></li>
@@ -462,16 +457,6 @@
                                                 href="<?php echo e(route('tasks.index')); ?>"><?php echo e(trans(('file.Tasks'))); ?></a>
                                     </li>
                                 <?php endif; ?>
-                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('client')): ?>
-                                    <li id="clients"><a
-                                                href="<?php echo e(route('clients.index')); ?>"><?php echo e(trans(('file.Client'))); ?></a>
-                                    </li>
-                                <?php endif; ?>
-
-                                <?php if($isCrmModuleExist): ?>
-                                    <li id="clients"><a href="<?php echo e(route('client.overview')); ?>"><?php echo e(trans(('file.Client Overview'))); ?></a></li>
-                                <?php endif; ?>
-
                                 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('view-invoice')): ?>
                                     <li id="invoices"><a
                                                 href="<?php echo e(route('invoices.index')); ?>"><?php echo e(trans(('file.Invoice'))); ?></a>
@@ -576,46 +561,55 @@
                         </li>
                     <?php endif; ?>
 
-
-                    <?php if($isCrmModuleExist): ?>
-                        <li class="<?php echo e((request()->is('lead*')) ? 'active' : ''); ?>">
-                            <a href="<?php echo e(route('lead.index')); ?>"> <i class="dripicons-ticket"></i><span><?php echo e(__('Leads')); ?></span>
-                            </a>
-                        </li>
-                        <li class="<?php echo e((request()->is('subscriptions*')) ? 'active' : ''); ?>">
-                            <a href="<?php echo e(route('subscription.index')); ?>"> <i class="dripicons-ticket"></i><span><?php echo e(__('Subscription')); ?></span>
-                            </a>
-                        </li>
-                        <li class="has-dropdown <?php if(request()->is('sales*')): ?><?php echo e((request()->is('sales.*')) ? 'active' : ''); ?> <?php elseif(request()->is('sales*')): ?><?php echo e((request()->is('sales*')) ? 'active' : ''); ?><?php endif; ?>">
-                            <a href="#sales" aria-expanded="false" data-toggle="collapse">
-                                <i class="dripicons-user"></i>
-                                <span><?php echo e(trans('file.Sales')); ?></span>
-                            </a>
-                            <ul id="sales" class="collapse list-unstyled ">
-                                <li id="sales-menu"><a href="<?php echo e(route('itemCategory.index')); ?>"><?php echo e(__('file.Item Category')); ?></a></li>
-                                <li id="sales-menu"><a href="<?php echo e(route('items.index')); ?>"><?php echo e(__('file.Items')); ?></a></li>
-                                <li id="sales-menu"><a href="<?php echo e(route('invoices.index')); ?>"><?php echo e(__('file.Invoices')); ?></a></li>
-                                <li id="sales-menu"><a href="<?php echo e(route('store.index')); ?>"><?php echo e(__('file.Store')); ?></a></li>
-                                <li id="sales-menu"><a href="<?php echo e(route('order.index')); ?>"><?php echo e(__('file.Order List')); ?></a></li>
-                                <li id="sales-menu"><a href="<?php echo e(route('invoice-payments.index')); ?>"><?php echo e(__('file.Payments')); ?></a></li>
-                            </ul>
-                        </li>
-                        <li class="<?php echo e((request()->is('contracts*')) ? 'active' : ''); ?>">
-                            <a href="<?php echo e(route('contracts.index')); ?>"> <i class="dripicons-ticket"></i><span><?php echo e(__('Contracts')); ?></span>
-                            </a>
-                        </li>
-                        <li class="has-dropdown <?php if(request()->is('prospects*')): ?><?php echo e((request()->is('prospects*')) ? 'active' : ''); ?><?php elseif(request()->is('add-user*')): ?><?php echo e((request()->is('add-user*')) ? 'active' : ''); ?><?php endif; ?>">
-                            <a href="#prospect" aria-expanded="false" data-toggle="collapse">
-                                <i class="dripicons-user"></i>
-                                <span><?php echo e(trans('file.Prospects')); ?></span>
-                            </a>
-                            <ul id="prospect" class="collapse list-unstyled ">
-                                <li id="prospect-menu"><a href="<?php echo e(route('prospects.proposals.index')); ?>"><?php echo e(__('file.Proposals')); ?></a></li>
-                                <li id="prospect-menu"><a href="<?php echo e(route('prospects.estimates.index')); ?>"><?php echo e(__('file.Estimates')); ?></a></li>
-                                <li id="prospect-menu"><a href="<?php echo e(route('prospects.estimate-forms.index')); ?>"><?php echo e(__('file.Estimate Forms')); ?></a></li>
-                            </ul>
-                        </li>
-                    <?php endif; ?>
+                    <li class="has-dropdown <?php if(request()->is('clients*')): ?><?php echo e((request()->is('clients.*')) ? 'active' : ''); ?> <?php elseif(request()->is('sales*')): ?><?php echo e((request()->is('sales*')) ? 'active' : ''); ?><?php endif; ?>">
+                        <a href="#clients" aria-expanded="false" data-toggle="collapse">
+                            <i class="dripicons-user"></i>
+                            <span><?php echo e(trans('file.Clients')); ?></span>
+                        </a>
+                        <ul id="clients" class="collapse list-unstyled ">
+                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('client')): ?>
+                                <li id="clients-menu"><a href="<?php echo e(route('clients.index')); ?>"><?php echo e(trans(('file.Clients'))); ?></a></li>
+                            <?php endif; ?>
+                            <li id="clients-menu"><a href="<?php echo e(route('client.overview')); ?>"><?php echo e(trans(('file.Client Overview'))); ?></a></li>
+                        </ul>
+                    </li>
+                    <li class="<?php echo e((request()->is('lead*')) ? 'active' : ''); ?>">
+                        <a href="<?php echo e(route('lead.index')); ?>"> <i class="dripicons-ticket"></i><span><?php echo e(__('Leads')); ?></span>
+                        </a>
+                    </li>
+                    <li class="<?php echo e((request()->is('subscriptions*')) ? 'active' : ''); ?>">
+                        <a href="<?php echo e(route('subscription.index')); ?>"> <i class="dripicons-ticket"></i><span><?php echo e(__('Subscription')); ?></span>
+                        </a>
+                    </li>
+                    <li class="has-dropdown <?php if(request()->is('sales*')): ?><?php echo e((request()->is('sales.*')) ? 'active' : ''); ?> <?php elseif(request()->is('sales*')): ?><?php echo e((request()->is('sales*')) ? 'active' : ''); ?><?php endif; ?>">
+                        <a href="#sales" aria-expanded="false" data-toggle="collapse">
+                            <i class="dripicons-user"></i>
+                            <span><?php echo e(trans('file.Sales')); ?></span>
+                        </a>
+                        <ul id="sales" class="collapse list-unstyled ">
+                            <li id="sales-menu"><a href="<?php echo e(route('itemCategory.index')); ?>"><?php echo e(__('file.Item Category')); ?></a></li>
+                            <li id="sales-menu"><a href="<?php echo e(route('items.index')); ?>"><?php echo e(__('file.Items')); ?></a></li>
+                            <li id="sales-menu"><a href="<?php echo e(route('invoices.index')); ?>"><?php echo e(__('file.Invoices')); ?></a></li>
+                            <li id="sales-menu"><a href="<?php echo e(route('store.index')); ?>"><?php echo e(__('file.Store')); ?></a></li>
+                            <li id="sales-menu"><a href="<?php echo e(route('order.index')); ?>"><?php echo e(__('file.Order List')); ?></a></li>
+                            <li id="sales-menu"><a href="<?php echo e(route('invoice-payments.index')); ?>"><?php echo e(__('file.Payments')); ?></a></li>
+                        </ul>
+                    </li>
+                    <li class="<?php echo e((request()->is('contracts*')) ? 'active' : ''); ?>">
+                        <a href="<?php echo e(route('contracts.index')); ?>"> <i class="dripicons-ticket"></i><span><?php echo e(__('Contracts')); ?></span>
+                        </a>
+                    </li>
+                    <li class="has-dropdown <?php if(request()->is('prospects*')): ?><?php echo e((request()->is('prospects*')) ? 'active' : ''); ?><?php elseif(request()->is('add-user*')): ?><?php echo e((request()->is('add-user*')) ? 'active' : ''); ?><?php endif; ?>">
+                        <a href="#prospect" aria-expanded="false" data-toggle="collapse">
+                            <i class="dripicons-user"></i>
+                            <span><?php echo e(trans('file.Prospects')); ?></span>
+                        </a>
+                        <ul id="prospect" class="collapse list-unstyled ">
+                            <li id="prospect-menu"><a href="<?php echo e(route('prospects.proposals.index')); ?>"><?php echo e(__('file.Proposals')); ?></a></li>
+                            <li id="prospect-menu"><a href="<?php echo e(route('prospects.estimates.index')); ?>"><?php echo e(__('file.Estimates')); ?></a></li>
+                            <li id="prospect-menu"><a href="<?php echo e(route('prospects.estimate-forms.index')); ?>"><?php echo e(__('file.Estimate Forms')); ?></a></li>
+                        </ul>
+                    </li>
 
                     <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('file_module')): ?>
                         <li class="has-dropdown <?php echo e((request()->is('file_manager*')) ? 'active' : ''); ?>">
@@ -653,4 +647,4 @@
         </div>
     </div>
 </nav>
-<?php /**PATH /var/www/html/peoplepro/peoplepro-hrm-crm/resources/views/layout/main_partials/sidebar.blade.php ENDPATH**/ ?>
+<?php /**PATH /var/www/html/peoplepro/peoplepro-hrm-crm/Modules/CRM/resources/views/layouts/partials/admin_sidebar.blade.php ENDPATH**/ ?>

@@ -198,6 +198,20 @@
             let id = $(this).data("id");
             currentModal = 'edit';
 
+// $file = $request->file_attachment;
+// $file_name = null;
+// if (isset($file))
+// {
+// 	if ($file->isValid()){
+// 		$file_name = 'lead_file_' . time() . '.' . $file->getClientOriginalExtension();
+// 		$file->storeAs('lead_file_attachments', $file_name);
+// 		$data['file_attachment'] = $file_name;
+// 	}
+// }
+
+// return response()->json($data);
+
+
             $.get({
                 url: editURL + id,
                 dataType: "json",

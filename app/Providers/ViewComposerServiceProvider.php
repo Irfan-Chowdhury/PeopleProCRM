@@ -36,6 +36,7 @@ class ViewComposerServiceProvider extends ServiceProvider
             view()->composer([
                 'layout.main',
                 'layout.main_partials.header',
+                'layout.main_partials.sidebar',
                 'layout.main_partials.footer',
                 'projects.invoices.show',
                 'dashboard',

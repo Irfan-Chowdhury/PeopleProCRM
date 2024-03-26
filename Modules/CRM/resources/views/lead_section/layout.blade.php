@@ -55,11 +55,11 @@
                             >{{trans('file.Proposals')}}
                         </a>
                     </li>
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                         <a class="nav-link" id="employee_project_task-tab" data-toggle="tab"
                            href="#Employee_project_task" role="tab" aria-controls="Employee_project_task"
                            aria-selected="false"> {{trans('file.Estimate Request')}}</a>
-                    </li>
+                    </li> --}}
                     <li class="nav-item">
                            <a class="nav-link {{ request()->routeIs('lead.contracts.index') ? 'active' : '' }}"  href="{{ route('lead.contracts.index', $leadId) }}" role="tab">{{trans('file.Contracts')}}</a>
                     </li>
@@ -69,10 +69,9 @@
                         </li>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="remainingLeaveType-tab" data-toggle="tab" href="#remainingLeaveType"
-                           role="tab" aria-controls="remainingLeaveType"
-                           aria-selected="false">{{trans('file.Files')}}
-                        </a>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('lead.files.index') ? 'active' : '' }}"  href="{{ route('lead.files.index', $leadId) }}" role="tab">{{trans('file.Files')}}</a>
+                        </li>
                     </li>
                 </ul>
 
