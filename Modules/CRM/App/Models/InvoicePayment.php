@@ -13,6 +13,7 @@ class InvoicePayment extends Model
 
     protected $fillable = [
         'invoice_id',
+        'client_id',
         'payment_method',
         'date',
         'amount',
@@ -22,5 +23,9 @@ class InvoicePayment extends Model
 
     public function invoice(){
 		return $this->belongsTo(Invoice::class,'invoice_id');
+	}
+
+    public function client(){
+		return $this->belongsTo(Client::class,'client_id');
 	}
 }

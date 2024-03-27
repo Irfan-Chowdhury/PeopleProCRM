@@ -136,12 +136,6 @@ class ClientController extends Controller {
 		return response()->json(['success' => __('You are not authorized')]);
 	}
 
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param int $id
-	 * @return Response
-	 */
 	public function edit($id)
 	{
 
@@ -153,13 +147,6 @@ class ClientController extends Controller {
 		}
 	}
 
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param Request $request
-	 * @param int $id
-	 * @return Response
-	 */
 	public function update(Request $request)
 	{
 
@@ -262,12 +249,7 @@ class ClientController extends Controller {
 
 	}
 
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param int $id
-	 * @return Response
-	 */
+
 	public function destroy($id)
 	{
 		if(!env('USER_VERIFIED'))

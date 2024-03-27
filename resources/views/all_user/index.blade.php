@@ -17,7 +17,12 @@
                                 <a class="dropdown-item" href="#" name="create_record" id="create_record">Add Admin</a>
                                 @endif
                                 <a class="dropdown-item" href="{{url('/staff/employees')}}#formModal">Add Employee</a>
-                                <a class="dropdown-item" href="{{url('/project-management/clients')}}#formModal">Add Client</a>
+
+                                @if ($isCrmModuleExist)
+                                    <a class="dropdown-item" href="{{url('/clients')}}#formModal">Add Client</a>
+                                @else
+                                    <a class="dropdown-item" href="{{url('/project-management/clients')}}#formModal">Add Client</a>
+                                @endif
                             </div>
                         </div>
                     @endcan

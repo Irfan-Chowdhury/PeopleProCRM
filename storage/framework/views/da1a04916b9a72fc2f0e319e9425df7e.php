@@ -1,14 +1,13 @@
-@extends('layout.main')
-@section('content')
+<?php $__env->startSection('content'); ?>
+
+<?php if(isset($client_id) && Auth::user()->role_users_id !==3): ?>
+    <?php echo $__env->make('crm::client.include.header',['clientId'=> $client_id], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php endif; ?>
+
 
 <div class="container-fluid">
     <div class="card">
-        <div class="card-header"><h3>{{__('file.Payments')}}</h3></div>
-            <div class="card-header">
-                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#createModal"><i class="fa fa-plus"></i> {{__('file.Add New')}}</button>
-                <button type="button" class="btn btn-danger" name="bulk_delete" id="bulk_delete"><i class="fa fa-minus-circle"></i> {{__('Bulk delete')}}</button>
-            </div>
-        </div>
+        <div class="card-header"><h3><?php echo e(__('file.Proposal')); ?></h3></div>
     </div>
 </div>
 
@@ -19,13 +18,12 @@
             <thead>
                 <tr>
                     <th class="not-exported"></th>
-                    <th>{{trans('file.Invoice Id')}}</th>
-                    <th>{{trans('file.Client')}}</th>
-                    <th>{{trans('file.Payment Date')}}</th>
-                    <th>{{trans('file.Payment Method')}}</th>
-                    <th>{{trans('file.Amount')}}</th>
-                    <th>{{trans('file.Payment Status')}}</th>
-                    <th class="not-exported">{{trans('file.Action')}}</th>
+                    <th><?php echo e(trans('file.Start Date')); ?></th>
+                    <th><?php echo e(trans('file.End Date')); ?></th>
+                    <th><?php echo e(trans('file.Assigned To')); ?></th>
+                    <th><?php echo e(trans('file.Tax')); ?></th>
+                    <th><?php echo e(trans('file.Total (+Tax)')); ?></th>
+                    <th class="not-exported"><?php echo e(trans('file.Action')); ?></th>
                 </tr>
             </thead>
             <tbody id="tablecontents"></tbody>
@@ -33,26 +31,24 @@
     </div>
 </div>
 
-@include('crm::sale_section.invoice_payments.create-modal')
+
+<?php $__env->stopSection(); ?>
 
 
-@endsection
+<?php $__env->startPush('scripts'); ?>
 
-
-@push('scripts')
 <script type="text/javascript">
-    let dataTableURL = "{{ route('invoice-payments.datatable') }}";
-    let storeURL = "{{ route('invoice-payments.store')}}";
-    let destroyURL = "{{ url('sales/invoice-payments/destroy')}}/";
-    let bulkDeleteURL = "{{route('invoice-payments.bulk_delete')}}";
+    <?php if(isset($client_id)): ?>
+        var dataTableURL = "<?php echo e(url('/client/proposals/show')); ?>/" + "<?php echo e($client_id); ?>" ;
+    <?php else: ?>
+        let dataTableURL = "<?php echo e(route('client.proposals.datatable')); ?>";
+    <?php endif; ?>
 </script>
+
 
 <script type="text/javascript">
     (function($) {
         "use strict";
-
-        var invoices = {!! $invoices !!};
-
 
         $(document).ready(function () {
             $.ajaxSetup({
@@ -63,7 +59,7 @@
 
             var date = $('.date');
             date.datepicker({
-                format: '{{ env('Date_Format_JS')}}',
+                format: '<?php echo e(env('Date_Format_JS')); ?>',
                 autoclose: true,
                 todayHighlight: true
             });
@@ -104,28 +100,24 @@
                         searchable: false
                     },
                     {
-                        data: 'invoiceId',
-                        name: 'invoiceId',
+                        data: 'start_date',
+                        name: 'start_date',
                     },
                     {
-                        data: 'client',
-                        name: 'client',
+                        data: 'end_date',
+                        name: 'end_date',
                     },
                     {
-                        data: 'payment_date',
-                        name: 'payment_date',
+                        data: 'assign_to',
+                        name: 'assign_to',
                     },
                     {
-                        data: 'payment_method',
-                        name: 'payment_method',
+                        data: 'tax',
+                        name: 'tax',
                     },
                     {
                         data: 'amount',
                         name: 'amount',
-                    },
-                    {
-                        data: 'payment_status',
-                        name: 'payment_status',
                     },
                     {
                         data: 'action',
@@ -137,12 +129,12 @@
 
                 "order": [],
                 'language': {
-                    'lengthMenu': '_MENU_ {{__("records per page")}}',
-                    "info": '{{trans("file.Showing")}} _START_ - _END_ (_TOTAL_)',
-                    "search": '{{trans("file.Search")}}',
+                    'lengthMenu': '_MENU_ <?php echo e(__("records per page")); ?>',
+                    "info": '<?php echo e(trans("file.Showing")); ?> _START_ - _END_ (_TOTAL_)',
+                    "search": '<?php echo e(trans("file.Search")); ?>',
                     'paginate': {
-                        'previous': '{{trans("file.Previous")}}',
-                        'next': '{{trans("file.Next")}}'
+                        'previous': '<?php echo e(trans("file.Previous")); ?>',
+                        'next': '<?php echo e(trans("file.Next")); ?>'
                     }
                 },
                 'columnDefs': [
@@ -203,24 +195,9 @@
             new $.fn.dataTable.FixedHeader(table);
         });
 
-        $('#submitForm select[name="invoice_id"]').change(function () {
-            let invoiceId = parseInt($(this).val());
-            let invoice = invoices.find(function(item) {
-                return parseInt(item.id) === invoiceId;
-            });
-            let amount = invoice ? invoice.sub_total : 0;
-
-            $('#submitForm input[name="amount"]').val(amount);
-        });
-
-
-
     })(jQuery);
 </script>
 
+<?php $__env->stopPush(); ?>
 
-<script type="text/javascript" src="{{ asset('js/common-js/store.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/common-js/delete.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/common-js/bulkDelete.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/common-js/alertMessages.js') }}"></script>
-@endpush
+<?php echo $__env->make(isset($client_id) && Auth::user()->role_users_id !==3 ? 'layout.main' : 'layout.client', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/html/peoplepro/peoplepro-hrm-crm/Modules/CRM/resources/views/client/proposals/index.blade.php ENDPATH**/ ?>

@@ -1,5 +1,10 @@
-@extends('layout.client')
+@extends(isset($client_id) && Auth::user()->role_users_id !==3 ? 'layout.main' : 'layout.client')
 @section('content')
+
+@if (isset($client_id) && Auth::user()->role_users_id !==3)
+    @include('crm::client.include.header',['clientId'=> $client_id])
+@endif
+
 
 <div class="container-fluid">
     <div class="card">
@@ -32,9 +37,15 @@
 
 
 @push('scripts')
+
 <script type="text/javascript">
-    let dataTableURL = "{{ route('client.proposals.datatable') }}";
+    @if(isset($client_id))
+        var dataTableURL = "{{ url('/client/proposals/show')}}/" + "{{ $client_id }}" ;
+    @else
+        let dataTableURL = "{{ route('client.proposals.datatable') }}";
+    @endif
 </script>
+
 
 <script type="text/javascript">
     (function($) {

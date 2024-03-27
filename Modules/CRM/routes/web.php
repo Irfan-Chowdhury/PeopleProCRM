@@ -307,7 +307,6 @@ Route::group(['middleware' => ['XSS']], function () {
         });
     });
 
-    Route::get('/client-overview', [ClientController::class, 'overview'])->name('client.overview');
 
     Route::prefix('report')->group(function () {
         Route::get('invoice', [ReportController::class, 'invoice'])->name('report.invoice');
@@ -326,19 +325,33 @@ Route::group(['middleware' => ['XSS']], function () {
         Route::post('invoices/delete/selected', [InvoiceController::class, 'delete_by_selection'])->name('mass_delete_invoices');
     });
 
+    Route::prefix('clients')->group(function () {
+        // Route::resource('/', ClientController::class, ['names' => 'clients'])->except(['destroy', 'create', 'update', 'show']);
+        Route::resource('/', ClientController::class, ['names' => 'clients'])->only(['index', 'store']);
+        Route::get('{id}/edit', [ClientController::class, 'edit'])->name('clients.edit');
+        Route::post('update', [ClientController::class, 'update'])->name('clients.update');
+        Route::get('{id}/delete', [ClientController::class, 'destroy'])->name('clients.destroy');
+        Route::post('delete/selected', [ClientController::class, 'delete_by_selection'])->name('mass_delete_clients');
+        Route::get('/overview', [ClientController::class, 'overview'])->name('client.overview');
+    });
 
+
+
+    // ============ Client Section ===========
     Route::prefix('client')->group(function() {
 
         Route::prefix('contracts')->group(function() {
             Route::get('/', [ClientContractController::class, 'index'])->name('client.contracts.index');
             Route::get('/datatable', [ClientContractController::class, 'datatable'])->name('client.contracts.datatable');
             Route::get('/{contract}', [ClientContractController::class, 'contractItemDetails'])->name('client.contracts.contractItemDetails');
+            Route::get('/show/{client_id}', [ClientContractController::class, 'show'])->name('client.contracts.show');
         });
 
         Route::prefix('proposals')->group(function() {
             Route::get('/', [ClientProposalController::class, 'index'])->name('client.proposals.index');
             Route::get('/datatable', [ClientProposalController::class, 'datatable'])->name('client.proposals.datatable');
             Route::get('/{proposal}', [ClientProposalController::class, 'proposalItemDetails'])->name('client.proposals.proposalItemDetails');
+            Route::get('/show/{client_id}', [ClientProposalController::class, 'show'])->name('client.proposals.show');
         });
 
         Route::prefix('subscriptions')->group(function() {

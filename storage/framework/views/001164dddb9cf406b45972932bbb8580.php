@@ -2,7 +2,7 @@
 
 <div class="container-fluid">
     <div class="card">
-        <div class="card-header"><h3><?php echo e(__('file.Files')); ?></h3></div>
+        <div class="card-header"><h3><?php echo e(__('file.Contact')); ?></h3></div>
         <div class="card-header">
             <button type="button" class="btn btn-info" data-toggle="modal" data-target="#createModal"><i class="fa fa-plus"></i> <?php echo e(__('file.Add New')); ?></button>
             <button type="button" class="btn btn-danger" name="bulk_delete" id="bulk_delete"><i class="fa fa-minus-circle"></i> <?php echo e(__('Bulk delete')); ?></button>                </div>
@@ -16,10 +16,11 @@
             <thead>
                 <tr>
                     <th class="not-exported"></th>
-                    <th><?php echo e(trans('file.Title')); ?></th>
-                    <th><?php echo e(trans('file.Description')); ?></th>
-                    <th><?php echo e(__('Date and Time')); ?></th>
-                    <th class="not-exported"><?php echo e(trans('file.action')); ?></th>
+                    <th><?php echo e(trans('file.Image')); ?></th>
+                    <th><?php echo e(trans('file.Name')); ?></th>
+                    <th><?php echo e(trans('file.Email')); ?></th>
+                    <th><?php echo e(trans('file.Phone')); ?></th>
+                    <th class="not-exported"><?php echo e(trans('file.Action')); ?></th>
                 </tr>
             </thead>
             <tbody id="tablecontents"></tbody>
@@ -27,18 +28,20 @@
     </div>
 </div>
 
-<?php echo $__env->make('crm::lead_section.files.create-modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-
+<?php echo $__env->make('crm::lead_section.contact.create-modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php echo $__env->make('crm::lead_section.contact.edit-modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
 
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startPush('scripts'); ?>
 <script type="text/javascript">
-    let dataTableURL = "<?php echo e(route('lead.files.datatable', ['lead' => $lead->id])); ?>";
-    let storeURL = "<?php echo e(route('lead.files.store', ['lead' => $lead->id])); ?>";
-    let destroyURL = "<?php echo e(url('/leads/details')); ?>/" + "<?php echo e($lead->id); ?>/files/destroy/";
-    let bulkDeleteURL = '<?php echo e(route('lead.files.bulk_delete', ['lead' => $lead->id])); ?>';
+    let dataTableURL = "<?php echo e(route('lead.contact.datatable', ['lead' => $lead->id])); ?>";
+    let storeURL = "<?php echo e(route('lead.contact.store', ['lead' => $lead->id])); ?>";
+    var editURL = "<?php echo e(url('/leads/details')); ?>/" + "<?php echo e($lead->id); ?>/contact/edit/" ;
+    var updateURL = "<?php echo e(url('/leads/details')); ?>/" + "<?php echo e($lead->id); ?>/contact/update/" ;
+    let destroyURL = "<?php echo e(url('/leads/details')); ?>/" + "<?php echo e($lead->id); ?>/contact/destroy/";
+    let bulkDeleteURL = '<?php echo e(route('lead.contact.bulk_delete', ['lead' => $lead->id])); ?>';
 </script>
 
 <script type="text/javascript">
@@ -87,18 +90,20 @@
                         searchable: false
                     },
                     {
-                        data: 'file_title',
-                        name: 'file_title'
+                        data: 'image',
+                        name: 'image',
                     },
                     {
-                        data: 'file_description',
-                        name: 'file_description',
-
+                        data: 'name',
+                        name: 'name',
                     },
                     {
-                        data: 'created_at',
-                        name: 'created_at',
-
+                        data: 'email',
+                        name: 'email',
+                    },
+                    {
+                        data: 'phone',
+                        name: 'phone',
                     },
                     {
                         data: 'action',
@@ -261,4 +266,4 @@
 <script type="text/javascript" src="<?php echo e(asset('js/common-js/alertMessages.js')); ?>"></script>
 <?php $__env->stopPush(); ?>
 
-<?php echo $__env->make('crm::lead_section.layout', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/html/peoplepro/peoplepro-hrm-crm/Modules/CRM/resources/views/lead_section/files/index.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('crm::lead_section.layout', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/html/peoplepro/peoplepro-hrm-crm/Modules/CRM/resources/views/lead_section/contact/index.blade.php ENDPATH**/ ?>

@@ -10,12 +10,19 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\CRM\App\Http\Requests\InvoicePayment\StoreInvoicePaymentRequest;
 use Modules\CRM\App\Models\InvoicePayment;
+use Illuminate\Support\Facades\DB;
 
 class InvoicePaymentController extends Controller
 {
     public function index()
     {
-        $invoices = Invoice::select('id','invoice_number','client_id','sub_total')->get();
+        $invoices = DB::table('invoices')
+                    ->select('id', 'invoice_number', 'client_id', 'sub_total')
+                    ->whereNotIn('id', function ($query) {
+                        $query->select('invoice_id')
+                            ->from('invoice_payments');
+                    })
+                    ->get();
 
         return view('crm::sale_section.invoice_payments.index', compact('invoices'));
     }
@@ -23,7 +30,7 @@ class InvoicePaymentController extends Controller
     public function datatable()
     {
         if (request()->ajax()) {
-			return datatables()->of(InvoicePayment::with('invoice:id,invoice_number,client_id')->orderBy('id','DESC')->get())
+			return datatables()->of(InvoicePayment::with('invoice:id,invoice_number,client_id','client')->orderBy('id','DESC')->get())
 				->setRowId(function ($row)
 				{
 					return $row->id;
@@ -31,6 +38,10 @@ class InvoicePaymentController extends Controller
                 ->addColumn('invoiceId',function ($row)
                 {
                     return $row->invoice->invoice_number ?? " ";
+                })
+                ->addColumn('client',function ($row)
+                {
+                    return $row->client->first_name.' '.$row->client->last_name;
                 })
                 ->addColumn('payment_date',function ($row)
                 {
@@ -69,8 +80,11 @@ class InvoicePaymentController extends Controller
 
     public function store(StoreInvoicePaymentRequest $request)
     {
+        $invoice = Invoice::find($request->invoice_id);
+
         InvoicePayment::create([
             'invoice_id' => $request->invoice_id,
+            'client_id' => $invoice->client_id,
             'payment_method' => $request->payment_method,
             'date' => date('Y-m-d',strtotime($request->payment_date)),
             'amount' => $request->amount,

@@ -1,4 +1,4 @@
-@extends('layout.client')
+@extends(isset($proposal->client_id) && Auth::user()->role_users_id !==3 ? 'layout.main' : 'layout.client')
 @section('content')
 
 <div class="container-fluid">

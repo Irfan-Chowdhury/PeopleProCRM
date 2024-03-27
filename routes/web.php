@@ -272,7 +272,7 @@ Route::group(['middleware' => ['XSS']], function () {
         Route::get('contacts/{id}/delete', [EmployeeContactController::class, 'destroy'])->name('contacts.destroy');
 
         // check - EmployeeSocialProfileController
-        Route::get('social_profile/{employee}', [EmployeeSocialProfileController::class, 'show'])->name('social_profile.show');
+        // Route::get('social_profile/{employee}', [EmployeeSocialProfileController::class, 'show'])->name('social_profile.show');
         Route::post('social_profile/{employee}/store', [EmployeeController::class, 'storeSocialInfo'])->name('social_profile.store');
 
         Route::post('profile_picture/{employee}/store', [EmployeeController::class, 'storeProfilePicture'])->name('profile_picture.store');
@@ -763,6 +763,12 @@ Route::group(['middleware' => ['XSS']], function () {
             Route::get('invoices/download', [InvoiceController::class, 'download'])->name('invoices.download');
             Route::get('invoices/download/{id}', [InvoiceController::class, 'download'])->name('invoices.downloadFile');
             Route::post('invoices/delete/selected', [InvoiceController::class, 'delete_by_selection'])->name('mass_delete_invoices');
+
+
+            Route::post('clients/update', [ClientController::class, 'update'])->name('clients.update');
+            Route::resource('clients', ClientController::class)->except(['destroy', 'create', 'update', 'show']);
+            Route::get('clients/{id}/delete', [ClientController::class, 'destroy'])->name('clients.destroy');
+            Route::post('clients/delete/selected', [ClientController::class, 'delete_by_selection'])->name('mass_delete_clients');
         }
 
         // ---------- Test End ------------------
@@ -778,10 +784,10 @@ Route::group(['middleware' => ['XSS']], function () {
 
 
 
-        Route::post('clients/update', [ClientController::class, 'update'])->name('clients.update');
-        Route::resource('clients', ClientController::class)->except(['destroy', 'create', 'update', 'show']);
-        Route::get('clients/{id}/delete', [ClientController::class, 'destroy'])->name('clients.destroy');
-        Route::post('clients/delete/selected', [ClientController::class, 'delete_by_selection'])->name('mass_delete_clients');
+        // Route::post('clients/update', [ClientController::class, 'update'])->name('clients.update');
+        // Route::resource('clients', ClientController::class)->except(['destroy', 'create', 'update', 'show']);
+        // Route::get('clients/{id}/delete', [ClientController::class, 'destroy'])->name('clients.destroy');
+        // Route::post('clients/delete/selected', [ClientController::class, 'delete_by_selection'])->name('mass_delete_clients');
     });
 
     Route::post('dynamic_dependent/fetch_department', [DynamicDependent::class, 'fetchDepartment'])->name('dynamic_department');
@@ -910,7 +916,7 @@ Route::group(['middleware' => ['XSS']], function () {
     Route::prefix('client')->group(function() {
         Route::get('/profile', [DashboardController::class, 'clientProfile'])->name('clientProfile');
 
-        
+
         $isCrmModuleExist = File::exists(base_path('Modules/CRM'));
         if (!$isCrmModuleExist) {
             Route::get('/invoices', [ClientInvoiceController::class, 'invoices'])->name('clientInvoice');

@@ -1,17 +1,13 @@
-@extends('layout.main')
+ @extends('layout.main')
 @section('content')
-
-
 
     <section>
 
         <div class="container-fluid"><span id="general_result"></span></div>
 
-
-        <div class="container-fluid">
+        <div class="container-fluid mb-3">
             @can('store-client')
-                <button type="button" class="btn btn-info" name="create_record" id="create_record"><i
-                            class="fa fa-plus"></i> {{__('Add Client')}}</button>
+                <button type="button" class="btn btn-info" name="create_record" id="create_record"><i class="fa fa-plus"></i> {{__('Add Client')}}</button>
             @endcan
             @can('delete-client')
                 <button type="button" class="btn btn-danger" name="bulk_delete" id="bulk_delete"><i
@@ -30,6 +26,10 @@
                     <th>{{trans('file.Website')}}</th>
                     <th>{{trans('file.Phone')}}</th>
                     <th>{{trans('file.Email')}}</th>
+                    <th>{{trans('file.Group')}}</th>
+                    <th>{{trans('file.Label')}}</th>
+                    <th>{{trans('file.Total Invoiced')}}</th>
+                    <th>{{trans('file.Payment Recieved')}}</th>
                     <th class="not-exported">{{trans('file.action')}}</th>
                 </tr>
                 </thead>
@@ -66,11 +66,6 @@
                                 <input type="text" name="last_name" id="last_name" placeholder={{__('Last Name')}}
                                         required class="form-control">
                             </div>
-                            {{-- <div class="col-md-6 form-group">
-                                <label>{{__('Name')}} <span class="text-danger">*</span></label>
-                                <input type="text" name="name" id="name" placeholder={{__('Name')}}
-                                        required class="form-control">
-                            </div> --}}
                             <div class="col-md-6 form-group">
                                 <label>{{trans('file.Company')}} <span class="text-danger">*</span></label>
                                 <input type="text" name="company_name" id="company_name"
@@ -85,13 +80,13 @@
                             </div>
 
                             <div class="col-md-6 form-group">
-                                <label>{{trans('file.Email')}} <span class="text-danger">*</span></label>
-                                <input type="email" name="email" id="email" placeholder='example@example.com' required
+                                <label>{{trans('file.Email')}}</label>
+                                <input type="email" name="email" id="email" placeholder='example@example.com'
                                        class="form-control">
                             </div>
                             <div class="col-md-6 form-group">
                                 <label>{{trans('file.Phone')}}<span class="text-danger">*</span></label>
-                                <input type="text" name="contact_no" id="contact_no"
+                                <input type="number" name="contact_no" id="contact_no"
                                        placeholder="{{trans('file.Phone')}}"
                                        class="form-control" value="{{ old('contact_no') }}">
                             </div>
@@ -143,22 +138,46 @@
                             </div>
 
 
-                            <div class="col-md-6">
-                                <div class="form-group">
+                            <div class="col-md-6 form-group">
                                     <label>{{trans('file.Country')}}</label>
-                                    <select name="country" id="country" required class="form-control selectpicker"
-                                            data-live-search="true" data-live-search-style="begins"
+                                    <select name="country" id="country" class="form-control selectpicker"
+                                            data-live-search="true" data-live-search-style="contains"
                                             title='{{__('Selecting',['key'=>trans('file.Country')])}}...'>
                                         @foreach($countries as $country)
                                             <option value="{{$country->id}}">{{$country->name}}</option>
                                         @endforeach
                                     </select>
-                                </div>
                             </div>
 
                             <div class="col-md-6 form-group">
-                                <label for="Photo"
-                                       class="col-md-4 col-form-label text-md-right">{{ __('Image') }}</label>
+                                <label>{{trans('file.Client Groups')}}</label>
+                                <select name="client_group" id="clientGroup" class="form-control selectpicker"
+                                        data-live-search="true" data-live-search-style="contains"
+                                        title='{{__('Selecting',['key'=>trans('file.Group')])}}...'>
+                                        <option value="Gold">@lang('file.Gold')</option>
+                                        <option value="VIP">@lang('file.VIP')</option>
+                                        <option value="Silver">@lang('file.Silver')</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>{{trans('file.Labels')}}</label>
+                                <select name="label" id="label" class="form-control selectpicker"
+                                        data-live-search="true" data-live-search-style="contains"
+                                        title='{{__('Selecting',['key'=>trans('file.Label')])}}...'>
+                                        <option value="Inactive">@lang('file.Inactive')</option>
+                                        <option value="Referral">@lang('file.Referral')</option>
+                                        <option value="Satisfied">@lang('file.Satisfied')</option>
+                                        <option value="Unsatisfied">@lang('file.Unsatisfied')</option>
+                                        <option value="Corporate">@lang('file.Corporate')</option>
+                                        <option value="Potential">@lang('file.Potential')</option>
+                                        <option value="90% Probability">@lang('file.90% Probability')</option>
+                                        <option value="Call this week">@lang('file.50% Probability')</option>
+                                        <option value="Call this week">@lang('file.Call this week')</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6 form-group">
+                                <label for="profile_photo">{{ __('Image') }}</label>
                                 <input type="file" id="profile_photo"
                                        class="form-control @error('photo') is-invalid @enderror"
                                        name="profile_photo"
@@ -190,12 +209,6 @@
     </div>
 
 
-
-
-
-
-
-
     <div id="confirmModal" class="modal fade" role="dialog">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -217,7 +230,6 @@
     </div>
 
 
-
 @endsection
 
 @push('scripts')
@@ -228,6 +240,13 @@
         $(document).ready(function () {
 
             if (window.location.href.indexOf('#formModal') != -1) {
+                $('.modal-title').text('{{__('Add Client')}}');
+                $('#store_profile_photo').html('');
+                $('#action_button').val('{{trans("file.Add")}}');
+                $('#action').val('{{trans("file.Add")}}');
+                $('.hide-add').hide();
+                $('.hide-edit').show();
+
                 $('#formModal').modal('show');
             }
 
@@ -291,6 +310,22 @@
                     {
                         data: 'email',
                         name: 'email',
+                    },
+                    {
+                        data: 'client_group',
+                        name: 'client_group',
+                    },
+                    {
+                        data: 'label',
+                        name: 'label',
+                    },
+                    {
+                        data: 'total_invoice',
+                        name: 'total_invoice',
+                    },
+                    {
+                        data: 'payment_recieved',
+                        name: 'payment_recieved',
                     },
                     {
                         data: 'action',
@@ -372,7 +407,6 @@
 
 
         $('#create_record').on('click', function () {
-
             $('.modal-title').text('{{__('Add Client')}}');
             $('#store_profile_photo').html('');
             $('#action_button').val('{{trans("file.Add")}}');
@@ -382,8 +416,8 @@
             $('#formModal').modal('show');
         });
 
-        $('#sample_form').on('submit', function (event) {
 
+        $('#sample_form').on('submit', function (event) {
             event.preventDefault();
             if ($('#action').val() == '{{trans('file.Add')}}') {
                 $.ajax({
@@ -395,6 +429,8 @@
                     processData: false,
                     dataType: "json",
                     success: function (data) {
+                        console.log(data);
+
                         var html = '';
                         if (data.errors) {
                             html = '<div class="alert alert-danger">';
@@ -414,7 +450,7 @@
                 });
             }
 
-            if ($('#action').val() == '{{trans('file.Edit')}}') {
+            else if ($('#action').val() == '{{trans('file.Edit')}}') {
                 $.ajax({
                     url: "{{ route('clients.update') }}",
                     method: "POST",
@@ -460,12 +496,14 @@
             $('.hide-add').show();
             $('#store_profile_photo').html('');
 
-            var target = "{{ route('clients.index') }}/" + id + '/edit';
+            // var target = "{{ route('clients.index') }}/" + id + '/edit';
+            var target = "clients/" + id + '/edit';
 
             $.ajax({
                 url: target,
                 dataType: "json",
                 success: function (html) {
+                    console.log(html);
 
                     $('#company_name').val(html.data.company_name);
                     $('#username').val(html.data.username);
@@ -489,6 +527,8 @@
                         $('#store_profile_photo').html("<img src={{ URL::to('/public') }}/uploads/profile_photos/" + html.data.profile + " width='70'  class='img-thumbnail' />");
                         $('#store_profile_photo').append("<input type='hidden' name='hidden_image' value='" + html.data.profile + "'  />");
                     }
+                    $('#clientGroup').selectpicker('val', html.data.client_group);
+                    $('#label').selectpicker('val', html.data.label);
 
                     $('#hidden_id').val(html.data.id);
                     $('.modal-title').text('{{trans('file.Edit')}}');

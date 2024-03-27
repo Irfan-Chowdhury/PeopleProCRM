@@ -92,7 +92,7 @@ class CRMController extends Controller
     {
         if ($data['isReceived']) {
 
-            self::otherFileDelete();
+            // self::otherFileDelete();
 
             $zip = new ZipArchive;
             self::unzipAndDeleteProcessing($zip, $data['remoteFileName']);
@@ -103,7 +103,7 @@ class CRMController extends Controller
     {
         $baseFiles = [
             // 'app/Http/Controllers/InvoiceController.php',
-            'app/Http/Controllers/ClientInvoiceController.php',
+            // 'app/Http/Controllers/ClientInvoiceController.php',
             // 'app/Models/Invoice.php',
             // 'app/Models/InvoiceItem.php',
         ];

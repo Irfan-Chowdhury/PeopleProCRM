@@ -11,6 +11,7 @@ return new class extends Migration
         Schema::create('invoice_payments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('invoice_id');
+            $table->foreignId('client_id');
             $table->string('payment_method');
             $table->date('date');
             $table->decimal('amount');

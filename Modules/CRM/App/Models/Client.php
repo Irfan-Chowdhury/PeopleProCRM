@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace Modules\CRM\App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -23,12 +23,15 @@ class Client extends Model
         'country',
         'zip',
         'profile',
-        'is_active'
+        'is_active',
+        'client_group',
+        'label'
 	];
 
 	public function invoices()
 	{
-		return $this->hasMany(Invoice::class);
+		return $this->hasMany(Invoice::class)
+                    ->with('invoiceItems');
 	}
 
 	public function projects()

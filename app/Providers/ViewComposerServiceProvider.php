@@ -27,12 +27,6 @@ class ViewComposerServiceProvider extends ServiceProvider
             $general_settings = GeneralSetting::latest()->first();
             $isCrmModuleExist = File::exists(base_path('Modules/CRM'));
 
-            // Procedure - 1
-            // view()->composer('layout.main_partials.header', function ($view) use ($generalSetting) {
-            //     $view->with('generalSetting', $generalSetting);
-            // });
-
-            // Procedure - 2
             view()->composer([
                 'layout.main',
                 'layout.main_partials.header',
@@ -44,6 +38,7 @@ class ViewComposerServiceProvider extends ServiceProvider
                 'frontend.Layout.navigation',
                 'documentation.index',
                 'vendor.translation.layout',
+                'all_user.index',
 
                 'vendor.translation.languages.create'
             ], function ($view) use ($general_settings, $isCrmModuleExist) {
